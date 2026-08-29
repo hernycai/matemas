@@ -10,6 +10,75 @@ import api from "../../config/api";
 import { useAuth } from "../../context/AuthContext";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 
+const DEFAULT_SECCIONES = [
+  {
+    id: 1,
+    grado: 1,
+    nombre: "Presupuesto y Compras del Hogar",
+    titulo: "Presupuesto y Compras del Hogar",
+    descripcion: "Aprendé a sumar gastos diarios, calcular vueltos y organizar tus ingresos del mes sin estrés.",
+    puntosRequeridos: 0,
+    puntosRecompensa: 40,
+    umbralAprobacion: 0.66,
+    estaDesbloqueada: true,
+  },
+  {
+    id: 2,
+    grado: 2,
+    nombre: "Descuentos, Ofertas y Rebajas",
+    titulo: "Descuentos, Ofertas y Rebajas",
+    descripcion: "Calculá mentalmente 15%, 25% y 50% de descuento en el supermercado y tiendas para ahorrar de verdad.",
+    puntosRequeridos: 40,
+    puntosRecompensa: 60,
+    umbralAprobacion: 0.66,
+    estaDesbloqueada: true,
+  },
+  {
+    id: 3,
+    grado: 3,
+    nombre: "División de Cuentas y Propinas",
+    titulo: "División de Cuentas y Propinas",
+    descripcion: "Dividí cenas con amigos, deliverys y propinas con total exactitud para que todos paguen lo justo.",
+    puntosRequeridos: 100,
+    puntosRecompensa: 80,
+    umbralAprobacion: 0.66,
+    estaDesbloqueada: true,
+  },
+  {
+    id: 4,
+    grado: 4,
+    nombre: "Cuotas vs Contado e Intereses",
+    titulo: "Cuotas vs Contado e Intereses",
+    descripcion: "Compará si te conviene pagar en cuotas fijas o al contado evaluando recargos y tarjetas de crédito.",
+    puntosRequeridos: 180,
+    puntosRecompensa: 100,
+    umbralAprobacion: 0.66,
+    estaDesbloqueada: true,
+  },
+  {
+    id: 5,
+    grado: 5,
+    nombre: "Cocina, Medidas y Proporciones",
+    titulo: "Cocina, Medidas y Proporciones",
+    descripcion: "Ajustá ingredientes de recetas para más o menos personas usando la regla de tres simple cotidiana.",
+    puntosRequeridos: 280,
+    puntosRecompensa: 120,
+    umbralAprobacion: 0.66,
+    estaDesbloqueada: true,
+  },
+  {
+    id: 6,
+    grado: 6,
+    nombre: "Gran Desafío Maestro de la Vida Diaria",
+    titulo: "Gran Desafío Maestro de la Vida Diaria",
+    descripcion: "Poné a prueba tu autonomía y agilidad numérica resolviendo situaciones reales combinadas.",
+    puntosRequeridos: 400,
+    puntosRecompensa: 150,
+    umbralAprobacion: 0.66,
+    estaDesbloqueada: true,
+  },
+];
+
 export default function CursoSection() {
   const { profile, refreshProfile } = useAuth();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -18,10 +87,10 @@ export default function CursoSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [, setScrollDirection] = useState(0);
   const isTransitioning = useRef(false);
-  const [lecciones, setLecciones] = useState([]);
+  const [lecciones, setLecciones] = useState(DEFAULT_SECCIONES);
   const desafioKey = String(profile?.desafioActualId ?? profile?.desafio ?? "all");
   const [desafioCargadoKey, setDesafioCargadoKey] = useState(null);
-  const loadingLecciones = desafioCargadoKey !== desafioKey;
+  const loadingLecciones = desafioCargadoKey !== desafioKey && lecciones.length === 0;
 
   // Si el onboarding guardó el texto pero no el id de rama, linkear ahora.
   useEffect(() => {
@@ -77,20 +146,21 @@ export default function CursoSection() {
             );
           });
         }
+        if (secciones.length === 0) {
+          secciones = DEFAULT_SECCIONES;
+        }
         secciones = [...secciones].sort(
           (a, b) => (a.grado ?? 0) - (b.grado ?? 0) || a.id - b.id,
         );
         const conTitulo = secciones.map((s) => ({ ...s, titulo: s.nombre }));
-        // MANTENER ORDEN ASCENDENTE: nivel 1 primero, nivel 6 al final
         setLecciones(conTitulo);
-        // Iniciar en el nivel 1 (primer elemento)
         setCurrentIndex(0);
         setDesafioCargadoKey(desafioKey);
       })
       .catch((err) => {
         if (!activo) return;
-        console.error("Error al cargar secciones:", err);
-        setLecciones([]);
+        console.warn("Usando secciones pedagógicas predeterminadas para adultos:", err.message);
+        setLecciones(DEFAULT_SECCIONES);
         setDesafioCargadoKey(desafioKey);
       });
 

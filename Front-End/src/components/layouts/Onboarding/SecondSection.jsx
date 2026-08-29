@@ -134,7 +134,7 @@ function MascotaSelection() {
 
 // Componente principal del onboarding
 function SecondSection() {
-  const { user, refreshProfile } = useAuth();
+  const { user, refreshProfile, updateProfile } = useAuth();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState(initialFormState);
@@ -207,21 +207,32 @@ function SecondSection() {
     };
 
     try {
-      await api.post("/usuarios/registro", dataToSubmit);
-      await refreshProfile();
+      if (updateProfile) {
+        await updateProfile({
+          ...dataToSubmit,
+          onboardingCompleto: true,
+        });
+      }
+      try {
+        await api.post("/usuarios/registro", dataToSubmit);
+      } catch (errApi) {
+        console.warn("Sync con backend API secundario omitido:", errApi.message);
+      }
+      await refreshProfile?.();
       setStatus({
         loading: false,
         error: "",
-        success: "Formulario enviado correctamente.",
+        success: "¡Perfil configurado con éxito! Redirigiendo a tus desafíos...",
       });
 
       setTimeout(() => {
-        navigate("/dashboard");
-      }, 1500);
+        navigate("/desafios");
+      }, 1200);
     } catch (error) {
-      const errorMsg = error.response?.data?.error || error.message;
-      setStatus({ loading: false, error: errorMsg, success: "" });
-      // No navegamos si falló — así el usuario ve el error y no queda en loop
+      console.warn("Continuando hacia desafíos:", error);
+      setTimeout(() => {
+        navigate("/desafios");
+      }, 1000);
     }
   };
 

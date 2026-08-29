@@ -35,15 +35,15 @@ const useRegisterForm = () => {
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [usuario, setUsuario] = useState("");
-  const [anioNacimiento, setAnioNacimiento] = useState("");
   const handleChangeValue = (e) => {
     const { name, value } = e.target;
-    if (name === "email") setEmail(value);
+    if (name === "nombre") setNombre(value);
+    else if (name === "email") setEmail(value);
     else if (name === "password") setPassword(value);
     else if (name === "confirmPassword") setConfirmPassword(value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       setToastMessage("❌ Por favor, completá todos los campos");
@@ -84,29 +84,31 @@ const useRegisterForm = () => {
       setShowToast(true);
       return;
     }
-    setShowProfileModal(true);
-  };
-  const handleCompleteProfile = async () => {
-    if (!nombre || !genero) {
-      setToastMessage("❌ Completá todos los campos del perfil");
-      setToastVariant("danger");
-      setShowToast(true);
-      return;
-    }
 
     try {
-      await register(email, password, nombre, {
-        genero,
+      setToastMessage("⏳ Creando tu cuenta...");
+      setToastVariant("info");
+      setShowToast(true);
+
+      await register(email.trim(), password, nombre.trim() || email.split("@")[0], {
+        genero: genero || "No especificado",
       });
-      setToastMessage("✅ Registro exitoso");
+
+      setToastMessage("✅ ¡Cuenta creada con éxito! Redirigiendo al inicio de sesión...");
       setToastVariant("success");
       setShowToast(true);
-      setShowProfileModal(false);
+
       setTimeout(() => {
         navigate("/login", { replace: true });
-      }, 2000);
+      }, 1500);
     } catch (error) {
-      setToastMessage(`❌ Error: ${error.message}`);
+      console.error("Error en registro:", error);
+      const raw = error?.message || "";
+      let msg = "No se pudo completar el registro. Intentá nuevamente.";
+      if (/already registered|user already exists/i.test(raw)) {
+        msg = "Este correo ya se encuentra registrado. Iniciá sesión.";
+      }
+      setToastMessage(`❌ ${msg}`);
       setToastVariant("danger");
       setShowToast(true);
     }
@@ -274,6 +276,32 @@ const RegisterPage = () => {
               onSubmit={handleSubmit}
               className="px-2"
             >
+              <Form.Group className="mb-3" controlId="registerNombre">
+                <Form.Label className="visually-hidden">Nombre</Form.Label>
+                <div style={{ position: "relative", width: "100%" }}>
+                  <InputGroup>
+                    <Form.Control
+                      type="text"
+                      name="nombre"
+                      autoComplete="name"
+                      required
+                      placeholder="Nombre completo o apodo"
+                      value={nombre}
+                      onChange={handleChangeValue}
+                      style={{
+                        width: "100%",
+                        backgroundColor: "#f5f5f5",
+                        border: "none",
+                        borderBottom: "1px solid #e0e0e0",
+                        borderRadius: 0,
+                        boxShadow: "none",
+                        paddingRight: "10px",
+                      }}
+                    />
+                  </InputGroup>
+                </div>
+              </Form.Group>
+
               <Form.Group className="mb-3" controlId="registerEmail">
                 <Form.Label className="visually-hidden">Email</Form.Label>
                 <div

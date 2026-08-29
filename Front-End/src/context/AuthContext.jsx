@@ -118,13 +118,13 @@ export const AuthProvider = ({ children }) => {
           id: user.id,
           nombre: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Usuario",
           email: user.email,
-          puntos: 50,
-          tokens: 10,
+          puntos: 0,
+          tokens: 0,
           racha: 1,
-          edad: user.user_metadata?.edad || "35",
-          desafio: user.user_metadata?.desafio || "mejorar_calculo_diario",
+          edad: user.user_metadata?.edad || "",
+          desafio: user.user_metadata?.desafio || "",
           mascota: user.user_metadata?.mascota || "suma",
-          onboardingCompleto: true,
+          onboardingCompleto: Boolean(user.user_metadata?.desafio),
           rol: "usuario",
         };
       }
@@ -139,28 +139,26 @@ export const AuthProvider = ({ children }) => {
       setProfileError(null);
 
       const hasOnboardingData =
-        data.edad && String(data.edad).trim() !== '' &&
-        data.desafio && String(data.desafio).trim() !== '';
+        Boolean(data.desafio && String(data.desafio).trim() !== "" && data.onboardingCompleto !== false);
 
-      const isNew = !hasOnboardingData && data.isNew === true;
+      const isNew = !hasOnboardingData;
       setIsNewUser(isNew);
 
-      console.log(`👤 Perfil cargado exitosamente: ${data.nombre} (${user.email})`);
+      console.log(`👤 Perfil cargado: ${data.nombre} (Nuevo: ${isNew ? 'SÍ' : 'NO'})`);
     } catch (error) {
       console.error("🔴 Error al procesar perfil:", error);
-      // Nunca dejar el perfil bloqueado en null si el usuario está autenticado
       const safeProfile = {
         id: user.id,
         nombre: user.user_metadata?.full_name || user.email?.split("@")[0] || "Usuario",
         email: user.email,
-        puntos: 50,
+        puntos: 0,
         racha: 1,
         mascota: "suma",
-        onboardingCompleto: true,
+        onboardingCompleto: false,
         rol: "usuario",
       };
       setProfile(safeProfile);
-      setIsNewUser(false);
+      setIsNewUser(true);
       lastFetchedId.current = user.id;
     } finally {
       isFetching.current = false;

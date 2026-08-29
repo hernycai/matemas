@@ -1,0 +1,43 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api/index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node src/app.js",
+    "postinstall": "prisma generate --schema=./prisma/schema.prisma",
+    "build": "prisma generate --schema=./prisma/schema.prisma",
+    "seed": "node prisma/seed.js",
+    "seed:auth": "node prisma/seed-auth-users.js",
+    "seed:ejercicios": "node prisma/seed-ejercicios.js",
+    "seed:ramas": "node prisma/seed-ramas.js",
+    "seed:lecciones": "node prisma/seed-lecciones.js",
+    "list:secciones": "node prisma/list-secciones.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=20.x"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "@google/generative-ai": "0.24.1",
+    "@prisma/client": "6.4.1",
+    "@supabase/supabase-js": "2.48.1",
+    "cors": "^2.8.6",
+    "dotenv": "17.4.2",
+    "express": "5.2.1",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "cross-env": "7.0.3",
+    "nodemon": "3.1.14",
+    "prisma": "6.4.1"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
+}

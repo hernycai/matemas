@@ -1,0 +1,19 @@
+id,titulo,descripcion,pregunta,explicacion,categoria,seccionId
+1,La Compra Mensual,Optimizando el presupuesto,¿Cuanto es 15 + 27?,Suma basica: 15+27=42,Aritmetica,1
+2,El Descuento,Calculando ofertas,Si algo sale 100 y tiene 20% off ¿cuanto pagas?,Restar el porcentaje del total,Porcentajes,1
+3,Ahorro Hormiga,Pequeños gastos diarios,Gastas 50 por dia en cafe ¿cuanto es al mes?,Multiplicacion simple,Aritmetica,1
+4,Pared de Ladrillos,Calculo de materiales,¿Cuantos ladrillos de 20cm entran en 1 metro?,Division de longitud,Geometria,2
+5,Mezcla de Cemento,Proporciones,Relacion 3 a 1. Si usas 9 de arena ¿cuanto cemento va?,Regla de tres simple,Proporciones,2
+6,Pintura de Habitacion,Superficie a cubrir,Pared de 3x3 metros ¿que superficie tiene?,Base por altura,Geometria,2
+7,Stock de Almacen,Conteo de mercaderia,Recibis 5 packs de 6 latas ¿total?,Multiplicacion,Aritmetica,3
+8,El Vuelto Justo,Atencion al cliente,Pagan con 1000 algo de 750 ¿vuelto?,Resta basica,Aritmetica,3
+9,Oferta 3x2,Comparacion de precios,¿Es mejor 3x2 o 50% en la segunda unidad?,Calculo de valor unitario,Logica,3
+10,Ruta de Entrega,Calculo de kilometros,Distancia de 120km a 60km/h ¿cuanto tardas?,Velocidad igual distancia sobre tiempo,Fisica,4
+11,Carga de Combustible,Consumo por litro,Consumo de 10L cada 100km. Para 250km ¿cuanto?,Proporcionalidad,Aritmetica,4
+12,Espacio en Camion,Volumen de carga,Cajas de 1m3 en espacio de 10m3 ¿cuantas entran?,Volumen,Geometria,4
+13,Puertas Logicas,Introduccion a la logica,¿Que sale de una compuerta AND con 1 y 0?,Tablas de verdad,Logica,5
+14,Bits y Bytes,Almacenamiento,¿Cuantos bits hay en un byte?,Definicion de unidad minima,Informatica,5
+15,Binario a Decimal,Conversion,¿Que numero es 101 en binario?,Suma de potencias de 2,Numeracion,5
+16,Prestamo Amigo,Interes simple,Prestas 100 al 10% mensual ¿en un mes tenes?,Calculo de interes,Finanzas,6
+17,Inflacion Mensual,Poder adquisitivo,Si los precios suben 10% dos meses seguidos ¿total?,Interes compuesto acumulado,Finanzas,6
+18,Inversion Inicial,Capitalizacion,Queres 120 en un mes con 20% interes ¿cuanto pones?,Ecuacion de primer grado,Finanzas,6

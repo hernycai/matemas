@@ -1,0 +1,20 @@
+node_modules
+.env
+dist
+build
+.pnpm-debug.log*
+*.log
+logs
+.vscode/*
+!.vscode/extensions.json
+.idea
+.project
+.DS_Store
+Thumbs.db
+
+# Local / sensibles (no subir)
+tmp-*/
+tmp-*.txt
+Back-End/data/lecciones.csv
+docs/VIDEOS-CLOUDINARY.md
+*.local

@@ -1,0 +1,320 @@
+.ejercicio-page-container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.ejercicio-page-content {
+  width: 100%;
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  /* --- FONDO DE PANTALLA REQUERIDO --- */
+  background-image: url('../../../assets/fondo_onboarding.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.ejercicio-top-bar {
+  width: 100%;
+  max-width: 1150px;
+  display: flex;
+  margin-bottom: 1.5rem;
+}
+
+/* --- REJILLA RESPONSIVA DE 2 COLUMNAS --- */
+.ejercicio-grid {
+  width: 100%;
+  max-width: 1150px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr; /* Asimetría ligera como en tu diseño */
+  gap: 3rem;
+  align-items: center;
+  flex: 1;
+}
+
+/* Columna Izquierda (Texto y Formulario) */
+.ejercicio-col-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ejercicio-pregunta {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #111111;
+  line-height: 1.3;
+  margin-bottom: 2rem;
+}
+
+.ejercicio-form {
+  width: 100%;
+  max-width: 450px;
+  margin-bottom: 1.5rem;
+}
+
+.input-container {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.ejercicio-input {
+  flex: 1;
+  padding: 0.9rem 1.25rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+  background-color: #ffffff;
+}
+
+.ejercicio-input:focus {
+  border-color: #ffd54f; /* Color a juego con tus botones amarillos */
+}
+
+.button-check {
+  padding: 0.9rem 1.5rem;
+  background-color: #FFDB54;
+  color: #000000;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button-check:hover {
+  background-color: #2d3748;
+}
+
+/* --- MENSAJES DE RESPUESTA (CARTELES) --- */
+.alert-message {
+  max-width: 450px;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  animation: slideIn 0.2s ease-out;
+}
+
+.alert-success {
+  background-color: #def7ec;
+  color: #03543f;
+  border: 1px solid #bcf0da;
+}
+
+.alert-danger {
+  background-color: #fde8e8;
+  color: #9b1c1c;
+  border: 1px solid #f8b4b4;
+}
+
+/* Columna Derecha (Contenedor Imagen) */
+.ejercicio-col-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Efecto flotante/Polaroid sutil como se aprecia en el ticket */
+.card-imagen-wrapper {
+  background-color: #ffffff;
+  padding: 1.25rem;
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  transform: rotate(2deg); /* Efecto levemente rotado como en la imagen */
+  max-width: 85%;
+  transition: transform 0.3s ease;
+}
+
+.card-imagen-wrapper:hover {
+  transform: rotate(0deg) scale(1.02);
+}
+
+.ejercicio-imagen {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+}
+
+/* Footer */
+.ejercicio-footer {
+  width: 100%;
+  max-width: 1150px;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  /* Espacio para que la mascota fija no tape Continuar en móvil */
+  padding-bottom: 7rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* --- ANIMACIÓN --- */
+@keyframes slideIn {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* --- MEDIA QUERIES (TABLETS Y MÓVILES) --- */
+@media (max-width: 900px) {
+  .ejercicio-grid {
+    grid-template-columns: 1fr; /* Pasa a una sola columna */
+    gap: 2.5rem;
+  }
+
+  .ejercicio-col-left {
+    order: 1; /* La pregunta e input se muestran arriba */
+    align-items: center;
+    text-align: center;
+  }
+
+  .ejercicio-col-right {
+    order: 2; /* La imagen pasa abajo */
+  }
+
+  .card-imagen-wrapper {
+    max-width: 70%;
+    transform: none; /* Quitamos la rotación en móviles para mejor lectura */
+  }
+
+  .card-imagen-wrapper:hover {
+    transform: none;
+  }
+
+  .ejercicio-footer {
+    justify-content: center; /* Botón continuar centrado en móviles */
+    padding-bottom: 8.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .ejercicio-page-content {
+    padding: 1.25rem;
+  }
+  
+  .ejercicio-pregunta {
+    font-size: 1.5rem;
+  }
+
+  .input-container {
+    flex-direction: column; /* Input y botón comprobar se apilan en pantallas diminutas */
+  }
+
+  .card-imagen-wrapper {
+    max-width: 100%;
+  }
+}
+
+/* --- ESTILOS PARA OPCIÓN MÚLTIPLE (CHOICE) --- */
+
+.ejercicio-choice-container {
+  width: 100%;
+  max-width: 750px; /* Centrado y acotado para lectura fluida */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+  padding-bottom: 2rem;
+}
+
+.ejercicio-pregunta-centered {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #111111;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  line-height: 1.3;
+}
+
+/* Contenedor vertical de los botones de opciones */
+.options-grid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+/* Botón base (Estilo alargado con borde redondeado idéntico a la imagen) */
+.option-button {
+  width: 100%;
+  padding: 1.1rem 2rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #111111;
+  background-color: #ffffff;
+  border: 2px solid #111111; /* Borde oscuro definido */
+  border-radius: 999px; /* Bordes completamente redondeados */
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.option-button:hover:not(.option-correct):not(.option-incorrect) {
+  background-color: #f7f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* Estado de Acierto (Verde dinámico al pulsar) */
+.option-button.option-correct {
+  background-color: #2ec4b6; /* Verde llamativo educacional */
+  color: #ffffff;
+  border-color: #2ec4b6;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(46, 196, 182, 0.3);
+}
+
+/* Estado Erróneo (Rojo de advertencia suave) */
+.option-button.option-incorrect {
+  background-color: #e63946;
+  color: #ffffff;
+  border-color: #e63946;
+  box-shadow: 0 8px 20px rgba(230, 57, 70, 0.2);
+}
+
+/* Envoltura de mensajes */
+.feedback-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  min-height: 60px; /* Evita saltos de layout cuando aparece el cartel */
+}
+
+.animate-pop {
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Ajustes adicionales en móviles para los botones de opciones */
+@media (max-width: 600px) {
+  .ejercicio-pregunta-centered {
+    font-size: 1.6rem;
+    margin-bottom: 1.75rem;
+  }
+  
+  .option-button {
+    padding: 0.9rem 1.5rem;
+    font-size: 1.1rem;
+  }
+}

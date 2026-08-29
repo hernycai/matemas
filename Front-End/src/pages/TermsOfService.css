@@ -1,0 +1,166 @@
+/* ==========================================================================
+   1. CONTENEDORES PRINCIPALES (CORRECCIÓN DE CORTE SUPERIOR Y SCROLL)
+   ========================================================================== */
+
+.legal-page-container {
+  width: 100%; 
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff; 
+}
+
+.legal-page-content {
+  width: 100%;
+  flex: 1;
+  
+  padding: 8rem 2rem 3rem 2rem; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   2. NAVEGACIÓN (BOTÓN VOLVER + SOLAPAS EN LA MISMA LÍNEA)
+   ========================================================================== */
+
+.tabs-navigation {
+  width: 100%;
+  max-width: 1150px;
+  display: flex;
+  align-items: center; 
+  gap: 2.5rem; 
+  margin-bottom: 3rem;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08); 
+  padding-bottom: 0.75rem;
+  box-sizing: border-box;
+}
+
+.tabs-buttons-group {
+  display: flex;
+  gap: 3rem; 
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 0 0 0.75rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #666666; 
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: #111111;
+}
+
+.tab-btn.active {
+  color: #111111;
+  font-weight: 700;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px; 
+  width: 100%;
+  height: 4px; 
+  background-color: #ffd54f; 
+  border-radius: 2px;
+}
+
+/* ==========================================================================
+   3. CUERPO DE TEXTO ABIERTO
+   ========================================================================== */
+
+.legal-card-body {
+  width: 100%;
+  max-width: 1150px;
+  background: none;   
+  border: none;       
+  padding: 0;         
+  box-shadow: none;   
+}
+
+.legal-text-content {
+  color: #111111;
+  line-height: 1.6;
+  font-size: 1.15rem; 
+  width: 100%;
+}
+
+.legal-text-content h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111111;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.legal-text-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.legal-text-content p {
+  margin-bottom: 1.25rem;
+  text-align: left; 
+}
+
+.legal-text-content ul {
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+}
+
+.legal-text-content li {
+  margin-bottom: 0.6rem;
+  list-style-type: disc;
+}
+
+/* ==========================================================================
+   4. ADAPTACIÓN RESPONSIVA
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .legal-page-content {
+    padding: 5rem 1.25rem 2rem 1.25rem;
+  }
+  
+  .tabs-navigation {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .tabs-buttons-group {
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .tab-btn {
+    font-size: 1.1rem;
+    flex: 1;
+    text-align: center;
+    padding-bottom: 0.5rem;
+  }
+
+  .legal-text-content {
+    font-size: 1.05rem;
+  }
+
+  .legal-text-content h2 {
+    font-size: 1.35rem;
+  }
+}

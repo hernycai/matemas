@@ -1,0 +1,31 @@
+{
+  "name": "proyecto-matematicas-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter backend dev",
+    "dev:back": "pnpm --filter backend dev",
+    "dev:front": "pnpm --filter frontend dev",
+    "dev:local": "cross-env DATA_SOURCE=MOCK pnpm --filter backend dev",
+    "dev:db": "cross-env DATA_SOURCE=DB pnpm --filter backend dev",
+    "dev:mock": "pnpm dev:all-mock",
+    "dev:all-mock": "cross-env DATA_SOURCE=MOCK pnpm --parallel --filter backend --filter frontend dev",
+    "dev:all": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "build:all": "pnpm build",
+    "clean:audit": "pnpm --filter backend clean:audit",
+    "install:all": "pnpm install",
+    "build:back": "pnpm --filter backend build",
+    "studio": "pnpm --filter backend exec prisma studio",
+    "seed": "pnpm --filter backend exec prisma db seed",
+    "refresh:lock": "rm pnpm-lock.yaml && pnpm install --no-frozen-lockfile"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "packageManager": "pnpm@9.15.9"
+}

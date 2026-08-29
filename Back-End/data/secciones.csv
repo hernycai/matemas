@@ -1,0 +1,7 @@
+id,nombre,descripcion,grado,puntosRequeridos,puntosRecompensa,umbralAprobacion
+1,Economia Domestica,Manejo de presupuestos y gastos del hogar,1,0,10,0.60
+2,Construccion Civil,Calculo de materiales y superficies,1,0,10,0.66
+3,Comercio Minorista,Gestion de stock y vueltos,1,0,10,0.66
+4,Logistica y Transporte,Calculo de distancias y combustible,2,10,25,0.70
+5,Informatica Basica,Logica de programacion y binario,2,10,25,0.70
+6,Finanzas Personales,Interes simple y compuesto,3,25,50,0.80

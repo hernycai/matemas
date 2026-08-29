@@ -1,0 +1,38 @@
+.buscar-box {
+    position: relative;
+    display: flex;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.buscar-box .buscar-icon {
+    position: absolute;
+    right: 10px;
+    color: #2C3E50;
+    pointer-events: none;
+
+}
+
+.buscar-box input {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 35px;
+    padding-left: 12px;
+    
+}
+.navbar-custom {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.navbar-custom .container,
+.navbar-custom .navbar-collapse {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+}

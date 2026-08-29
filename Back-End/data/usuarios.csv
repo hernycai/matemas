@@ -1,0 +1,33 @@
+id,email,nombre,rol,puntos,racha,password,edad,genero,lugar,desafio,sentimiento,createdAt
+user-001,usuario1@innova.com,Juan Perez,usuario,10,1,User123!,20 a 30 años,masculino,Buenos Aires,Porcentajes,Relajado,2026-06-01T10:00:00Z
+user-002,usuario2@innova.com,Maria Garcia,usuario,25,3,User123!,30 a 50 años,femenino,Cordoba,Finanzas cotidianas,Ansioso,2026-06-01T12:00:00Z
+user-003,usuario3@innova.com,Carlos Lopez,usuario,0,0,User123!,+ 50 años,masculino,Rosario,Numeros basicos,Confundido,2026-06-02T09:00:00Z
+user-004,usuario4@innova.com,Ana Martinez,usuario,150,5,User123!,30 a 50 años,femenino,Mendoza,Finanzas cotidianas,Relajado,2026-06-02T15:00:00Z
+user-005,usuario5@innova.com,Luis Rodriguez,usuario,40,2,User123!,20 a 30 años,masculino,Salta,Fracciones y proporciones,Estresado,2026-06-03T11:00:00Z
+user-006,usuario6@innova.com,Elena Gomez,usuario,0,0,User123!,+ 50 años,femenino,Neuquen,Estimulacion cognitiva,Relajado,2026-06-03T18:00:00Z
+user-007,usuario7@innova.com,Diego Fernandez,usuario,10,1,User123!,20 a 30 años,masculino,Buenos Aires,Porcentajes,Ansioso,2026-06-04T08:00:00Z
+user-008,usuario8@innova.com,Sofia Diaz,usuario,60,4,User123!,30 a 50 años,femenino,Cordoba,Finanzas cotidianas,Relajado,2026-06-04T22:00:00Z
+user-009,usuario9@innova.com,Martin Paz,usuario,30,1,User123!,20 a 30 años,masculino,Rosario,Numeros basicos,Confundido,2026-06-05T13:00:00Z
+user-010,usuario10@innova.com,Laura Torres,usuario,5,1,User123!,30 a 50 años,femenino,Mendoza,Estimulacion cognitiva,Ansioso,2026-06-05T17:00:00Z
+user-011,user11@test.com,Roberto Gomez,usuario,50,2,User123!,30 a 50 años,masculino,Tucuman,Porcentajes,Relajado,2026-06-06T10:00:00Z
+user-012,user12@test.com,Lucia Ruiz,usuario,80,3,User123!,20 a 30 años,femenino,La Plata,Finanzas cotidianas,Ansioso,2026-06-06T14:00:00Z
+user-013,user13@test.com,Marcos Sosa,usuario,10,1,User123!,+ 50 años,masculino,Corrientes,Numeros basicos,Estresado,2026-06-07T09:30:00Z
+user-014,user14@test.com,Julia Benitez,usuario,200,7,User123!,30 a 50 años,femenino,Posadas,Finanzas cotidianas,Relajado,2026-06-07T12:00:00Z
+user-015,user15@test.com,Patricio Rey,usuario,0,0,User123!,20 a 30 años,otro,Tandil,Fracciones y proporciones,Confundido,2026-06-07T19:00:00Z
+user-016,user16@test.com,Carla Peterson,usuario,45,2,User123!,30 a 50 años,femenino,Quilmes,Porcentajes,Ansioso,2026-06-08T11:00:00Z
+user-017,user17@test.com,Esteban Quito,usuario,30,1,User123!,20 a 30 años,masculino,Lujan,Estimulacion cognitiva,Relajado,2026-06-08T15:20:00Z
+user-018,user18@test.com,Marta Minujin,usuario,90,4,User123!,+ 50 años,femenino,CABA,Finanzas cotidianas,Relajado,2026-06-08T20:00:00Z
+user-019,user19@test.com,Ricardo Fort,usuario,500,10,User123!,30 a 50 años,masculino,Miami,Porcentajes,Relajado,2026-06-09T08:00:00Z
+user-020,user20@test.com,Juana Viale,usuario,12,1,User123!,20 a 30 años,femenino,CABA,Numeros basicos,Ansioso,2026-06-09T11:00:00Z
+admin-001,elmoteroloco@gmail.com,elmoteroloco,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-002,equip8.innovalab@gmail.com,Equipo 8,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-004,casladante@gmail.com,Dante,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-005,demian231190@gmail.com,Demian,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-006,ernestoalbrz@gmail.com,Ernesto,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-007,florenciaflw@gmail.com,Florencia,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-008,gustavo.ovejero@bue.edu.ar,Gustavo,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-009,hluciano@gmail.com,Luciano,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-010,mundanumauro4@gmail.com,Mauro,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-011,rominaruiz2104@gmail.com,Romina,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-012,salvareschiLisandro0@gmail.com,Lisandro,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z
+admin-013,sofiadigiano@live.com.ar,Sofia,admin,0,0,Admin123!,,,,,,2026-05-20T10:00:00Z

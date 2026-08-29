@@ -1,0 +1,114 @@
+containerInicio {
+  width: 90vw;
+  max-width: 1200px; /* Evita que se estire infinitamente en pantallas gigantes */
+  min-height: 90vh;
+  background: #eef3f8;
+  border-radius: 20px;
+  padding: 35px 25px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+  overflow: hidden;
+  
+}
+
+/* Permitimos que Bootstrap maneje el envoltorio (wrap) de las columnas */
+.containerInicio .row {
+  flex-wrap: wrap; 
+}
+
+/* Centramos el círculo horizontalmente en su propia columna */
+.containerCirculo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Corregimos las tarjetas verdes */
+.containerProgess {
+  /* Eliminamos el width fijo en vw. Ahora se adapta al ancho de col-md-3 */
+  width: 100%; 
+  max-width: 240px; /* Controla aquí qué tan grandes/chicas quieres las tarjetas */
+  margin: 0 auto; /* Las centra dentro de su columna */
+  background: #2ecc71;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 20px;
+  padding: 25px 15px; /* Reduje un poco el padding para hacerlas más compactas */
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.containerProgess h4 {
+  margin-bottom: 0.75rem;
+  font-size: 1.05rem;
+}
+
+.containerProgess p {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.containerProgess small {
+  display: block;
+  margin-top: 0.5rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Bloque inferior de información */
+.infoBlock {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 25px 30px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  color: #1f2937;
+}
+
+.infoBlock h3 {
+  margin-bottom: 0.75rem;
+}
+
+.infoBlock p {
+  margin: 0;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+/* boton*/
+
+.option-btn {
+  width: 100%;
+  padding: 25px 30px;
+  background: #34495e;
+  border: 2px solid #455a6f;
+  border-radius: 10px;
+  color: #bdc3c7;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.option-btn:hover {
+  background: rgba(46, 204, 113, 0.15); 
+  color: #2ecc71;
+  border-color: #2ecc71;
+  font-weight: 1000;
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.2);
+}
+
+.button-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.button-container .option-btn {
+  width: auto;
+  min-width: 150px;
+  padding: 12px 22px;
+}

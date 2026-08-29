@@ -1,0 +1,11 @@
+/* ModalPersonalizado.css o en tu archivo de estilos */
+.modal-custom .modal-content {
+    background-color: #8FD8FD !important;
+    border-radius: 20px;
+    border: none;
+}
+
+.modal-custom .modal-header,
+.modal-custom .modal-footer {
+    border: none;
+}

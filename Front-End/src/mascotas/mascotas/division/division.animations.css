@@ -1,0 +1,54 @@
+@import '../shared/mascot-keyframes.css';
+
+/* División (÷) — 719×749, dos círculos + barra diagonal */
+.division-mascot {
+  --mascot-bob-y: -7px;
+  --mascot-jump-y: -16px;
+  --mascot-droop-y: 4px;
+  --mascot-tear-fall: 14px;
+  --division-mouth-x: 329px;
+  --division-mouth-y: 328px;
+
+  display: block;
+  transform-origin: center bottom;
+  overflow: visible;
+}
+
+.division-mascot--idle { animation: mascot-idle-bob 3s ease-in-out infinite; }
+.division-mascot--idle .division-eyelid { animation: mascot-blink 4s ease-in-out infinite; }
+
+.division-mascot--celebration { animation: mascot-celebrate-jump 0.6s ease-in-out infinite; }
+.division-mascot--celebration .division-confetti { opacity: 1; animation: mascot-confetti-pop 0.6s ease-in-out infinite; }
+.division-mascot--celebration .division-body { animation: mascot-body-squash 0.6s ease-in-out infinite; }
+.division-mascot--celebration .division-mouth {
+  transform-origin: var(--division-mouth-x) var(--division-mouth-y);
+  animation: mascot-smile-big 0.6s ease-in-out infinite;
+}
+
+.division-mascot--sad { animation: mascot-sad-droop 2.5s ease-in-out infinite; }
+.division-mascot--sad .division-tear { opacity: 1; }
+.division-mascot--sad .division-tear-drop--left { animation: mascot-tear-fall 1.8s ease-in infinite; }
+.division-mascot--sad .division-tear-drop--right { animation: mascot-tear-fall 1.8s ease-in 0.4s infinite; }
+.division-mascot--sad .division-arms-up { opacity: 0; }
+.division-mascot--sad .division-arms-sad { opacity: 1; }
+.division-mascot--sad .division-mouth {
+  transform: scaleY(-1) translateY(8px);
+  transform-origin: var(--division-mouth-x) var(--division-mouth-y);
+}
+
+.division-mascot--thinking { animation: mascot-think-tilt 2.5s ease-in-out infinite; }
+.division-mascot--thinking .division-thought { opacity: 1; animation: mascot-thought-bob 2s ease-in-out infinite; }
+.division-mascot--thinking .division-arms-up { opacity: 0; }
+.division-mascot--thinking .division-arms-thinking { opacity: 1; }
+.division-mascot--thinking .division-pupil--left { transform: translate(6px, -5px); }
+.division-mascot--thinking .division-pupil--right { transform: translate(5px, -6px); }
+
+.division-confetti, .division-tear, .division-thought, .division-arms-sad, .division-arms-thinking, .division-eyelid {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.division-mouth { transition: transform 0.3s ease; }
+.division-pupil--left, .division-pupil--right { transition: transform 0.4s ease; }
+.division-arms-sad,
+.division-arms-thinking { pointer-events: none; }

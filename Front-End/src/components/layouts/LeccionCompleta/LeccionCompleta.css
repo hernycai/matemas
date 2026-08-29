@@ -1,0 +1,107 @@
+.leccion-completa-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #8fd8fd 0%, #a3dffd 45%, #e8f7ff 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem 3rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.leccion-completa-confetti {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 20%, #ffdb54 0 6px, transparent 7px),
+    radial-gradient(circle at 80% 15%, #ff6b6b 0 5px, transparent 6px),
+    radial-gradient(circle at 30% 70%, #34d399 0 5px, transparent 6px),
+    radial-gradient(circle at 70% 60%, #4285f4 0 6px, transparent 7px),
+    radial-gradient(circle at 50% 30%, #a78bfa 0 4px, transparent 5px);
+  opacity: 0.55;
+  animation: leccion-confetti-drift 6s ease-in-out infinite alternate;
+}
+
+@keyframes leccion-confetti-drift {
+  from { transform: translateY(0); }
+  to { transform: translateY(18px); }
+}
+
+.leccion-completa-eyebrow {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: #0a3d91;
+}
+
+.leccion-completa-title {
+  position: relative;
+  z-index: 1;
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  color: #151515;
+  text-align: center;
+}
+
+.leccion-completa-subtitle {
+  position: relative;
+  z-index: 1;
+  margin: 0.5rem 0 1.5rem;
+  color: #2d3e4e;
+  text-align: center;
+  max-width: 28rem;
+}
+
+.leccion-completa-carousel-wrap {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.leccion-completa-carousel {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.leccion-completa-dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.leccion-completa-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(15, 23, 42, 0.25);
+  padding: 0;
+  cursor: pointer;
+}
+
+.leccion-completa-dot.is-active {
+  width: 28px;
+  background: #0a3d91;
+}
+
+.reward-count {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  animation: reward-pop 0.45s ease;
+}
+
+@keyframes reward-pop {
+  0% { transform: scale(0.7); opacity: 0.4; }
+  60% { transform: scale(1.12); }
+  100% { transform: scale(1); opacity: 1; }
+}

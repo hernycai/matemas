@@ -1,0 +1,54 @@
+/* Keyframes compartidos — cada mascota define sus propios selectores y valores */
+
+@keyframes mascot-idle-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(var(--mascot-bob-y, -8px)); }
+}
+
+@keyframes mascot-blink {
+  0%, 42%, 44%, 100% { opacity: 0; }
+  43% { opacity: 1; }
+}
+
+@keyframes mascot-celebrate-jump {
+  0%, 100% { transform: translateY(0) scale(1); }
+  30% { transform: translateY(calc(var(--mascot-jump-y, -18px) * 0.75)) scale(1.04); }
+  50% { transform: translateY(var(--mascot-jump-y, -18px)) scale(1.06) rotate(-2deg); }
+  70% { transform: translateY(calc(var(--mascot-jump-y, -18px) * 0.6)) scale(1.03) rotate(2deg); }
+}
+
+@keyframes mascot-confetti-pop {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-12px) rotate(8deg); opacity: 1; }
+}
+
+@keyframes mascot-body-squash {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.96) scaleX(1.03); }
+}
+
+@keyframes mascot-smile-big {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.2); }
+}
+
+@keyframes mascot-sad-droop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(var(--mascot-droop-y, 4px)); }
+}
+
+@keyframes mascot-tear-fall {
+  0% { opacity: 0.85; transform: translateY(0); }
+  70% { opacity: 0.5; transform: translateY(var(--mascot-tear-fall, 16px)); }
+  100% { opacity: 0; transform: translateY(calc(var(--mascot-tear-fall, 16px) * 1.5)); }
+}
+
+@keyframes mascot-think-tilt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(var(--mascot-tilt-deg, 4deg)); }
+}
+
+@keyframes mascot-thought-bob {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(-6px); opacity: 0.9; }
+}

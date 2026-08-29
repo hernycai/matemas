@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iconos animados — Racha, Monedas, XP, Logros</title>
+  <link rel="stylesheet" href="icons.css">
+</head>
+<body>
+  <main class="demo">
+    <header class="demo__header">
+      <h1>Iconos animados</h1>
+      <p>Idle siempre activo · Tocá cada uno para el efecto extra</p>
+    </header>
+
+    <div class="demo__grid">
+      <!-- ========== RACHA (fuego) ========== -->
+      <figure class="demo__item">
+        <button class="app-icon app-icon--fire" type="button" aria-label="Racha" data-icon="fire">
+          <svg class="icon-svg" width="31" height="37" viewBox="0 0 31 37" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <!-- Distorsión suave de toda la llama (no mueve piezas sueltas) -->
+              <filter id="flame-wobble" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="0.04 0.09" numOctaves="2" seed="3" result="noise">
+                  <animate attributeName="baseFrequency"
+                    dur="0.9s"
+                    values="0.035 0.08;0.055 0.12;0.03 0.09;0.045 0.07;0.035 0.08"
+                    repeatCount="indefinite"/>
+                </feTurbulence>
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+            <g class="fire-body" filter="url(#flame-wobble)">
+              <path class="fire-layer fire-layer--outer" d="M26.5 21.5C26.5 27.299 20.9036 32 14 32C7.09645 32 1.50001 27 1.50001 21.5C1.50001 15.701 7.09645 11 14 11C20.9036 11 26.5 15.701 26.5 21.5Z" fill="#FD3C4F"/>
+              <path class="fire-layer fire-layer--tip-r" d="M20 12.5L20.5 12H21L21.5 11.5L22 10L22 10.5L22.5 9.5L23 8.5L23 9L23.5 8L24.5 9.5L25.5 10.5L26 11.5L27 13L27.5 15L28 18V20.5L27.5 22L26.5 24L25.5 26L26 21L25 17L22.5 14L20 12.5Z" fill="#FD3C4F"/>
+              <path class="fire-layer fire-layer--tip-l" d="M13.5 1L14.5 0L16 1L16 0.5L17 2.5L17.5 3L18 3.5L18 3L19 4.5L19.5 5V4.5L20.5 6.5L21 7.5V8.25V9V10.5L20.5 12.5L15.5 11.5H10.5L7.00001 13L3.50001 16L2.50001 25.5L1.50001 24L1.00001 22.5L0.500008 21.5L0 18.5L0.500008 15.5L1.00001 14.5L1.50001 14L2.00001 13L2.50001 12.5V12L3.00001 11V11.5L3.50001 11L4.00001 10V10.5L4.50001 10L5.00001 9V9.5L5.50001 9L6.00001 8V8.5L6.50001 8L7.00001 7.5L7.50001 7L8.00001 6V6.5L8.50001 6L9.00001 5.5L9.50001 5L10 4V4.5L10.5 4L11 3.5L11.5 2.5V3L12 2.5L12.5 2L13 1.5L13.5 1Z" fill="#FD3C4F"/>
+              <path class="fire-layer fire-layer--mid" d="M7.86663 11.6365C4.86663 13.1365 2.89448 17.1013 1.86663 16.1365C0.838778 15.1716 2.8271 12.3746 5.86663 9.1366C10.3631 5.27367 10.3388 3.67179 11.3666 4.63665C12.3945 5.60151 10.9062 8.3985 7.86663 11.6365Z" fill="#FE7683"/>
+              <path class="fire-layer fire-layer--highlight" d="M10 9C9.00001 10 8.5 10.5 6.5 12C5.00001 10 7.50001 9.5 8 8.5C9.50001 7.5 8 8.5 10 7C11.6569 7 10 7.61929 10 9Z" fill="white"/>
+              <path class="fire-layer fire-layer--core" d="M20 24.5C21 28.5 17.0376 32 14 32C11.5 31 8.00001 31 8.00001 24.5C10 20 12 17.5 14.5 16.5C16 17.5 18.5 21 20 24.5Z" fill="#FFCE29"/>
+              <path class="fire-layer fire-layer--edge" d="M28.0003 20.0006C28.0003 21.0005 27 26.0001 22 30.0001C10.5 34 19 30 19.5 28.5002C19.5 27.0002 19.4998 28 22 25.5002C24.5 24.0001 25.8047 20.5734 28.0003 20.0006Z" fill="#D73343"/>
+              <path class="fire-layer fire-layer--inner" d="M19.4998 28.8618C18.4998 30.362 18.5098 30.382 17.4999 30.8619C13.0002 32.9998 13.5 31.4998 13.5 30.362C16.4999 29.8621 14.6655 30.286 16.5 29.4999C20 28 20.5 25.5 19.4998 28.8618Z" fill="#D9AF23"/>
+            </g>
+            <path class="icon-shadow" d="M26 34.4999C25.5 37 19.5 36.5 14.2553 36.5C9.00001 36 4.50001 37 2.50001 34.4999C3.50001 32.5 6.50001 32.5 14.2553 32.5C22.239 32.5 24.5 33 26 34.4999Z" fill="#B3B3B3"/>
+          </svg>
+        </button>
+        <figcaption>
+          <strong>Racha</strong>
+          <span>Idle: llama · Toque: azul + crece</span>
+        </figcaption>
+      </figure>
+
+      <!-- ========== MONEDA ========== -->
+      <figure class="demo__item">
+        <button class="app-icon app-icon--coin" type="button" aria-label="Monedas" data-icon="coin">
+          <svg class="icon-svg" width="36" height="39" viewBox="0 0 36 39" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path class="icon-shadow" d="M29.5126 36.9398C29.0126 39.4399 23.0126 38.9399 17.7679 38.9399C12.5126 38.4399 8.01256 39.4399 6.01256 36.9398C7.01256 34.9399 10.0126 34.9399 17.7679 34.9399C25.7515 34.9399 28.0126 35.4399 29.5126 36.9398Z" fill="#B3B3B3"/>
+            <g class="coin-spin">
+              <g class="coin-body">
+                <path d="M32.0126 19.9522C30.0126 29.4399 26.2772 32.7069 17.7772 33.2068C8.77724 30.7068 5.01256 28.4398 3.01256 19.9522C3.01256 10.9399 9.65663 3.94038 18.0126 4.43996C26.86 4.43996 32.0126 11.9511 32.0126 19.9522Z" fill="#FFCE29"/>
+                <path d="M10.0126 11.44C4.41086 16.1081 7.01255 21.4399 4.51255 21.44C1.77725 22.7068 3.01255 13.4399 7.01263 8.93983C13.2772 2.70675 20.865 4.20676 20.5126 5.43988C19.5126 8.93999 19.0126 3.93999 10.0126 11.44Z" fill="#FFDD69"/>
+                <path d="M25.2127 26.5533C30.6671 21.714 27.4777 18.8198 30.4774 15.8203C32.4774 15.8203 32.7772 22.7069 28.7773 28.2068C26.2775 32.7065 16.7773 34.7069 14.4777 31.8198C14.7426 29.5863 18.2773 32.7068 25.2127 26.5533Z" fill="#D9AF23"/>
+                <path d="M10.0126 11.4398C8.01255 12.9398 8.01255 14.4398 6.51255 14.4398C6.01255 12.9399 7.01256 10.9398 9.01256 9.43986C11.0126 7.43994 11.5126 7.43979 13.5126 7.4398C13.0126 8.93979 13.7197 8.65963 10.0126 11.4398Z" fill="#FFFEFC"/>
+                <path d="M12.5126 17.4399L12.2772 15.7068L12.5126 14.6116L13.0126 13.9399L13.5126 13.4399L14.0126 12.9399L14.5126 12.4399L15.0126 11.9399H16.0126H16.5126V10.4399L17.0126 9.43994H18.0126H18.5126L19.0126 10.4399V11.9399H20.5126L21.2772 12.2068L21.7772 12.7068L22.0126 12.9399L22.4295 13.4399L22.5126 13.9399V14.4399L21.5126 14.8275L19.5126 14.4399H17.0126L16.0126 14.9399L15.5126 15.9399L16.0126 16.9399L17.5126 17.4399H18.0126H20.0126L21.0126 17.9399L21.5126 18.4399L22.5126 19.4399L23.0126 19.9399L23.2772 20.4399L23.4516 21.4065V22.4399L23.0126 23.4399L22.0126 24.4399L21.2772 25.2068L20.5126 25.4399H19.0126V26.9399V27.9399L18.0126 28.4399L17.0126 27.9399L16.5126 27.4399V26.4399V25.4399H15.0126L13.5126 24.9399L12.5126 24.4399L12.0126 23.9399V22.9399L12.5126 22.4399H13.0126H13.5126H14.0126H14.5126L15.2772 22.7068L16.3831 22.9399H17.5126H19.0126L19.5126 22.4399L20.0126 21.9399L19.5126 20.9399L19.0126 20.4399L17.0126 19.9399L16.0126 19.7797L15.0126 19.4399L14.2772 19.2068L13.5126 18.9399L13.0126 18.3257L12.5126 17.4399Z" fill="#9C34C2"/>
+              </g>
+            </g>
+          </svg>
+        </button>
+        <figcaption>
+          <strong>Monedas</strong>
+          <span>Idle: rebote · Toque: gira 1 vez</span>
+        </figcaption>
+      </figure>
+
+      <!-- ========== EXPERIENCIA ========== -->
+      <figure class="demo__item">
+        <button class="app-icon app-icon--coin" type="button" aria-label="Experiencia" data-icon="xp">
+          <svg class="icon-svg" width="36" height="39" viewBox="0 0 36 39" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path class="icon-shadow" d="M29.5126 36.9398C29.0126 39.4399 23.0126 38.9399 17.7679 38.9399C12.5126 38.4399 8.01256 39.4399 6.01256 36.9398C7.01256 34.9399 10.0126 34.9399 17.7679 34.9399C25.7515 34.9399 28.0126 35.4399 29.5126 36.9398Z" fill="#B3B3B3"/>
+            <g class="coin-spin">
+              <g class="coin-body">
+                <path d="M32.0126 19.9522C30.0126 29.4399 26 32.5001 17.5 33C8.5 30.5 5.01256 28.4398 3.01256 19.9522C3.01256 10.9399 9.65662 3.94038 18.0126 4.43996C26.86 4.43996 32.0126 11.9511 32.0126 19.9522Z" fill="#9C34C2"/>
+                <path d="M10.0126 11.44C4.41086 16.1081 7.01255 21.4399 4.51255 21.44C1.77725 22.7068 3.01255 13.4399 7.01263 8.93983C13.2772 2.70675 20.865 4.20676 20.5126 5.43988C19.5126 8.93999 19.0126 3.93999 10.0126 11.44Z" fill="#BA71D4"/>
+                <path d="M25.2127 26.5532C30.6671 21.7138 27.4777 18.8196 30.4774 15.8201C32.4774 15.8201 32.7773 22.7067 28.7773 28.2066C26 32.9999 15.5 34 14.5 31.5001C14.7649 29.2666 18.2773 32.7067 25.2127 26.5532Z" fill="#852CA5"/>
+                <path d="M10.0126 11.4398C8.01255 12.9398 8.01255 14.4398 6.51255 14.4398C6.01255 12.9399 7.01256 10.9398 9.01256 9.43986C11.0126 7.43994 11.5126 7.43979 13.5126 7.4398C13.0126 8.93979 13.7197 8.65963 10.0126 11.4398Z" fill="white"/>
+                <path d="M12 17L16 11.5L17 10.5L18 10L19 10.5L20 11.5L24 17V18L23.5 19H22.5H21V24.5V25L20.5 25.5L20 26H18H16L15.5 25.5L15 25V24.5V19H14H13L12 18V17Z" fill="#FFCE29"/>
+              </g>
+            </g>
+          </svg>
+        </button>
+        <figcaption>
+          <strong>Experiencia</strong>
+          <span>Idle: rebote · Toque: gira 1 vez</span>
+        </figcaption>
+      </figure>
+
+      <!-- ========== LOGROS (copa) ========== -->
+      <figure class="demo__item">
+        <button class="app-icon app-icon--trophy" type="button" aria-label="Logros" data-icon="trophy">
+          <span class="trophy-confetti" aria-hidden="true"></span>
+          <svg class="icon-svg" width="37" height="36" viewBox="0 0 37 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Brillos idle -->
+            <g class="trophy-sparkles" fill="#FFE566">
+              <path class="sparkle sparkle--1" d="M4 2 L4.6 3.4 L6 4 L4.6 4.6 L4 6 L3.4 4.6 L2 4 L3.4 3.4 Z"/>
+              <path class="sparkle sparkle--2" d="M33 3 L33.5 4.2 L34.7 4.7 L33.5 5.2 L33 6.4 L32.5 5.2 L31.3 4.7 L32.5 4.2 Z"/>
+              <path class="sparkle sparkle--3" d="M2 22 L2.4 23 L3.4 23.4 L2.4 23.8 L2 24.8 L1.6 23.8 L0.6 23.4 L1.6 23 Z"/>
+              <path class="sparkle sparkle--4" d="M35 20 L35.45 21.1 L36.55 21.55 L35.45 22 L35 23.1 L34.55 22 L33.45 21.55 L34.55 21.1 Z"/>
+              <path class="sparkle sparkle--5" d="M18 -1 L18.35 0 L19.35 0.35 L18.35 0.7 L18 1.7 L17.65 0.7 L16.65 0.35 L17.65 0 Z"/>
+            </g>
+            <path class="icon-shadow" d="M30 32.9999C29.5 35.5 23.5 35 18.2553 35C13 34.5 8.5 35.5 6.5 32.9999C7.5 31 10.5 31 18.2553 31C26.239 31 28.5 31.5 30 32.9999Z" fill="#B3B3B3"/>
+            <g class="trophy-body">
+              <path d="M8.5 3.5H28.5V6V16L27.5 19L24.5 22.5L23.5 23L22.5 23.5L21 24V26.5H16V24L14.5 23.5L13.5 23L12.5 22.5L9.5 19L8.5 16V6V3.5Z" fill="#FFCE29"/>
+              <path d="M11.5 10.4998C11.5 14.0897 11.5 17 10 16.9999C8 17 9 16.9999 8.50001 10.4999C9 3.49987 7.5 3.99953 10.5 3.99985C12 4.00001 11.5 6.91 11.5 10.4998Z" fill="#FFDD69"/>
+              <path d="M18 23.5H22L21 24V24.5V27H18V23.5Z" fill="#D9AF23"/>
+              <path d="M27.5 18.5001C26.6545 21.337 22.5 24.5 19.5 23.5001C19 24.5 14 24.9999 24 18.5001C26 14.5001 26.5 11.0001 27.5 11.5C28.5 10.5 29 15.5 27.5 18.5001Z" fill="#D9AF23"/>
+              <path d="M11.3502 26.5H25.807V27.1154H26.5L27 27.5V28V29L26.4175 29.2968H25.807V29.8778H11.3502V29.2968H10.6553L10 29V27.5L10.6553 27.1154H11.3502V26.5Z" fill="#D98C00"/>
+              <path d="M8.40612 0H28.8158V0.728725H29.7941L30.5 1.1842V1.77631V2.96051L29.6777 3.31199H28.8158V4H8.40612V3.31199H7.42511L6.5 2.96051V1.1842L7.42511 0.728725H8.40612V0Z" fill="#FFC04C"/>
+              <path d="M21 1L29.7982 1V1.54655H30.2059L30.5 1.88816V2.33223V3.22039L30.1574 3.484H29.7982V4L21.2942 4.016V3.5H19.5V3L20.3591 3.07264V2.33223H21V1.54655V1Z" fill="#FFA704"/>
+              <path d="M0.5 9L1 8L2.5 6.5L4.5 5.5L6.5 5L8 5.5L8.5 6V11L8 10.5L7.5 10L6.5 9.5L5.5 10L5 10.5L4.5 11V12L5.5 13L6.5 14L7.5 14.5L8 15L8.5 15.5V16.5L9 17.5L9.5 18.5V19.5L9 20.5L8.5 21H7V20.5L6.5 20L6 19L5.5 18.5L4 17.5L3 16.5L2 15.5L1 14.5L0.5 14L0 11.5L0.5 9Z" fill="#FFA500"/>
+              <path d="M36.0263 9L35.5526 8L34.1316 6.5L32.2368 5.5L30.3421 5L28.9211 5.5L28.4474 6V11L28.9211 10.5L29.3947 10L30.3421 9.5L31.2895 10L31.7632 10.5L32.2368 11V12L31.2895 13L30.3421 14L29.3947 14.5L28.9211 15L28.4474 15.5V16.5L27.9737 17.5L27.5 18.5V19.5L27.9737 20.5L28.4474 21H29.8684V20.5L30.3421 20L30.8158 19L31.2895 18.5L32.7105 17.5L33.6579 16.5L34.6053 15.5L35.5526 14.5L36.0263 14L36.5 11.5L36.0263 9Z" fill="#FFA500"/>
+              <path d="M15.5 3C16 4 14 4 12.5 4C10.8431 4 9 4 9.5 3C9.5 2.44772 10 1.5 12.5 1.5C16 1.5 15.5 2.44772 15.5 3Z" fill="#FFFDF8"/>
+              <path d="M23.5 14C23.5 16.7614 21.2614 19.5 18.5 19.5C15.7386 19.5 13.5 16.7614 13.5 14C13.5 11.2386 15.7386 9 18.5 9C21.2614 9 23.5 11.2386 23.5 14Z" fill="#FFA500"/>
+              <rect x="16.5" y="16" width="4" height="1" fill="#FFCE29"/>
+              <path d="M18 11H19V16H18V13.5V12.5H16.5L17 12L17.5 11.5L18 11Z" fill="#FFCE29"/>
+            </g>
+          </svg>
+        </button>
+        <figcaption>
+          <strong>Logros</strong>
+          <span>Idle: brillos · Toque: confeti</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <section class="demo__howto">
+      <h2>Cómo usarlos en el proyecto</h2>
+      <ol>
+        <li>Copiá <code>icons.css</code> y <code>icons.js</code> a tu proyecto.</li>
+        <li>Enlazá el CSS y el JS en tu HTML.</li>
+        <li>Copiá el <code>&lt;button class="app-icon …"&gt;</code> del icono que necesites (incluye el SVG).</li>
+        <li>Clases: <code>app-icon--fire</code>, <code>app-icon--coin</code>, <code>app-icon--trophy</code>.</li>
+      </ol>
+    </section>
+  </main>
+
+  <script src="icons.js"></script>
+</body>
+</html>

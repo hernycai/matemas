@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Rol {
+  usuario
+  admin
+  superadmin
+}
+
+enum TipoEjercicio {
+  opcion_multiple
+  numerico
+}
+
+model Usuario {
+  id                 String              @id
+  email              String              @unique
+  nombre             String?
+  puntos             Int                 @default(0)
+  tokens             Int                 @default(0)
+  rol                Rol                 @default(usuario)
+  password           String?
+  edad               String?
+  genero             String?
+  lugar              String?
+  desafio            String?
+  sentimiento        String?
+  mascota            String             @default("multi")
+  racha              Int                 @default(0)
+  ultimaConexion     DateTime            @default(now())
+  progreso           Progreso[]
+  seccionesAprobadas SeccionAprobada[]
+  insignias          Insignia[]
+  recursos           Recurso[]
+  auditorias         Auditoria[]
+  createdAt          DateTime            @default(now())
+  desafioActualId    Int?
+  desafioActual      Rama?               @relation(fields: [desafioActualId], references: [id])
+}
+
+model Auditoria {
+  id          Int      @id @default(autoincrement())
+  usuarioId   String
+  accion      String
+  entidad     String
+  entidadId   String?
+  detalles    Json?
+  timestamp   DateTime @default(now())
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+}
+
+model Seccion {
+  id               Int               @id @default(autoincrement())
+  nombre           String
+  descripcion      String
+  grado            Int               @default(1)
+  puntosRequeridos Int               @default(0)
+  puntosRecompensa Int               @default(0)
+  umbralAprobacion Float             @default(0.66)
+  escenarios       Escenario[]
+  aprobadaPor      SeccionAprobada[]
+  recursoOtorgado  Recurso?
+  lecciones        Leccion[]
+  ramaId  Int?
+  rama    Rama? @relation(fields: [ramaId], references: [id])
+}
+
+model SeccionAprobada {
+  usuarioId String
+  seccionId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  seccion   Seccion @relation(fields: [seccionId], references: [id])
+  @@id([usuarioId, seccionId])
+}
+
+model Escenario {
+  id                Int        @id @default(autoincrement())
+  titulo            String
+  descripcion       String
+  pregunta          String
+  explicacion       String?
+  categoria         String
+  tipo              TipoEjercicio @default(opcion_multiple)
+  respuestaCorrecta String?
+  imagenUrl         String?
+  seccionId         Int
+  seccion           Seccion    @relation(fields: [seccionId], references: [id])
+  opciones          Opcion[]
+  insignias         Insignia[]
+  progreso          Progreso[]
+  consejos          Consejo[]
+}
+
+model Opcion {
+  id          Int       @id @default(autoincrement())
+  texto       String
+  puntos      Int       @default(0)
+  esCorrecta  Boolean   @default(false)
+  escenarioId Int
+  escenario   Escenario @relation(fields: [escenarioId], references: [id])
+}
+
+model Recurso {
+  id        String   @id @default(uuid())
+  nombre    String
+  valor     Int      @default(1)
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id])
+  seccionId Int      @unique
+  seccion   Seccion  @relation(fields: [seccionId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Insignia {
+  id               String    @id @default(uuid())
+  nombre           String
+  descripcion      String
+  imagenUrl        String?
+  puntosRequeridos Int       @default(0)
+  escenarioId      Int
+  escenario        Escenario @relation(fields: [escenarioId], references: [id])
+  usuarios         Usuario[]
+  createdAt        DateTime  @default(now())
+}
+
+model Progreso {
+  id               Int       @id @default(autoincrement())
+  usuarioId        String
+  escenarioId      Int
+  puntosObtenidos  Int       @default(0)
+  resuelto         Boolean   @default(false)
+  intentosFallidos Int       @default(0)
+  usuario          Usuario   @relation(fields: [usuarioId], references: [id])
+  escenario        Escenario @relation(fields: [escenarioId], references: [id])
+  updatedAt        DateTime  @updatedAt
+}
+
+model Leccion {
+  id        Int      @id @default(autoincrement())
+  seccionId Int
+  seccion   Seccion  @relation(fields: [seccionId], references: [id])
+  titulo    String
+  videoUrl  String
+  orden     Int      @default(0)
+}
+
+model Consejo {
+  id          Int       @id @default(autoincrement())
+  descripcion String
+  activo      Boolean   @default(true)
+  escenarioId Int
+  escenario   Escenario @relation(fields: [escenarioId], references: [id])
+}
+
+model Rama {
+  id          Int       @id @default(autoincrement())
+  nombre      String    @unique
+  descripcion String?
+  orden       Int       @default(0)
+  activo      Boolean   @default(true)
+  secciones   Seccion[]
+  usuarios    Usuario[]
+}

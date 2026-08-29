@@ -1,0 +1,9 @@
+packages:
+  - "Back-End"
+  - "Front-End"
+
+allowBuilds:
+  '@prisma/client': true
+  "@prisma/engines": true
+  esbuild: true
+  "prisma": true

@@ -1,0 +1,167 @@
+/* ============================================
+   HEADER - NAVBAR
+   ============================================ */
+
+/* Smooth scroll con offset para el navbar fijo */
+html {
+  scroll-behavior: smooth;
+}
+
+#navbar-nav {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+/* ============================================
+   NAVBAR PRINCIPAL
+   ============================================ */
+.navbar-custom {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100% !important;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 10px 20px;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+/* ============================================
+   BRAND (Mate+)
+   ============================================ */
+.navbar-custom .brand {
+  color: #000000 !important;
+  font-weight: 700;
+  font-size: 2.5rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+/* ============================================
+   ENLACES DE NAVEGACIÓN
+   ============================================ */
+.navbar-custom .nav-link {
+  font-weight: 400;
+  font-size: 1rem;
+  margin: 0 0.25rem;
+  padding: 0.5rem 0;
+  color: rgba(0, 0, 0, 0.7);
+  position: relative;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  background: transparent;
+  border: none;
+}
+
+/* Enlace de "Iniciar Sesión" (botón) */
+.navbar-custom .nav-link.button {
+  background-color: #ffdb54;
+  border-radius: 35px;
+  padding: 10px 24px;
+  color: #000000 !important;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.navbar-custom .nav-link.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover en enlaces normales */
+.navbar-custom .nav-link:hover:not(.button) {
+  color: #ffdb54 !important;
+  transform: translateY(-1px);
+}
+
+/* Línea decorativa debajo del enlace */
+.navbar-custom .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #ffdb54;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.navbar-custom .nav-link:not(.button):hover::after {
+  width: 80%;
+}
+
+/* ============================================
+   TOGGLER (Menú Hamburguesa)
+   ============================================ */
+.navbar-custom .navbar-toggler {
+  border: 1px solid #000000;
+  outline: none;
+  box-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.navbar-custom .navbar-toggler:focus,
+.navbar-custom .navbar-toggler:active {
+  outline: none;
+  box-shadow: none;
+  border-color: #ffdb54;
+}
+
+/* ============================================
+   RESPONSIVE - MÓVIL (max-width: 991px)
+   ============================================ */
+@media (max-width: 991px) {
+  .navbar-custom {
+    padding: 10px 16px;
+  }
+
+  /* Fondo del menú colapsado */
+  .navbar-custom .navbar-collapse {
+    background-color: #ffffff;
+    border-radius: 20px;
+    margin-top: 10px;
+    padding: 10px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Enlaces en móvil */
+  .navbar-custom .nav-link {
+    padding: 0.75rem 1rem;
+    text-align: center;
+    margin: 0;
+  }
+
+}
+
+
+/* ============================================
+   RESPONSIVE - ESCRITORIO (min-width: 992px)
+   ============================================ */
+@media (min-width: 992px) {
+  .navbar-custom .nav-link {
+    margin: 0 0.5rem;
+  }
+}
+
+/* Estilo limpio exclusivo para el botón en el desplegable móvil */
+.btn-mobile-login {
+  background-color: #ffdb54;
+  color: #000000 !important;
+  border-radius: 35px;
+  padding: 10px 24px;
+  font-weight: 500;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin: 0 auto; /* Lo centra perfectamente en la columna */
+}
+
+.btn-mobile-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}

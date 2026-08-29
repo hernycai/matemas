@@ -1,0 +1,86 @@
+.header-desafio {
+  width: 100vw;
+  max-width: 100vw;
+  margin: 0 calc(-50vw + 50%) 1.25rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  backdrop-filter: none;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.header-desafio .brand {
+  color: #2C3E50 !important;
+  font-weight: 700;
+  font-size: 1.85rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.header-desafio-content{
+    display: flex;
+   
+ 
+}
+
+.header-desafio .progress-bar-container {
+  flex: 1;
+  height: 9px;
+  background-color: rgba(255, 255, 255, 0.45);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.header-desafio-back {
+  display: flex;
+  align-items: center;
+}
+.header-desafio-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.back-icon {
+  width: 50px;
+  height: 50px;
+}
+.header-desafio .progress-bar-fill {
+    height: 100%;
+    background-color: #A3DFFD;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+.header-desafio-icons {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+.header-desafio-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #A3DFFD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.icon-btn img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+}
+.progress-bar-container {
+  flex: 1;
+}

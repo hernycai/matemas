@@ -1,0 +1,48 @@
+/* --- ESTILO DE LOS TEXTOS LEGALES EN CUERPO ABIERTO --- */
+.legal-text-content {
+  color: #111111;
+  line-height: 1.6;
+  font-size: 1.15rem; /* Un toque más grande para lectura óptima al aire libre */
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  width: 100%;
+}
+
+.legal-text-content h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #111111;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.legal-text-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.legal-text-content p {
+  margin-bottom: 1.25rem;
+  text-align: left; /* Alineado a la izquierda limpio como en Figma */
+}
+
+.legal-text-content ul {
+  margin-bottom: 2rem;
+  padding-left: 1.5rem;
+}
+
+.legal-text-content li {
+  margin-bottom: 0.6rem;
+  list-style-type: disc;
+}
+
+@media (max-width: 768px) {
+  .legal-text-content {
+    font-size: 1.05rem;
+  }
+  .legal-text-content h2 {
+    font-size: 1.35rem;
+  }
+}

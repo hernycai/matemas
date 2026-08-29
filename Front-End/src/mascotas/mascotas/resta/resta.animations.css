@@ -1,0 +1,85 @@
+@import '../shared/mascot-keyframes.css';
+
+/* Resta (−) — 790×547, cuerpo ancho y bajo */
+.resta-mascot {
+  --mascot-bob-y: -5px;
+  --mascot-jump-y: -12px;
+  --mascot-droop-y: 3px;
+  --mascot-tear-fall: 12px;
+  --mascot-tilt-deg: 3deg;
+  --resta-mouth-x: 363px;
+  --resta-mouth-y: 172px;
+
+  display: block;
+  transform-origin: center bottom;
+  overflow: visible;
+}
+
+.resta-mascot--idle {
+  animation: mascot-idle-bob 3s ease-in-out infinite;
+}
+
+.resta-mascot--idle .resta-eyelid {
+  animation: mascot-blink 4s ease-in-out infinite;
+}
+
+.resta-mascot--celebration {
+  animation: mascot-celebrate-jump 0.6s ease-in-out infinite;
+}
+
+.resta-mascot--celebration .resta-confetti { opacity: 1; animation: mascot-confetti-pop 0.6s ease-in-out infinite; }
+.resta-mascot--celebration .resta-body { animation: mascot-body-squash 0.6s ease-in-out infinite; }
+.resta-mascot--celebration .resta-mouth {
+  transform-origin: var(--resta-mouth-x) var(--resta-mouth-y);
+  animation: mascot-smile-big 0.6s ease-in-out infinite;
+}
+
+.resta-mascot--sad {
+  animation: mascot-sad-droop 2.5s ease-in-out infinite;
+}
+
+.resta-mascot--sad .resta-tear { opacity: 1; }
+.resta-mascot--sad .resta-tear-drop--left { animation: mascot-tear-fall 1.8s ease-in infinite; }
+.resta-mascot--sad .resta-tear-drop--right { animation: mascot-tear-fall 1.8s ease-in 0.4s infinite; }
+.resta-mascot--sad .resta-arms-up { opacity: 0; }
+.resta-mascot--sad .resta-arms-sad { opacity: 1; }
+
+/* Boca triste: invertir en su propio centro, sin empujarla hacia abajo */
+.resta-mascot--sad .resta-mouth {
+  transform: scaleY(-1);
+  transform-origin: var(--resta-mouth-x) var(--resta-mouth-y);
+}
+
+.resta-mascot--thinking {
+  animation: mascot-think-tilt 2.5s ease-in-out infinite;
+}
+
+.resta-mascot--thinking .resta-thought { opacity: 1; animation: mascot-thought-bob 2s ease-in-out infinite; }
+.resta-mascot--thinking .resta-arms-up { opacity: 0; }
+.resta-mascot--thinking .resta-arms-thinking { opacity: 1; }
+.resta-mascot--thinking .resta-pupil--left { transform: translate(6px, -4px); }
+.resta-mascot--thinking .resta-pupil--right { transform: translate(4px, -5px); }
+
+.resta-confetti,
+.resta-tear,
+.resta-thought,
+.resta-arms-sad,
+.resta-arms-thinking,
+.resta-eyelid {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.resta-mouth {
+  transition: transform 0.3s ease;
+}
+
+.resta-pupil--left,
+.resta-pupil--right {
+  transition: transform 0.4s ease;
+}
+
+.resta-arms-sad,
+.resta-arms-thinking {
+  pointer-events: none;
+}

@@ -1,0 +1,711 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+/* ==========================================================================
+   CONTENEDOR PRINCIPAL UNIFICADO
+   ========================================================================== */
+
+.onboarding {
+  height: 100dvh;
+  width: 100vw;
+  background-image: url('../../../assets/background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.onboarding-container {
+  width: 90%;
+  height: 90%;
+  max-height: 95vh;
+  background-image: url('../../../assets/fondo_onboarding.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  text-align: center;
+  border-radius: 20px;
+  padding: 20px 15px;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  margin: 10px auto;
+  overflow-y: auto;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.onboarding-container header {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+  color: #ECF0F1;
+}
+
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS PARA FIRST SECTION
+   ========================================================================== */
+
+.onboarding-container .title2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  margin-top: 100px;
+  color: #000000;
+  text-shadow: #A9A9A9 1px 1px 1px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.onboarding-container .button2 {
+  width: 100%;
+  padding: 14px 12px;
+  background: #34495e;
+  border: 2px solid #455a6f;
+  border-radius: 10px;
+  color: #bdc3c7;
+  font-size: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.onboarding-container .button2:hover {
+  background: #415b76;
+  color: #bdc3c7;
+  border-color: #7f8c8d;
+}
+
+.onboarding-container .button2.selected {
+  background: rgba(169, 169, 169, 0.15);
+  border-color: #A9A9A9;
+  color: #A9A9A9;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(169, 169, 169, 0.2);
+}
+
+/* ==========================================================================
+   BARRA DE PROGRESO
+   ========================================================================== */
+
+.onboarding-container .progress-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto 15px auto;
+  width: 100%;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.onboarding-container .progress-bar .step {
+  text-align: center;
+  width: 100%;
+  position: relative;
+}
+
+.onboarding-container .progress-bar .step p {
+  font-weight: 500;
+  font-size: 14px;
+  color: #7f8c8d;
+  margin-bottom: 4px;
+  transition: color 0.3s ease;
+}
+
+.onboarding-container .progress-bar .step p.active {
+  color: #A9A9A9;
+  font-weight: 600;
+}
+
+.onboarding-container .progress-bar .step .bullet {
+  height: 24px;
+  width: 24px;
+  border: 2px solid #7f8c8d;
+  display: inline-block;
+  border-radius: 50%;
+  position: relative;
+  background: #A9A9A9;
+  z-index: 2;
+  font-weight: 600;
+  font-size: 12px;
+  color: #7f8c8d;
+  transition: all 0.3s ease;
+}
+
+.onboarding-container .progress-bar .step .bullet.active {
+  border-color: #2c3e50;
+  color: #2c3e50;
+}
+
+.onboarding-container .progress-bar .step.completed .bullet {
+  background: #2c3e50;
+  color: #fff;
+}
+
+.onboarding-container .progress-bar .step .bullet span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.onboarding-container .progress-bar .step::before {
+  position: absolute;
+  content: '';
+  bottom: 11px;
+  left: 50%;
+  height: 2px;
+  width: 100%;
+  background: #7f8c8d;
+  z-index: 1;
+  transition: background 0.3s ease;
+}
+
+.onboarding-container .progress-bar .step.completed::before {
+  background: #A9A9A9;
+}
+
+.onboarding-container .progress-bar .step:last-child::before {
+  display: none;
+}
+
+/* ==========================================================================
+   FORMULARIO DESLIZABLE
+   ========================================================================== */
+
+.onboarding-container .form-outer {
+  width: 100%;
+  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+.onboarding-container .form-outer form {
+  display: flex;
+  width: 400%;
+  transition: margin-left 0.3s ease-in-out;
+  height: 100%;
+}
+
+.onboarding-container .form-outer form .page {
+  width: 25%;
+  min-width: 25%;
+  padding: 0 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 0;
+}
+
+.onboarding-container .form-outer form .page .title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 15px;
+  color: #000000;
+  flex-shrink: 0;
+  padding: 0 5px;
+}
+
+.onboarding-container .form-outer form .page .subtitle {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 15px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   GRID DE OPCIONES
+   ========================================================================== */
+
+.onboarding-container .options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  width: 100%;
+  flex: 1;
+  align-content: start;
+  margin-bottom: 10px;
+}
+
+.onboarding-container .options-grid.full-width-options {
+  grid-template-columns: 1fr;
+  max-width: 300px;
+  margin: 0 auto 10px auto;
+}
+
+.onboarding-container .options-grid button:last-child:nth-child(odd) {
+  grid-column: span 2;
+}
+
+/* ==========================================================================
+   BOTONES DE OPCIONES
+   ========================================================================== */
+
+.onboarding-container .option-btn {
+  width: 100%;
+  padding: 12px 10px;
+  background: #34495e;
+  border: 2px solid #455a6f;
+  border-radius: 10px;
+  color: #bdc3c7;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.onboarding-container .option-btn:hover {
+  background: #415b76;
+  color: #fff;
+  border-color: #7f8c8d;
+}
+
+.onboarding-container .option-btn.selected {
+  background: rgba(169, 169, 169, 0.15);
+  border-color: #A9A9A9;
+  color: #A9A9A9;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(169, 169, 169, 0.2);
+}
+
+/* ==========================================================================
+   BOTONES DE NAVEGACIÓN - FIJOS EN LA PARTE INFERIOR
+   ========================================================================== */
+
+.onboarding-container .form-outer form .page .field.btns {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 12px;
+  margin-top: auto;
+  padding: 10px 0 5px 0;
+  flex-shrink: 0;
+}
+
+.onboarding-container .field.btns.central-btn {
+  justify-content: center;
+}
+
+.onboarding-container form .page .field.btns button {
+  flex: 1;
+  max-width: 120px;
+  height: 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  text-transform: none;
+}
+
+.onboarding-container form .page .field.btns button.prev {
+  background: #7f8c8d;
+  color: #fff;
+}
+
+.onboarding-container form .page .field.btns button.prev:hover {
+  background: #95a5a6;
+}
+
+.onboarding-container form .page .field.btns button.next,
+.onboarding-container form .page .field.btns button.submit {
+  background: #A9A9A9;
+  color: #fff;
+}
+
+.onboarding-container form .page .field.btns button.next:hover,
+.onboarding-container form .page .field.btns button.submit:hover {
+  background: #8f8f8f;
+}
+
+.onboarding-container form .page .field.btns button:disabled {
+  background: #566573 !important;
+  color: #95a5a6;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   MASCOTA - RESPONSIVE
+   ========================================================================== */
+
+.mascota-selection-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+}
+
+.mascota-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mascota-widget-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mascota-selection-container .mascota-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.mascota-selection-container .mascota-btn:hover {
+  transform: scale(1.05);
+}
+
+.mascota-selection-container .mascota-btn.selected {
+  filter: drop-shadow(0 0 10px rgba(169, 169, 169, 0.5));
+}
+
+.mascota-hint {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.mascota-celebration-badge {
+  position: absolute;
+  top: -10px;
+  background: #A9A9A9;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* ==========================================================================
+   MENSAJES DE FEEDBACK
+   ========================================================================== */
+
+.onboarding-container .status-msg {
+  font-size: 14px;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+.onboarding-container .status-msg.error {
+  color: #e74c3c;
+}
+
+.onboarding-container .status-msg.success {
+  color: #A9A9A9;
+}
+
+/* ==========================================================================
+   MEDIA QUERY PARA TABLET (max-width: 1024px)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .onboarding-container {
+    padding: 15px 12px;
+  }
+
+  .onboarding-container .form-outer form .page .title {
+    font-size: 20px;
+  }
+
+  .onboarding-container .option-btn {
+    font-size: 15px;
+    padding: 11px 9px;
+  }
+}
+
+/* ==========================================================================
+   MEDIA QUERY PARA MÓVIL (max-width: 768px)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .onboarding {
+    align-items: center;
+    padding: 10px;
+  }
+
+  .onboarding-container {
+    width: 100%;
+    height: 95vh;
+    max-height: 95vh;
+    margin: 0;
+    padding: 12px 10px;
+    border-radius: 15px;
+    background-size: cover;
+    min-height: 0;
+  }
+
+  .onboarding-container .progress-bar .step p {
+    font-size: 10px;
+  }
+
+  .onboarding-container .progress-bar .step .bullet {
+    height: 20px;
+    width: 20px;
+    font-size: 10px;
+  }
+
+  .onboarding-container .progress-bar .step::before {
+    bottom: 9px;
+  }
+
+  .onboarding-container .form-outer form .page .title {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .onboarding-container .form-outer form .page .subtitle {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .onboarding-container .options-grid {
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+
+  .onboarding-container .options-grid.full-width-options {
+    max-width: 250px;
+  }
+
+  .onboarding-container .option-btn {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+
+  .onboarding-container form .page .field.btns {
+    gap: 10px;
+    padding: 8px 0 3px 0;
+  }
+
+  .onboarding-container form .page .field.btns button {
+    height: 38px;
+    font-size: 15px;
+    max-width: 100px;
+  }
+
+  /* Grid de mascotas en móvil */
+  .mascota-selection-container > div:last-child {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin: 0 5px !important;
+  }
+
+  .mascota-hint {
+    font-size: 12px;
+  }
+
+  .mascota-celebration-badge {
+    font-size: 12px;
+    padding: 4px 12px;
+  }
+
+  .onboarding-container .status-msg {
+    font-size: 12px;
+    margin-top: 10px;
+  }
+}
+
+/* ==========================================================================
+   MEDIA QUERY PARA PANTALLAS MUY PEQUEÑAS (max-width: 400px)
+   ========================================================================== */
+
+@media (max-width: 400px) {
+  .onboarding-container {
+    padding: 8px 6px;
+  }
+
+  .onboarding-container .progress-bar .step p {
+    font-size: 8px;
+  }
+
+  .onboarding-container .progress-bar .step .bullet {
+    height: 18px;
+    width: 18px;
+    font-size: 9px;
+  }
+
+  .onboarding-container .progress-bar .step::before {
+    bottom: 8px;
+  }
+
+  .onboarding-container .form-outer form .page .title {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .onboarding-container .form-outer form .page .subtitle {
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .onboarding-container .options-grid {
+    gap: 6px;
+  }
+
+  .onboarding-container .option-btn {
+    font-size: 12px;
+    padding: 8px 6px;
+  }
+
+  .onboarding-container form .page .field.btns {
+    gap: 8px;
+    padding: 5px 0 2px 0;
+  }
+
+  .onboarding-container form .page .field.btns button {
+    height: 34px;
+    font-size: 13px;
+    max-width: 80px;
+  }
+
+  .mascota-selection-container > div:last-child {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  .mascota-hint {
+    font-size: 11px;
+  }
+
+  .onboarding-container .status-msg {
+    font-size: 11px;
+    margin-top: 8px;
+  }
+}
+
+/* ==========================================================================
+   MEDIA QUERY PARA PANTALLAS MUY GRANDES (min-width: 1200px)
+   ========================================================================== */
+
+@media (min-width: 1200px) {
+  .onboarding-container {
+    max-width: 900px;
+    padding: 40px 50px;
+  }
+
+  .onboarding-container .form-outer form .page .title {
+    font-size: 32px;
+  }
+
+  .onboarding-container .option-btn {
+    font-size: 20px;
+    padding: 16px 18px;
+  }
+
+  .onboarding-container form .page .field.btns button {
+    height: 50px;
+    font-size: 20px;
+    max-width: 160px;
+  }
+
+  .onboarding-container .progress-bar .step p {
+    font-size: 18px;
+  }
+
+  .onboarding-container .progress-bar .step .bullet {
+    height: 32px;
+    width: 32px;
+    font-size: 15px;
+  }
+
+  .onboarding-container .progress-bar .step::before {
+    bottom: 15px;
+  }
+}
+
+/* ==========================================================================
+   MEDIA QUERY PARA PANTALLAS GRANDES (min-width: 769px)
+   ========================================================================== */
+
+@media (min-width: 769px) and (max-width: 1199px) {
+  .onboarding-container .form-outer form .page .title {
+    font-size: 28px;
+  }
+
+  .onboarding-container .option-btn {
+    font-size: 18px;
+    padding: 15px 14px;
+  }
+
+  .onboarding-container form .page .field.btns button {
+    height: 45px;
+    font-size: 18px;
+    max-width: 140px;
+  }
+
+  .onboarding-container .progress-bar .step p {
+    font-size: 16px;
+  }
+
+  .onboarding-container .progress-bar .step .bullet {
+    height: 28px;
+    width: 28px;
+    font-size: 13px;
+  }
+
+  .onboarding-container .progress-bar .step::before {
+    bottom: 13px;
+  }
+}
+
+/* ==========================================================================
+   UTILIDADES ADICIONALES
+   ========================================================================== */
+
+/* Para evitar overflow en móviles */
+* {
+  box-sizing: border-box;
+}
+
+/* Scrollbar personalizada */
+.onboarding-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.onboarding-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.onboarding-container::-webkit-scrollbar-thumb {
+  background: #A9A9A9;
+  border-radius: 10px;
+}
+
+.onboarding-container::-webkit-scrollbar-thumb:hover {
+  background: #8f8f8f;
+}
+
+/* Firefox scrollbar */
+.onboarding-container {
+  scrollbar-width: thin;
+  scrollbar-color: #A9A9A9 rgba(0, 0, 0, 0.05);
+}

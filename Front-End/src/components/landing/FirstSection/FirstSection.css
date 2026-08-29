@@ -1,0 +1,114 @@
+/* ============================================
+   FIRST SECTION - ESTILOS OPTIMIZADOS
+   ============================================ */
+
+/* Usar clamp() para tamaños responsivos y reducir media queries */
+#inicio .title {
+    color: black;
+    font-weight: 800;
+    font-size: clamp(2rem, 4.5vw, 3rem); /* 32px → 64px responsive */
+    line-height: 1.2;
+}
+
+#inicio .subtitle {
+    font-size: clamp(1rem, 1.5vw, 1.5rem); /* 16px → 24px responsive */
+    color: black;
+    line-height: 1.6;
+    max-width: 600px;
+}
+
+/* Iconos decorativos - si existen */
+#inicio .decorative-icon {
+    width: clamp(35px, 3vw, 45px);
+    height: clamp(33px, 2.8vw, 43px);
+    top: 3%;
+    left: 8%;
+}
+
+#inicio .icon-card-body {
+    padding: clamp(2rem, 4vw, 4rem);
+    gap: clamp(1rem, 1.5vw, 1.5rem);
+}
+
+/* ============================================
+   RESPONSIVE - Solo lo necesario
+   ============================================ */
+
+/* Desktop pequeño (992px - 1199px) */
+@media (max-width: 1199px) and (min-width: 992px) {
+    /* Los clamp() ya manejan esto, pero si necesitas ajustes específicos: */
+    #inicio .icon-card-body {
+        padding: 3rem;
+        gap: 1.25rem;
+    }
+}
+
+/* Tablet (768px - 991px) */
+@media (max-width: 991px) {
+    #inicio .title {
+        /* Sobrescribir clamp para tablet */
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+        text-align: center;
+    }
+
+    #inicio .subtitle {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        text-align: center;
+    }
+
+    #inicio .icon-card-body {
+        padding: 2.5rem;
+    }
+
+    #inicio .decorative-icon {
+        width: 35px;
+        height: 33px;
+    }
+}
+
+/* Móvil (≤576px) */
+@media (max-width: 576px) {
+    #inicio .title {
+        font-size: 1.5rem;
+    }
+
+    #inicio .subtitle {
+        font-size: 0.9rem;
+    }
+
+    #inicio .icon-card-body {
+        padding: 1.5rem;
+        gap: 0.75rem;
+    }
+
+    #inicio .decorative-icon {
+        width: 28px;
+        height: 26px;
+        top: 2%;
+        left: 5%;
+    }
+}
+
+/* ============================================
+   ACCESIBILIDAD
+   ============================================ */
+
+/* Preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    #inicio * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Mejor contraste para el título en modo oscuro del sistema */
+@media (prefers-color-scheme: dark) {
+    #inicio .title {
+        color: #ffffff;
+    }
+
+    #inicio .subtitle {
+        color: #e0e0e0;
+    }
+}

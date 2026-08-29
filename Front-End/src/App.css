@@ -1,0 +1,33 @@
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    margin: 0; /* elimina margen por defecto del navegador */
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    overflow-x: hidden; /* evita scroll horizontal si usamos full-bleed */
+}
+
+:focus-visible {
+    outline: 3px solid #0A3D91;
+    outline-offset: 2px;
+}
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 10000;
+    padding: 0.75rem 1rem;
+    background: #0A3D91;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+}

@@ -1,0 +1,54 @@
+@import '../shared/mascot-keyframes.css';
+
+/* Suma (+) — 786×753, cuerpo vertical alto */
+.suma-mascot {
+  --mascot-bob-y: -8px;
+  --mascot-jump-y: -20px;
+  --mascot-droop-y: 4px;
+  --mascot-tear-fall: 16px;
+  --suma-mouth-x: 377px;
+  --suma-mouth-y: 370px;
+
+  display: block;
+  transform-origin: center bottom;
+  overflow: visible;
+}
+
+.suma-mascot--idle { animation: mascot-idle-bob 3s ease-in-out infinite; }
+.suma-mascot--idle .suma-eyelid { animation: mascot-blink 4s ease-in-out infinite; }
+
+.suma-mascot--celebration { animation: mascot-celebrate-jump 0.6s ease-in-out infinite; }
+.suma-mascot--celebration .suma-confetti { opacity: 1; animation: mascot-confetti-pop 0.6s ease-in-out infinite; }
+.suma-mascot--celebration .suma-body { animation: mascot-body-squash 0.6s ease-in-out infinite; }
+.suma-mascot--celebration .suma-mouth {
+  transform-origin: var(--suma-mouth-x) var(--suma-mouth-y);
+  animation: mascot-smile-big 0.6s ease-in-out infinite;
+}
+
+.suma-mascot--sad { animation: mascot-sad-droop 2.5s ease-in-out infinite; }
+.suma-mascot--sad .suma-tear { opacity: 1; }
+.suma-mascot--sad .suma-tear-drop--left { animation: mascot-tear-fall 1.8s ease-in infinite; }
+.suma-mascot--sad .suma-tear-drop--right { animation: mascot-tear-fall 1.8s ease-in 0.4s infinite; }
+.suma-mascot--sad .suma-arms-up { opacity: 0; }
+.suma-mascot--sad .suma-arms-sad { opacity: 1; }
+.suma-mascot--sad .suma-mouth {
+  transform: scaleY(-1) translateY(10px);
+  transform-origin: var(--suma-mouth-x) var(--suma-mouth-y);
+}
+
+.suma-mascot--thinking { animation: mascot-think-tilt 2.5s ease-in-out infinite; }
+.suma-mascot--thinking .suma-thought { opacity: 1; animation: mascot-thought-bob 2s ease-in-out infinite; }
+.suma-mascot--thinking .suma-arms-up { opacity: 0; }
+.suma-mascot--thinking .suma-arms-thinking { opacity: 1; }
+.suma-mascot--thinking .suma-pupil--left { transform: translate(8px, -6px); }
+.suma-mascot--thinking .suma-pupil--right { transform: translate(6px, -8px); }
+
+.suma-confetti, .suma-tear, .suma-thought, .suma-arms-sad, .suma-arms-thinking, .suma-eyelid {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.suma-mouth { transition: transform 0.3s ease; }
+.suma-pupil--left, .suma-pupil--right { transition: transform 0.4s ease; }
+.suma-arms-sad,
+.suma-arms-thinking { pointer-events: none; }

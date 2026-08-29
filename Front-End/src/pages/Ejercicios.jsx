@@ -15,29 +15,13 @@ const SCENARIOS_BY_SECTION = {
     {
       id: 101,
       tipo: "choice",
-      pregunta: "Hacés las compras del día: gastás $4.500 en verdulería, $8.200 en carnicería y $2.300 en panadería. ¿Cuánto gastaste en total?",
+      pregunta: "Destinás el 30% de tus ingresos de $400.000 mensuales a las compras de supermercado y comida. ¿Cuánto dinero tenés presupuestado para el mes?",
       opciones: [
-        { id: 1011, texto: "$15.000", esCorrecta: true },
-        { id: 1012, texto: "$14.200", esCorrecta: false },
-        { id: 1013, texto: "$16.500", esCorrecta: false },
+        { id: 1011, texto: "$120.000", esCorrecta: true },
+        { id: 1012, texto: "$100.000", esCorrecta: false },
+        { id: 1013, texto: "$140.000", esCorrecta: false },
       ],
     },
-    {
-      id: 102,
-      tipo: "input",
-      pregunta: "Tu compra en el supermercado sumó $16.400 y pagás con un billete de $20.000. ¿Cuánto vuelto exacto debés recibir?",
-      respuestaEsperada: 3600,
-    },
-    {
-      id: 103,
-      tipo: "choice",
-      pregunta: "Tenés un presupuesto semanal de $50.000 para comida. Si en los primeros 4 días gastaste $32.000, ¿cuánto podés gastar en los 3 días restantes?",
-      opciones: [
-        { id: 1031, texto: "$18.000", esCorrecta: true },
-        { id: 1032, texto: "$22.000", esCorrecta: false },
-        { id: 1033, texto: "$15.000", esCorrecta: false },
-      ],
-    }
   ],
   // Sección 2: Descuentos, Ofertas y Rebajas (Porcentajes)
   2: [
@@ -51,148 +35,58 @@ const SCENARIOS_BY_SECTION = {
         { id: 2013, texto: "50", esCorrecta: false },
       ],
     },
-    {
-      id: 202,
-      tipo: "choice",
-      pregunta: "Una campera cuesta $40.000 y tiene un 20% de descuento por liquidación de temporada. ¿Cuánto pagarás finalmente?",
-      opciones: [
-        { id: 2021, texto: "$32.000", esCorrecta: true },
-        { id: 2022, texto: "$36.000", esCorrecta: false },
-        { id: 2023, texto: "$30.000", esCorrecta: false },
-      ],
-    },
-    {
-      id: 203,
-      tipo: "input",
-      pregunta: "Un electrodoméstico cuesta $200.000. Si pagás al contado te hacen un 15% de descuento directo. ¿Cuántos pesos te ahorrás?",
-      respuestaEsperada: 30000,
-    },
-    {
-      id: 204,
-      tipo: "choice",
-      pregunta: "En una promoción de 'Llevá 2 y la segunda unidad tiene 50% de descuento', si cada producto sale $6.000, ¿cuánto pagás por los 2?",
-      opciones: [
-        { id: 2041, texto: "$9.000", esCorrecta: true },
-        { id: 2042, texto: "$10.000", esCorrecta: false },
-        { id: 2043, texto: "$8.000", esCorrecta: false },
-      ],
-    }
   ],
   // Sección 3: División de Cuentas y Propinas
   3: [
     {
       id: 301,
-      tipo: "input",
-      pregunta: "Cena con amigos: La cuenta total es de $48.000 entre 4 personas en partes iguales. ¿Cuánto debe poner cada uno?",
-      respuestaEsperada: 12000,
-    },
-    {
-      id: 302,
       tipo: "choice",
-      pregunta: "El total del restaurante fue de $35.000 y quieren dejar el 10% de propina sugerida al mozo. ¿Cuánto es la propina?",
+      pregunta: "Cenan 4 amigos y la cuenta es de $50.000. Agregan el 10% de propina ($5.000) y dividen los $55.000 en 4 partes iguales. ¿Cuánto abona cada uno?",
       opciones: [
-        { id: 3021, texto: "$3.500", esCorrecta: true },
-        { id: 3022, texto: "$4.000", esCorrecta: false },
-        { id: 3023, texto: "$3.000", esCorrecta: false },
+        { id: 3011, texto: "$13.750", esCorrecta: true },
+        { id: 3012, texto: "$12.500", esCorrecta: false },
+        { id: 3013, texto: "$15.000", esCorrecta: false },
       ],
     },
-    {
-      id: 303,
-      tipo: "choice",
-      pregunta: "Alquilan una cabaña por el fin de semana entre 5 personas por un total de $175.000. ¿Cuánto abona cada persona?",
-      opciones: [
-        { id: 3031, texto: "$35.000", esCorrecta: true },
-        { id: 3032, texto: "$30.000", esCorrecta: false },
-        { id: 3033, texto: "$40.000", esCorrecta: false },
-      ],
-    }
   ],
   // Sección 4: Cuotas vs Contado e Intereses
   4: [
     {
       id: 401,
       tipo: "choice",
-      pregunta: "Comprás un producto por $120.000 al contado o en 6 cuotas fijas de $23.000. ¿Cuánto es el recargo total financiado?",
+      pregunta: "Un televisor cuesta $100.000 al contado. En 12 cuotas con tarjeta tiene un recargo total por interés del 15%. ¿Cuánto se pagará en total financiado?",
       opciones: [
-        { id: 4011, texto: "$18.000", esCorrecta: true },
-        { id: 4012, texto: "$15.000", esCorrecta: false },
-        { id: 4013, texto: "$20.000", esCorrecta: false },
+        { id: 4011, texto: "$115.000", esCorrecta: true },
+        { id: 4012, texto: "$120.000", esCorrecta: false },
+        { id: 4013, texto: "$110.000", esCorrecta: false },
       ],
     },
-    {
-      id: 402,
-      tipo: "input",
-      pregunta: "Un celular cuesta $180.000 en 6 cuotas fijas sin interés. ¿De cuánto es el valor exacto de cada cuota mensual?",
-      respuestaEsperada: 30000,
-    },
-    {
-      id: 403,
-      tipo: "choice",
-      pregunta: "Una factura de gas de $15.000 tiene un recargo del 5% por abonarse después del vencimiento. ¿Cuánto pagarás en total?",
-      opciones: [
-        { id: 4031, texto: "$15.750", esCorrecta: true },
-        { id: 4032, texto: "$16.500", esCorrecta: false },
-        { id: 4033, texto: "$15.500", esCorrecta: false },
-      ],
-    }
   ],
   // Sección 5: Cocina, Medidas y Proporciones
   5: [
     {
       id: 501,
       tipo: "choice",
-      pregunta: "Una receta de torta para 4 personas lleva 200 gramos de harina. Si querés preparar la torta para 8 personas, ¿cuánta harina necesitás?",
+      pregunta: "Una masa artesanal de pan requiere un 60% de agua respecto al peso de la harina. Si vas a usar 500 gramos de harina, ¿cuántos gramos de agua debés verter?",
       opciones: [
-        { id: 5011, texto: "400 gramos", esCorrecta: true },
-        { id: 5012, texto: "300 gramos", esCorrecta: false },
-        { id: 5013, texto: "500 gramos", esCorrecta: false },
+        { id: 5011, texto: "300 gramos", esCorrecta: true },
+        { id: 5012, texto: "250 gramos", esCorrecta: false },
+        { id: 5013, texto: "350 gramos", esCorrecta: false },
       ],
     },
-    {
-      id: 502,
-      tipo: "input",
-      pregunta: "Un auto consume 8 litros de combustible cada 100 km en ruta. ¿Cuántos litros consumirá en un viaje de 250 km?",
-      respuestaEsperada: 20,
-    },
-    {
-      id: 503,
-      tipo: "choice",
-      pregunta: "Si 3 metros de tela cuestan $18.000, ¿cuánto costarán 5 metros de la misma tela?",
-      opciones: [
-        { id: 5031, texto: "$30.000", esCorrecta: true },
-        { id: 5032, texto: "$28.000", esCorrecta: false },
-        { id: 5033, texto: "$32.000", esCorrecta: false },
-      ],
-    }
   ],
   // Sección 6: Gran Desafío Maestro de la Vida Diaria
   6: [
     {
       id: 601,
       tipo: "choice",
-      pregunta: "En una ferretería comprás 2 cajas de tornillos a $3.500 c/u y una herramienta a $14.000. Con 10% de descuento sobre el total, ¿cuánto pagás?",
+      pregunta: "Tenías $80.000 ahorrados. Gastaste el 25% en una compra y luego recibiste un reintegro bancario del 10% sobre lo gastado. ¿Cuánto dinero tenés en total ahora?",
       opciones: [
-        { id: 6011, texto: "$18.900", esCorrecta: true },
-        { id: 6012, texto: "$19.500", esCorrecta: false },
-        { id: 6013, texto: "$18.000", esCorrecta: false },
+        { id: 6011, texto: "$62.000", esCorrecta: true },
+        { id: 6012, texto: "$60.000", esCorrecta: false },
+        { id: 6013, texto: "$65.000", esCorrecta: false },
       ],
     },
-    {
-      id: 602,
-      tipo: "input",
-      pregunta: "Ahorrás $15.000 por mes durante 8 meses seguidos para unas vacaciones. ¿Cuánto dinero tenés ahorrado en total al finalizar?",
-      respuestaEsperada: 120000,
-    },
-    {
-      id: 603,
-      tipo: "choice",
-      pregunta: "Un tanque de agua de 1.000 litros se vacía a razón de 50 litros por minuto. ¿Cuántos minutos tarda en vaciarse por completo?",
-      opciones: [
-        { id: 6031, texto: "20 minutos", esCorrecta: true },
-        { id: 6032, texto: "25 minutos", esCorrecta: false },
-        { id: 6033, texto: "15 minutos", esCorrecta: false },
-      ],
-    }
   ]
 };
 

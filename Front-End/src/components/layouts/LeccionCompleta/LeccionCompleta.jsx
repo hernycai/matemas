@@ -133,7 +133,7 @@ const DesafioCompletado = () => {
 
         {/* Botones de acción rápida para avanzar */}
         <div style={{ display: "flex", gap: "1rem", marginTop: "1.5rem", justifyContent: "center", flexWrap: "wrap" }}>
-          {siguienteSeccionId && siguienteSeccionId <= 6 && (
+          {siguienteSeccionId && siguienteSeccionId <= 6 ? (
             <button
               type="button"
               onClick={irASiguienteNivel}
@@ -152,8 +152,21 @@ const DesafioCompletado = () => {
                 gap: "8px",
               }}
             >
-              <span>🚀 Continuar al Nivel {siguienteSeccionId}</span>
+              <span>
+                🚀 Continuar al Nivel {siguienteSeccionId}
+                {siguienteSeccionId === 2 && " (Descuentos y Rebajas)"}
+                {siguienteSeccionId === 3 && " (Cuentas y Propinas)"}
+                {siguienteSeccionId === 4 && " (Cuotas e Intereses)"}
+                {siguienteSeccionId === 5 && " (Cocina y Medidas)"}
+                {siguienteSeccionId === 6 && " (Gran Desafío Maestro)"}
+              </span>
             </button>
+          ) : (
+            <div style={{ width: "100%", textAlign: "center", marginBottom: "0.5rem" }}>
+              <span style={{ fontSize: "1.2rem", fontWeight: 800, color: "#166534" }}>
+                🏆 ¡Completaste todos los Desafíos de Porcentajes!
+              </span>
+            </div>
           )}
           <button
             type="button"

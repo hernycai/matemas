@@ -82,6 +82,42 @@ const FirstSection = ({ navigate }) => {
                             Dominá las herramientas matemáticas que realmente necesitás para tu día a día. Sin estrés, vos elegís cuándo y cómo avanzar.
                         </p>
 
+                        {/* Tarjeta Explicativa del Tutor Bot IA */}
+                        <div style={{
+                            backgroundColor: "rgba(239, 246, 255, 0.92)",
+                            border: "2px solid #93C5FD",
+                            borderRadius: "16px",
+                            padding: "12px 16px",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "12px",
+                            maxWidth: "520px",
+                            boxShadow: "0 6px 18px rgba(37, 99, 235, 0.08)",
+                            margin: "0.25rem 0",
+                        }}>
+                            <div style={{
+                                fontSize: "1.8rem",
+                                backgroundColor: "#DBEAFE",
+                                borderRadius: "12px",
+                                padding: "6px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexShrink: 0,
+                            }}>
+                                🤖
+                            </div>
+                            <div style={{ textAlign: "left" }}>
+                                <div style={{ fontWeight: 800, fontSize: "0.92rem", color: "#1E3A8A", display: "flex", alignItems: "center", gap: "6px" }}>
+                                    <span>Tutor Bot Inteligente en el Encabezado</span>
+                                    <span style={{ backgroundColor: "#2563EB", color: "#FFFFFF", fontSize: "0.65rem", padding: "2px 6px", borderRadius: "6px", fontWeight: 700 }}>IA 24/7</span>
+                                </div>
+                                <p style={{ fontSize: "0.82rem", color: "#334155", margin: "2px 0 0 0", lineHeight: 1.35 }}>
+                                    Hacé clic en el botón <strong>Tutor Bot</strong> o <strong>Calculadora</strong> arriba en la barra superior para recibir pistas paso a paso y resolver cualquier duda al instante.
+                                </p>
+                            </div>
+                        </div>
+
                         {/* Badges Flotantes Dinámicos con Movimiento */}
                         <div style={{
                             display: "flex",

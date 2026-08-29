@@ -17,9 +17,7 @@ export const getRanking = async (req, res, next) => {
         // 1. Obtener top usuarios por puntos
         const topUsuarios = await prisma.usuario.findMany({
             where: {
-                // Excluir usuarios sin nombre o con 0 puntos (opcional)
                 nombre: { not: null },
-                puntos: { gt: 0 }
             },
             select: {
                 id: true,
@@ -39,9 +37,11 @@ export const getRanking = async (req, res, next) => {
                     }
                 }
             },
-            orderBy: {
-                puntos: 'desc'
-            },
+            orderBy: [
+                { puntos: 'desc' },
+                { racha: 'desc' },
+                { createdAt: 'asc' }
+            ],
             take: limit
         });
 
@@ -134,7 +134,6 @@ export const getPodio = async (req, res, next) => {
         const topTres = await prisma.usuario.findMany({
             where: {
                 nombre: { not: null },
-                puntos: { gt: 0 }
             },
             select: {
                 id: true,
@@ -152,9 +151,11 @@ export const getPodio = async (req, res, next) => {
                     }
                 }
             },
-            orderBy: {
-                puntos: 'desc'
-            },
+            orderBy: [
+                { puntos: 'desc' },
+                { racha: 'desc' },
+                { createdAt: 'asc' }
+            ],
             take: 3
         });
 

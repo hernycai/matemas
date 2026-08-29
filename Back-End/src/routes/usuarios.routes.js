@@ -18,6 +18,7 @@ router.post("/registro", registrarUsuario);
 router.post("/login", rateLimitLogin, loginUsuario);
 router.put("/perfil", checkAuth, actualizarPerfil);
 router.delete("/eliminar", checkAuth, eliminarUsuario);
+router.post("/eliminar", checkAuth, eliminarUsuario);
 router.get("/desafio-actual", checkAuth, getDesafioActual);
 router.patch("/desafio-actual", checkAuth, actualizarDesafioActual);
 

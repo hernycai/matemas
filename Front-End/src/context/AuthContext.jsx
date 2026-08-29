@@ -50,6 +50,66 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const deleteAccount = useCallback(async (password = '') => {
+    try {
+      const currentUserId = profile?.id || session?.user?.id;
+
+      // 1. Intentar eliminar vía API Back-End (soporta POST y DELETE para evitar 405)
+      try {
+        await api.post('/usuarios/eliminar', {
+          confirmacion: 'ELIMINAR',
+          password: password || undefined,
+        });
+      } catch (postErr) {
+        try {
+          await api.delete('/usuarios/eliminar', {
+            data: { confirmacion: 'ELIMINAR', password: password || undefined },
+          });
+        } catch (delErr) {
+          console.warn("⚠️ API delete omitido o no disponible:", delErr?.message);
+        }
+      }
+
+      // 2. Intentar limpiar tablas en Supabase directamente
+      if (currentUserId && supabase && typeof supabase.from === 'function') {
+        try {
+          await supabase.from('Progreso').delete().eq('usuarioId', currentUserId);
+          await supabase.from('SeccionAprobada').delete().eq('usuarioId', currentUserId);
+          await supabase.from('Usuario').delete().eq('id', currentUserId);
+        } catch (dbErr) {
+          console.warn("⚠️ Supabase direct delete:", dbErr);
+        }
+      }
+
+      // 3. Limpiar almacenamiento local y sesión
+      if (currentUserId) {
+        localStorage.removeItem(`mate_onboarding_done_${currentUserId}`);
+        localStorage.removeItem(`mate_profile_${currentUserId}`);
+      }
+      localStorage.removeItem("mate_demo_profile");
+      localStorage.removeItem("supabase.mock.session");
+      sessionStorage.clear();
+
+      setSession(null);
+      setProfile(null);
+      setIsNewUser(false);
+      lastFetchedId.current = null;
+      setLoading(false);
+      setInitialized(true);
+
+      if (supabase?.auth?.signOut) {
+        await supabase.auth.signOut();
+      }
+
+      return { success: true };
+    } catch (err) {
+      console.error("Error al eliminar cuenta:", err);
+      throw err;
+    } finally {
+      window.location.href = '/';
+    }
+  }, [profile?.id, session?.user?.id]);
+
   const fetchProfile = useCallback(async (user, options = {}) => {
     const { force = false } = options;
 
@@ -599,6 +659,7 @@ export const AuthProvider = ({ children }) => {
       setProfile,
       register,
       logout,
+      deleteAccount,
       loginWithGoogle,
       completeOnboarding,
       refreshProfile: () => session?.user && fetchProfile(session.user, { force: true }),
@@ -607,7 +668,7 @@ export const AuthProvider = ({ children }) => {
       shouldShowLogin: !session && initialized && !loading,
     }),
     [session, profile, isNewUser, loading, registerLoading, googleLoading, initialized, profileError,
-      login, loginAsDemoUser, updateProfile, register, logout, loginWithGoogle, completeOnboarding, fetchProfile]
+      login, loginAsDemoUser, updateProfile, register, logout, deleteAccount, loginWithGoogle, completeOnboarding, fetchProfile]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

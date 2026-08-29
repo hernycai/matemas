@@ -25,6 +25,7 @@ app.disable("x-powered-by");
 
 const allowedOrigins = [
   "https://matemas.vercel.app",
+  "https://matemas2.vercel.app",
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   ...(process.env.CORS_ORIGINS
@@ -35,8 +36,14 @@ const allowedOrigins = [
 app.use(
   cors({
     origin(origin, callback) {
-      // Permitir tools sin Origin (curl, healthchecks) y orígenes whitelisteados
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Permitir requests sin Origin (curl, healthchecks), localhost y subdominios de vercel.app
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") ||
+        origin.includes("localhost") ||
+        origin.includes("127.0.0.1")
+      ) {
         return callback(null, true);
       }
       return callback(null, false);

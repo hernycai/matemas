@@ -9,7 +9,7 @@ import { supabase } from '../../../config/supabaseClient';
 const PASSWORD_PLACEHOLDER = '*************';
 
 function Configuracion() {
-  const { profile, refreshProfile, logout } = useAuth();
+  const { profile, refreshProfile, logout, deleteAccount } = useAuth();
   const [showHeader, setShowHeader] = useState(false);
   const [saving, setSaving] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
@@ -165,24 +165,14 @@ function Configuracion() {
   const handleConfirmDelete = async () => {
     setDeleting(true);
     try {
-      if (deletePassword.trim()) {
-        try {
-          await supabase.auth.signInWithPassword({
-            email: profile?.email || formData.email,
-            password: deletePassword,
-          });
-        } catch {
-          // Ignorar si el usuario fue registrado con Google OAuth
-        }
+      if (deleteAccount) {
+        await deleteAccount(deletePassword);
+      } else {
+        await api.post('/usuarios/eliminar', { confirmacion: 'ELIMINAR', password: deletePassword }).catch(() => {});
+        await logout?.();
       }
-
-      await api.delete('/usuarios/eliminar', {
-        data: { confirmacion: 'ELIMINAR', password: deletePassword },
-      });
       setShowDeleteModal(false);
       setDeletePassword('');
-      await logout?.();
-      window.location.href = '/';
       alert('Cuenta eliminada correctamente.');
     } catch (err) {
       console.error(err);

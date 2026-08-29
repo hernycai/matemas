@@ -134,7 +134,7 @@ const LOGROS = [
 
 function Perfil() {
   const navigate = useNavigate();
-  const { profile, updateProfile, logout } = useAuth();
+  const { profile, updateProfile, logout, deleteAccount } = useAuth();
   const { setMascot } = useMascotContext();
   const [activeTab, setActiveTab] = useState('datos');
   const [showHeader, setShowHeader] = useState(false);
@@ -224,12 +224,13 @@ function Perfil() {
 
     setEliminando(true);
     try {
-      await api.delete('/usuarios/eliminar', {
-        data: { confirmacion: 'ELIMINAR' },
-      });
+      if (deleteAccount) {
+        await deleteAccount();
+      } else {
+        await api.post('/usuarios/eliminar', { confirmacion: 'ELIMINAR' }).catch(() => {});
+        await logout?.();
+      }
       setShowModalEliminar(false);
-      await logout?.();
-      window.location.href = '/';
       alert('Tu perfil y todos tus datos fueron eliminados permanentemente.');
     } catch (err) {
       console.error('Error al eliminar perfil:', err);

@@ -38,8 +38,8 @@ const AuthCallback = () => {
 
                 if (session?.user) {
                     setTimeout(() => {
-                        navigate('/onboarding', { replace: true });
-                    }, 800);
+                        navigate('/dashboard', { replace: true });
+                    }, 600);
                 } else {
                     setError('No se pudo completar el inicio de sesión con Google');
                     setProcessing(false);

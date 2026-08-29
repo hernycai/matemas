@@ -179,6 +179,49 @@ export default function ModalCalculadora({ isOpen, onClose }) {
     setOverwrite(true);
   }, [prevValue, operation, display]);
 
+  // Listener para teclado físico
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
+        return;
+      }
+
+      if (e.key >= '0' && e.key <= '9') {
+        e.preventDefault();
+        handleDigit(e.key);
+      } else if (e.key === '.' || e.key === ',') {
+        e.preventDefault();
+        handleDecimal();
+      } else if (e.key === '+') {
+        e.preventDefault();
+        handleOperation('+');
+      } else if (e.key === '-') {
+        e.preventDefault();
+        handleOperation('−');
+      } else if (e.key === '*' || e.key === 'x' || e.key === 'X') {
+        e.preventDefault();
+        handleOperation('×');
+      } else if (e.key === '/') {
+        e.preventDefault();
+        handleOperation('÷');
+      } else if (e.key === 'Enter' || e.key === '=') {
+        e.preventDefault();
+        handleEqual();
+      } else if (e.key === 'Backspace') {
+        e.preventDefault();
+        handleBackspace();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, handleDigit, handleDecimal, handleOperation, handleEqual, handleBackspace, onClose]);
+
   // Porcentaje inteligente cotidiano (ej: 1000 + 20% -> 1200, 1000 - 15% -> 850, 500 * 10% -> 50)
   const handlePercent = useCallback(() => {
     const current = parseFloat(display);

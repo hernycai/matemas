@@ -546,6 +546,8 @@ export default function MixtoPage() {
           centered
           backdrop="static"
           size="lg"
+          enforceFocus={false}
+          autoFocus={false}
         >
           <Modal.Header closeButton style={{ backgroundColor: "#0A3D91", color: "#FFFFFF", border: "none" }}>
             <Modal.Title style={{ fontWeight: 800, fontSize: "1.2rem", display: "flex", alignItems: "center", gap: "8px" }}>

@@ -199,40 +199,46 @@ function SecondSection() {
     setStatus({ loading: true, error: "", success: "" });
 
     const fechaActual = new Date().toISOString();
+    const resolvedNombre = (
+      `${formData.nombre || ''} ${formData.apellidos || ''}`.trim() ||
+      user?.user_metadata?.full_name ||
+      user?.email?.split('@')[0] ||
+      'Usuario'
+    );
 
     const dataToSubmit = {
       ...formData,
       fechaRespuesta: fechaActual,
-      nombre: `${formData.nombre} ${formData.apellidos}`.trim(),
+      nombre: resolvedNombre,
+      desafio: formData.desafio || "Porcentajes",
+      edad: formData.edad || "30-45 años",
+      mascota: formData.mascota || "suma",
+      onboardingCompleto: true,
     };
 
     try {
       if (updateProfile) {
-        await updateProfile({
-          ...dataToSubmit,
-          onboardingCompleto: true,
-        });
+        await updateProfile(dataToSubmit);
       }
       try {
         await api.post("/usuarios/registro", dataToSubmit);
       } catch (errApi) {
-        console.warn("Sync con backend API secundario omitido:", errApi.message);
+        console.warn("Sync con backend secundario omitido:", errApi.message);
       }
-      await refreshProfile?.();
       setStatus({
         loading: false,
         error: "",
-        success: "¡Perfil configurado con éxito! Redirigiendo a tus desafíos...",
+        success: "¡Perfil configurado con éxito! Redirigiendo...",
       });
 
       setTimeout(() => {
-        navigate("/desafios");
-      }, 1200);
+        navigate("/dashboard", { replace: true });
+      }, 600);
     } catch (error) {
-      console.warn("Continuando hacia desafíos:", error);
+      console.warn("Continuando hacia dashboard:", error);
       setTimeout(() => {
-        navigate("/desafios");
-      }, 1000);
+        navigate("/dashboard", { replace: true });
+      }, 500);
     }
   };
 

@@ -306,28 +306,7 @@ export const AuthProvider = ({ children }) => {
     };
   }, [fetchProfile, markInitialized, initialized]);
 
-  const completeOnboarding = useCallback(async (additionalData = {}) => {
-    if (!session?.user) return;
-
-    try {
-      setLoading(true);
-      const { data } = await api.put(`/usuarios/${session.user.id}`, {
-        ...additionalData,
-        onboardingCompleto: true,
-      });
-
-      if (data) {
-        setProfile(data);
-        setIsNewUser(false);
-        console.log('✅ Onboarding completado exitosamente');
-      }
-    } catch (error) {
-      console.error('❌ Error al completar onboarding:', error);
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }, [session?.user]);
+  // completeOnboarding is declared below using updateProfile
 
   const login = useCallback(async (email, password, options = {}) => {
     const { rememberMe = true } = options;
@@ -505,20 +484,56 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = useCallback(async (updatedData) => {
     try {
+      const normalizedMascotVal = updatedData.mascota
+        ? normalizeMascot(updatedData.mascota)
+        : (profile?.mascota || 'suma');
+
       const newProfile = {
         ...(profile || {}),
         ...updatedData,
-        mascota: updatedData.mascota ? normalizeMascot(updatedData.mascota) : (profile?.mascota || 'suma'),
+        mascota: normalizedMascotVal,
+        onboardingCompleto: true,
       };
 
       setProfile(newProfile);
+      setIsNewUser(false);
       localStorage.setItem("mate_demo_profile", JSON.stringify(newProfile));
 
       if (session?.user?.id && session.user.id !== 'demo-adult-user-01') {
+        // 1. Guardar directamente en la tabla Usuario de Supabase
+        if (supabase && typeof supabase.from === 'function') {
+          try {
+            const { error: supaErr } = await supabase.from('Usuario').upsert({
+              id: session.user.id,
+              email: session.user.email,
+              nombre: newProfile.nombre || session.user.user_metadata?.full_name || session.user.email?.split('@')[0],
+              edad: String(newProfile.edad || ''),
+              desafio: String(newProfile.desafio || ''),
+              mascota: normalizedMascotVal,
+              genero: newProfile.genero || 'No especificado',
+              sentimiento: newProfile.tiempo || newProfile.sentimiento || '10 minutos',
+              puntos: Number(newProfile.puntos ?? 50),
+              tokens: Number(newProfile.tokens ?? 10),
+              racha: Number(newProfile.racha ?? 1),
+            });
+            if (supaErr) {
+              console.warn("⚠️ Upsert en tabla Usuario:", supaErr.message);
+            } else {
+              console.log("✅ Perfil guardado directamente en Supabase");
+            }
+          } catch (supaErr) {
+            console.warn("⚠️ Error guardando en Supabase:", supaErr);
+          }
+        }
+
+        // 2. Intentar sincronizar con backend si existiera
         try {
-          await api.put(`/usuarios/${session.user.id}`, updatedData);
+          await api.put(`/usuarios/${session.user.id}`, {
+            ...updatedData,
+            onboardingCompleto: true,
+          });
         } catch (apiErr) {
-          console.warn("No se pudo sincronizar perfil con backend (usando persistencia local):", apiErr);
+          // Omitir si no hay backend
         }
       }
       return newProfile;
@@ -527,6 +542,13 @@ export const AuthProvider = ({ children }) => {
       throw err;
     }
   }, [profile, session]);
+
+  const completeOnboarding = useCallback(async (additionalData = {}) => {
+    return await updateProfile({
+      ...additionalData,
+      onboardingCompleto: true,
+    });
+  }, [updateProfile]);
 
   const value = useMemo(
     () => ({

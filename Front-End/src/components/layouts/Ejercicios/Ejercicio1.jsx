@@ -54,6 +54,7 @@ function EjercicioInput({
 
   // 🔄 Resetear estado cuando cambia la pregunta
   useEffect(() => {
+    isMounted.current = true;
     setInputValue('');
     setResultado(null);
     setIntentos(0);

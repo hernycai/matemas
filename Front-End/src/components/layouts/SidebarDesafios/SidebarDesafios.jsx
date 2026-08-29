@@ -29,14 +29,15 @@ const SidebarDesafios = ({ isOpen, onClose }) => {
     api
       .get("/ramas")
       .then((res) => {
-        if (res.data && res.data.length > 0) {
-          setRamas(res.data);
+        const payload = Array.isArray(res?.data) ? res.data : (Array.isArray(res?.data?.data) ? res.data.data : null);
+        if (payload && payload.length > 0) {
+          setRamas(payload);
         } else {
           setRamas(DEFAULT_RAMAS);
         }
       })
       .catch((err) => {
-        console.warn("Cargando ramas pedagógicas locales:", err.message);
+        console.warn("Cargando ramas pedagógicas predeterminadas:", err?.message);
         setRamas(DEFAULT_RAMAS);
       })
       .finally(() => {
@@ -44,16 +45,17 @@ const SidebarDesafios = ({ isOpen, onClose }) => {
       });
   }, [isOpen]);
 
-  const desafioActualId = profile?.desafioActualId || 2;
-  const desafioActual = ramas.find((r) => r.id === desafioActualId) || ramas[1];
-  const otrasRamas = ramas.filter((r) => r.id !== desafioActualId);
+  const listaRamas = Array.isArray(ramas) && ramas.length > 0 ? ramas : DEFAULT_RAMAS;
+  const desafioActualId = Number(profile?.desafioActualId) || 2;
+  const desafioActual = listaRamas.find((r) => Number(r.id) === desafioActualId) || listaRamas[0] || DEFAULT_RAMAS[0];
+  const otrasRamas = listaRamas.filter((r) => Number(r.id) !== desafioActualId);
 
   const cambiarDesafio = async (ramaId) => {
-    if (cambiando || ramaId === desafioActualId) return;
+    if (cambiando || Number(ramaId) === desafioActualId) return;
     try {
       setCambiando(true);
       if (updateProfile) {
-        await updateProfile({ desafioActualId: ramaId, desafio: ramas.find(r => r.id === ramaId)?.nombre });
+        await updateProfile({ desafioActualId: ramaId, desafio: listaRamas.find(r => Number(r.id) === Number(ramaId))?.nombre });
       }
       try {
         await api.patch("/usuarios/desafio-actual", { desafioActualId: ramaId });

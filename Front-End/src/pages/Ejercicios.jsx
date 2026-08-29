@@ -235,27 +235,24 @@ function ModuloEjercicios() {
 
   useEffect(() => {
     let activo = true;
-    setCargando(true);
     setError(null);
 
-    const defaultForSection = SCENARIOS_BY_SECTION[idSeccionActual] || SCENARIOS_BY_SECTION[2];
+    const defaultForSection = SCENARIOS_BY_SECTION[idSeccionActual] || SCENARIOS_BY_SECTION[1];
+    setEscenarios(defaultForSection);
+    setIndexActual(0);
+    setCargando(false);
 
+    // Sincronizar en segundo plano si hay escenarios adicionales del servidor
     api
       .get(`/secciones/${idSeccionActual}/escenarios`)
       .then((res) => {
         if (!activo) return;
-        const data = res.data && res.data.length > 0 ? res.data : defaultForSection;
-        setEscenarios(data);
-        setIndexActual(0);
+        if (Array.isArray(res.data) && res.data.length >= 3) {
+          setEscenarios(res.data);
+        }
       })
       .catch((err) => {
-        if (!activo) return;
-        console.warn("Cargando escenarios de práctica autónomos:", err.message);
-        setEscenarios(defaultForSection);
-        setIndexActual(0);
-      })
-      .finally(() => {
-        if (activo) setCargando(false);
+        console.warn("Utilizando escenarios pedagógicos locales:", err.message);
       });
 
     return () => {
@@ -263,7 +260,7 @@ function ModuloEjercicios() {
     };
   }, [idSeccionActual]);
 
-  const ejercicioActual = escenarios[indexActual];
+  const ejercicioActual = escenarios[indexActual] || SCENARIOS_BY_SECTION[idSeccionActual]?.[0] || SCENARIOS_BY_SECTION[1][0];
 
   const manejarRespuesta = async ({ opcionId, opcionObj, respuestaUsuario }) => {
     if (!ejercicioActual || enviando) return;
@@ -281,6 +278,7 @@ function ModuloEjercicios() {
       esCorrecto = Boolean(
         opt?.esCorrecta === true ||
         opcionId === 201 ||
+        opcionId === 2011 ||
         opcionId === 1011 ||
         opcionId === 1031 ||
         opcionId === 2021 ||
@@ -328,6 +326,20 @@ function ModuloEjercicios() {
         : "No es el número exacto. Revisá las operaciones e intentá nuevamente.";
     }
 
+    // Intentar sincronizar progreso con API si existe
+    try {
+      const res = await api.post("/progreso", {
+        escenarioId: ejercicioActual.id,
+        ...(opcionId ? { opcionId } : { respuestaUsuario }),
+      });
+      if (res?.data?.esCorrecto !== undefined) {
+        esCorrecto = Boolean(res.data.esCorrecto) || esCorrecto;
+        if (res.data.feedback) feedback = res.data.feedback;
+      }
+    } catch (e) {
+      // Offline fallback
+    }
+
     const resultadoFinal = {
       esCorrecto,
       puntosGanados: esCorrecto ? 50 : 0,
@@ -337,16 +349,6 @@ function ModuloEjercicios() {
       seccionNombre: "Cálculo Cotidiano",
       seccionAprobada: false,
     };
-
-    // Intentar sincronizar progreso con API si existe
-    try {
-      await api.post("/progreso", {
-        escenarioId: ejercicioActual.id,
-        ...(opcionId ? { opcionId } : { respuestaUsuario }),
-      });
-    } catch (e) {
-      // Offline fallback
-    }
 
     setUltimoResultado(resultadoFinal);
     setEnviando(false);

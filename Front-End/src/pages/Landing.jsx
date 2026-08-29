@@ -10,6 +10,7 @@ const Introduction = React.lazy(() => import('../components/landing/Introduccion
 const Footer = React.lazy(() => import('../components/layouts/Footer/Footer'));
 const Header = React.lazy(() => import('../components/layouts/header/Header'));
 const Banner = React.lazy(() => import('../components/landing/Components/Banner/Banner'));
+const WelcomeModal = React.lazy(() => import('../components/ui/WelcomeModal/WelcomeModal'));
 
 const Landing = () => {
     const navigate = useNavigate();
@@ -94,6 +95,7 @@ const Landing = () => {
 
     return (
         <>
+            <WelcomeModal />
             <Container ref={containerRef} fluid className="p-0 m-0 overflow-auto overflow-x-hidden" style={{ backgroundColor: "#F0F1EB" }}>
                 <a href="#contenido-principal" className="skip-link">
                     Saltar al contenido

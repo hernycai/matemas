@@ -26,9 +26,9 @@ function EjercicioChoice({
   const datosChoiceDePrueba = {
     pregunta: "¿Cuánto es el 25% de 300?",
     opciones: [
-      { id: -1, texto: "75" },
-      { id: -2, texto: "100" },
-      { id: -3, texto: "50" },
+      { id: 201, texto: "75", esCorrecta: true },
+      { id: 202, texto: "100", esCorrecta: false },
+      { id: 203, texto: "50", esCorrecta: false },
     ],
   };
 

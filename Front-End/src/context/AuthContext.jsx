@@ -29,18 +29,24 @@ export const AuthProvider = ({ children }) => {
   const initializationAttempted = useRef(false); // ✅ Evita múltiples inicializaciones
 
   const logout = useCallback(async () => {
-    // Limpieza optimista para evitar mostrar el loader global de inicio de sesión.
-    setSession(null);
-    setProfile(null);
-    setIsNewUser(false);
-    lastFetchedId.current = null;
-    setLoading(false);
-    setInitialized(true);
-
     try {
-      await supabase.auth.signOut();
+      localStorage.removeItem("mate_demo_profile");
+      localStorage.removeItem("supabase.mock.session");
+      sessionStorage.clear();
+      setSession(null);
+      setProfile(null);
+      setIsNewUser(false);
+      lastFetchedId.current = null;
+      setLoading(false);
+      setInitialized(true);
+
+      if (supabase?.auth?.signOut) {
+        await supabase.auth.signOut();
+      }
     } catch (err) {
-      console.warn("⚠️ Error al cerrar sesión en Supabase, limpiando estado local.", err);
+      console.warn("⚠️ Error al cerrar sesión en Supabase:", err);
+    } finally {
+      window.location.href = '/';
     }
   }, []);
 
@@ -592,11 +598,7 @@ export const AuthProvider = ({ children }) => {
       updateProfile,
       setProfile,
       register,
-      logout: async () => {
-        localStorage.removeItem("mate_demo_profile");
-        localStorage.removeItem("supabase.mock.session");
-        await logout();
-      },
+      logout,
       loginWithGoogle,
       completeOnboarding,
       refreshProfile: () => session?.user && fetchProfile(session.user, { force: true }),

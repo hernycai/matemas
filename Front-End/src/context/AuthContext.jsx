@@ -59,6 +59,15 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log(`🔄 Obteniendo perfil para: ${user.id}`);
 
+      const localOnboardingDone = localStorage.getItem(`mate_onboarding_done_${user.id}`) === "true";
+      let cachedProfile = null;
+      try {
+        const cachedRaw = localStorage.getItem(`mate_profile_${user.id}`);
+        if (cachedRaw) cachedProfile = JSON.parse(cachedRaw);
+      } catch (e) {
+        // Ignorar error de parsing
+      }
+
       let data = null;
 
       // 1. Intentar consultar directamente la tabla Usuario en Supabase
@@ -72,33 +81,13 @@ export const AuthProvider = ({ children }) => {
 
           if (!dbError && dbUser) {
             data = dbUser;
-          } else if (!dbError && !dbUser) {
-            // Si el usuario aún no está en la tabla, insertarlo automáticamente
-            const newUser = {
-              id: user.id,
-              email: user.email,
-              nombre: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'Usuario',
-              puntos: 50,
-              tokens: 0,
-              racha: 1,
-              mascota: user.user_metadata?.mascota || 'suma',
-            };
-            const { data: inserted, error: insertError } = await supabase
-              .from('Usuario')
-              .insert([newUser])
-              .select()
-              .maybeSingle();
-
-            if (!insertError && inserted) {
-              data = inserted;
-            }
           }
         } catch (supabaseErr) {
           console.warn("⚠️ Consulta directa a tabla Supabase omitida:", supabaseErr);
         }
       }
 
-      // 2. Si no obtuvimos datos directos, consultar al backend si está disponible
+      // 2. Si no obtuvimos datos de la tabla, intentar consultar al backend API
       if (!data) {
         try {
           const response = await api.post("/usuarios/registro", {
@@ -108,57 +97,67 @@ export const AuthProvider = ({ children }) => {
           });
           data = response?.data;
         } catch (apiErr) {
-          console.warn("⚠️ Back-End API no disponible, usando datos de la sesión de Supabase:", apiErr.message);
+          console.warn("⚠️ Back-End API no disponible, resolviendo desde sesión de Supabase:", apiErr.message);
         }
       }
 
-      // 3. Fallback garantizado: armar perfil desde los metadatos de la sesión
-      if (!data) {
-        data = {
-          id: user.id,
-          nombre: user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Usuario",
-          email: user.email,
-          puntos: 0,
-          tokens: 0,
-          racha: 1,
-          edad: user.user_metadata?.edad || "",
-          desafio: user.user_metadata?.desafio || "",
-          mascota: user.user_metadata?.mascota || "suma",
-          onboardingCompleto: Boolean(user.user_metadata?.desafio),
-          rol: "usuario",
-        };
-      }
+      // 3. Fusionar datos de Supabase DB, Auth user_metadata y caché local
+      const userMeta = user.user_metadata || {};
+      const resolvedDesafio = data?.desafio || userMeta.desafio || cachedProfile?.desafio || "";
+      const resolvedEdad = data?.edad || userMeta.edad || cachedProfile?.edad || "";
+      const resolvedMascota = normalizeMascot(data?.mascota || userMeta.mascota || cachedProfile?.mascota || "suma");
+      const resolvedNombre = data?.nombre || userMeta.full_name || userMeta.name || cachedProfile?.nombre || user.email?.split("@")[0] || "Usuario";
+
+      const isOnboardingComplete = Boolean(
+        localOnboardingDone ||
+        data?.onboardingCompleto === true ||
+        userMeta.onboardingCompleto === true ||
+        (resolvedDesafio && resolvedDesafio.trim() !== "")
+      );
 
       const normalizedProfile = {
-        ...data,
-        mascota: normalizeMascot(data.mascota),
+        id: user.id,
+        email: user.email,
+        nombre: resolvedNombre,
+        puntos: Number(data?.puntos ?? cachedProfile?.puntos ?? 50),
+        tokens: Number(data?.tokens ?? cachedProfile?.tokens ?? 10),
+        racha: Number(data?.racha ?? cachedProfile?.racha ?? 1),
+        edad: resolvedEdad,
+        desafio: resolvedDesafio,
+        mascota: resolvedMascota,
+        genero: data?.genero || userMeta.genero || cachedProfile?.genero || "No especificado",
+        sentimiento: data?.sentimiento || userMeta.tiempo || cachedProfile?.sentimiento || "10 minutos",
+        onboardingCompleto: isOnboardingComplete,
+        rol: data?.rol || "usuario",
       };
 
       setProfile(normalizedProfile);
       lastFetchedId.current = user.id;
       setProfileError(null);
 
-      const hasOnboardingData =
-        Boolean(data.desafio && String(data.desafio).trim() !== "" && data.onboardingCompleto !== false);
-
-      const isNew = !hasOnboardingData;
+      const isNew = !isOnboardingComplete;
       setIsNewUser(isNew);
 
-      console.log(`👤 Perfil cargado: ${data.nombre} (Nuevo: ${isNew ? 'SÍ' : 'NO'})`);
+      if (isOnboardingComplete) {
+        localStorage.setItem(`mate_onboarding_done_${user.id}`, "true");
+        localStorage.setItem(`mate_profile_${user.id}`, JSON.stringify(normalizedProfile));
+      }
+
+      console.log(`👤 Perfil cargado: ${normalizedProfile.nombre} (Requiere Onboarding: ${isNew ? 'SÍ' : 'NO'})`);
     } catch (error) {
       console.error("🔴 Error al procesar perfil:", error);
       const safeProfile = {
         id: user.id,
         nombre: user.user_metadata?.full_name || user.email?.split("@")[0] || "Usuario",
         email: user.email,
-        puntos: 0,
+        puntos: 50,
         racha: 1,
         mascota: "suma",
-        onboardingCompleto: false,
+        onboardingCompleto: true,
         rol: "usuario",
       };
       setProfile(safeProfile);
-      setIsNewUser(true);
+      setIsNewUser(false);
       lastFetchedId.current = user.id;
     } finally {
       isFetching.current = false;
@@ -497,10 +496,36 @@ export const AuthProvider = ({ children }) => {
 
       setProfile(newProfile);
       setIsNewUser(false);
+
+      const userId = session?.user?.id || profile?.id;
+      if (userId) {
+        localStorage.setItem(`mate_onboarding_done_${userId}`, "true");
+        localStorage.setItem(`mate_profile_${userId}`, JSON.stringify(newProfile));
+      }
       localStorage.setItem("mate_demo_profile", JSON.stringify(newProfile));
 
       if (session?.user?.id && session.user.id !== 'demo-adult-user-01') {
-        // 1. Guardar directamente en la tabla Usuario de Supabase
+        // 1. Guardar en metadatos de Supabase Auth (persistencia nativa indestructible)
+        try {
+          if (supabase?.auth?.updateUser) {
+            await supabase.auth.updateUser({
+              data: {
+                full_name: newProfile.nombre,
+                edad: String(newProfile.edad || ''),
+                desafio: String(newProfile.desafio || ''),
+                mascota: normalizedMascotVal,
+                genero: newProfile.genero || 'No especificado',
+                tiempo: newProfile.tiempo || '10 minutos',
+                onboardingCompleto: true,
+              }
+            });
+            console.log("✅ Metadatos de usuario guardados en Supabase Auth");
+          }
+        } catch (authErr) {
+          console.warn("⚠️ Error actualizando user_metadata en Supabase:", authErr);
+        }
+
+        // 2. Guardar directamente en la tabla Usuario de Supabase
         if (supabase && typeof supabase.from === 'function') {
           try {
             const { error: supaErr } = await supabase.from('Usuario').upsert({
@@ -519,14 +544,14 @@ export const AuthProvider = ({ children }) => {
             if (supaErr) {
               console.warn("⚠️ Upsert en tabla Usuario:", supaErr.message);
             } else {
-              console.log("✅ Perfil guardado directamente en Supabase");
+              console.log("✅ Perfil guardado directamente en Supabase DB");
             }
           } catch (supaErr) {
             console.warn("⚠️ Error guardando en Supabase:", supaErr);
           }
         }
 
-        // 2. Intentar sincronizar con backend si existiera
+        // 3. Intentar sincronizar con backend si existiera
         try {
           await api.put(`/usuarios/${session.user.id}`, {
             ...updatedData,

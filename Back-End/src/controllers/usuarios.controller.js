@@ -213,7 +213,7 @@ export const eliminarUsuario = async (req, res, next) => {
     }
 
     // Si aún queda password legacy en DB, exigir coincidencia.
-    // Si es null (flujo Supabase), alcanza con JWT + confirmacion (BUG-036).
+    // Si es null (flujo Supabase / Google OAuth), alcanza con JWT + confirmacion.
     if (usuario.password) {
       if (!password || usuario.password !== password) {
         throw ApiError.unauthorized(
@@ -222,9 +222,17 @@ export const eliminarUsuario = async (req, res, next) => {
       }
     }
 
-    await prisma.usuario.delete({
-      where: { id: uid },
-    });
+    await prisma.$transaction([
+      prisma.progreso.deleteMany({ where: { usuarioId: uid } }),
+      prisma.seccionAprobada.deleteMany({ where: { usuarioId: uid } }),
+      prisma.recurso.deleteMany({ where: { usuarioId: uid } }),
+      prisma.auditoria.deleteMany({ where: { usuarioId: uid } }),
+      prisma.usuario.update({
+        where: { id: uid },
+        data: { insignias: { set: [] } },
+      }),
+      prisma.usuario.delete({ where: { id: uid } }),
+    ]);
 
     res.status(200).json({ message: "Cuenta borrada correctamente" });
   } catch (error) {

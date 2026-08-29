@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../Desafios/headerDash/HeaderDash'; 
 import fondoCuadrille from '../../../assets/fondo_consejo.png';
 import fotoPerfilDefault from '../../../assets/Foto_perfil.png'; 
@@ -10,7 +11,8 @@ import iconMascotas from '../../../assets/icono_mascota.png';
 import { useAuth } from '../../../context/AuthContext';
 import { useMascotContext } from '../../../mascotas/core/MascotProvider';
 import { MascotCharacter } from '../../../mascotas/components/MascotCharacter';
-import { FaCheck, FaCoins, FaFire, FaTrophy, FaStar, FaUserEdit, FaCheckCircle, FaDice, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaCheck, FaCoins, FaFire, FaTrophy, FaStar, FaUserEdit, FaCheckCircle, FaDice, FaMapMarkerAlt, FaTrashAlt, FaExclamationTriangle } from 'react-icons/fa';
+import api from '../../../config/api';
 
 import './Perfil.css';
 
@@ -131,12 +133,16 @@ const LOGROS = [
 ];
 
 function Perfil() {
-  const { profile, updateProfile } = useAuth();
+  const navigate = useNavigate();
+  const { profile, updateProfile, logout } = useAuth();
   const { setMascot } = useMascotContext();
   const [activeTab, setActiveTab] = useState('datos');
   const [showHeader, setShowHeader] = useState(false);
   const [guardadoExitoso, setGuardadoExitoso] = useState(false);
   const [guardando, setGuardando] = useState(false);
+  const [showModalEliminar, setShowModalEliminar] = useState(false);
+  const [eliminando, setEliminando] = useState(false);
+  const [textoConfirmacion, setTextoConfirmacion] = useState('');
 
   // Form State
   const [formData, setFormData] = useState({
@@ -178,6 +184,7 @@ function Perfil() {
     { id: 'titulos', label: 'Títulos de Honor', iconImg: iconTitulos },
     { id: 'mascota', label: 'Mascota & Tutor', iconImg: iconMascotas },
     { id: 'inventario', label: 'Inventario & Logros', iconImg: iconInventario },
+    { id: 'eliminar', label: 'Eliminar Perfil', iconImg: iconAvatar },
   ];
 
   const handleInputChange = (field, value) => {
@@ -206,6 +213,29 @@ function Perfil() {
       console.error("Error al guardar perfil:", err);
     } finally {
       setGuardando(false);
+    }
+  };
+
+  const handleConfirmarEliminacion = async () => {
+    if (textoConfirmacion.trim().toUpperCase() !== 'ELIMINAR') {
+      alert('Por favor escribí la palabra ELIMINAR para confirmar la eliminación de tu cuenta.');
+      return;
+    }
+
+    setEliminando(true);
+    try {
+      await api.delete('/usuarios/eliminar', {
+        data: { confirmacion: 'ELIMINAR' },
+      });
+      setShowModalEliminar(false);
+      await logout?.();
+      window.location.href = '/';
+      alert('Tu perfil y todos tus datos fueron eliminados permanentemente.');
+    } catch (err) {
+      console.error('Error al eliminar perfil:', err);
+      alert(err.response?.data?.error || err.message || 'No se pudo eliminar el perfil.');
+    } finally {
+      setEliminando(false);
     }
   };
 
@@ -857,26 +887,83 @@ function Perfil() {
                   </div>
                 )}
 
+                {/* 7. ZONA DE PELIGRO: ELIMINAR PERFIL */}
+                {activeTab === 'eliminar' && (
+                  <div style={{
+                    backgroundColor: '#FEF2F2',
+                    border: '2px solid #F87171',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    color: '#991B1B',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                      <FaExclamationTriangle size={26} color="#DC2626" />
+                      <h3 style={{ margin: 0, fontWeight: 800, fontSize: '1.25rem', color: '#991B1B' }}>
+                        Zona de Peligro: Eliminar Perfil y Cuenta
+                      </h3>
+                    </div>
+
+                    <p style={{ fontSize: '0.95rem', color: '#7F1D1D', lineHeight: 1.5, marginBottom: '1rem' }}>
+                      Esta acción es <strong>definitiva e irreversible</strong>. Al eliminar tu perfil:
+                    </p>
+
+                    <ul style={{ fontSize: '0.9rem', color: '#7F1D1D', marginBottom: '1.5rem', lineHeight: 1.6 }}>
+                      <li>Se borrarán todos tus datos personales, apodo, provincia y avatar.</li>
+                      <li>Perderás todos tus puntos XP, monedas acumuladas y racha de días.</li>
+                      <li>Se eliminará todo tu historial de ejercicios resueltos y módulos aprobados.</li>
+                      <li>Tu usuario será removido del ranking general de la plataforma.</li>
+                    </ul>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setTextoConfirmacion('');
+                        setShowModalEliminar(true);
+                      }}
+                      style={{
+                        backgroundColor: '#DC2626',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        borderRadius: '12px',
+                        padding: '12px 24px',
+                        fontSize: '0.95rem',
+                        fontWeight: 800,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        boxShadow: '0 4px 14px rgba(220, 38, 38, 0.3)',
+                        transition: 'all 0.2s ease',
+                      }}
+                    >
+                      <FaTrashAlt />
+                      <span>Eliminar Mi Perfil Definitivamente</span>
+                    </button>
+                  </div>
+                )}
+
               </div>
 
-              {/* BOTÓN GUARDAR CAMBIOS */}
-              <button
-                type="button"
-                className="save-profile-btn"
-                onClick={handleGuardarCambios}
-                disabled={guardando}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  opacity: guardando ? 0.7 : 1,
-                  marginTop: '1.5rem',
-                }}
-              >
-                <FaUserEdit size={18} />
-                <span>{guardando ? 'Guardando...' : 'Guardar Cambios del Perfil'}</span>
-              </button>
+              {/* BOTÓN GUARDAR CAMBIOS (Oculto en tab eliminar) */}
+              {activeTab !== 'eliminar' && (
+                <button
+                  type="button"
+                  className="save-profile-btn"
+                  onClick={handleGuardarCambios}
+                  disabled={guardando}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    opacity: guardando ? 0.7 : 1,
+                    marginTop: '1.5rem',
+                  }}
+                >
+                  <FaUserEdit size={18} />
+                  <span>{guardando ? 'Guardando...' : 'Guardar Cambios del Perfil'}</span>
+                </button>
+              )}
 
             </section>
 
@@ -884,6 +971,111 @@ function Perfil() {
 
         </div>
       </div>
+
+      {/* MODAL DE CONFIRMACIÓN PARA ELIMINAR PERFIL */}
+      {showModalEliminar && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          backgroundColor: 'rgba(0, 0, 0, 0.65)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          padding: '1rem',
+        }}>
+          <div style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '20px',
+            maxWidth: '480px',
+            width: '100%',
+            padding: '2rem',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
+            textAlign: 'center',
+          }}>
+            <div style={{
+              width: '60px',
+              height: '60px',
+              backgroundColor: '#FEE2E2',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1rem auto',
+            }}>
+              <FaTrashAlt size={26} color="#DC2626" />
+            </div>
+
+            <h3 style={{ fontSize: '1.3rem', fontWeight: 800, color: '#1E293B', marginBottom: '0.75rem' }}>
+              ¿Estás seguro de eliminar tu perfil?
+            </h3>
+
+            <p style={{ fontSize: '0.9rem', color: '#64748B', lineHeight: 1.4, marginBottom: '1.25rem' }}>
+              Para confirmar que realmente deseas eliminar permanentemente tu cuenta y perder tu progreso, por favor escribe la palabra <strong style={{ color: '#DC2626' }}>ELIMINAR</strong> a continuación:
+            </p>
+
+            <input
+              type="text"
+              value={textoConfirmacion}
+              onChange={(e) => setTextoConfirmacion(e.target.value)}
+              placeholder="Escribe ELIMINAR"
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                borderRadius: '10px',
+                border: '2px solid #CBD5E1',
+                fontSize: '1rem',
+                fontWeight: 700,
+                textAlign: 'center',
+                marginBottom: '1.5rem',
+              }}
+            />
+
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              <button
+                type="button"
+                onClick={() => setShowModalEliminar(false)}
+                disabled={eliminando}
+                style={{
+                  backgroundColor: '#F1F5F9',
+                  color: '#475569',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '10px 20px',
+                  fontSize: '0.95rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                Cancelar
+              </button>
+
+              <button
+                type="button"
+                onClick={handleConfirmarEliminacion}
+                disabled={eliminando || textoConfirmacion.trim().toUpperCase() !== 'ELIMINAR'}
+                style={{
+                  backgroundColor: '#DC2626',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '12px',
+                  padding: '10px 24px',
+                  fontSize: '0.95rem',
+                  fontWeight: 800,
+                  cursor: eliminando || textoConfirmacion.trim().toUpperCase() !== 'ELIMINAR' ? 'not-allowed' : 'pointer',
+                  opacity: eliminando || textoConfirmacion.trim().toUpperCase() !== 'ELIMINAR' ? 0.5 : 1,
+                  boxShadow: '0 4px 12px rgba(220, 38, 38, 0.25)',
+                }}
+              >
+                {eliminando ? 'Eliminando...' : 'Sí, Eliminar Cuenta'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

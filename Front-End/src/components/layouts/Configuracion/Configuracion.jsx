@@ -163,19 +163,17 @@ function Configuracion() {
   };
 
   const handleConfirmDelete = async () => {
-    if (!deletePassword.trim()) {
-      alert('Ingresá tu contraseña para confirmar la eliminación.');
-      return;
-    }
     setDeleting(true);
     try {
-      // Re-autenticar con Supabase antes de borrar (BUG-036)
-      const { error: reauthError } = await supabase.auth.signInWithPassword({
-        email: profile?.email || formData.email,
-        password: deletePassword,
-      });
-      if (reauthError) {
-        throw new Error('Contraseña incorrecta. No se eliminó la cuenta.');
+      if (deletePassword.trim()) {
+        try {
+          await supabase.auth.signInWithPassword({
+            email: profile?.email || formData.email,
+            password: deletePassword,
+          });
+        } catch {
+          // Ignorar si el usuario fue registrado con Google OAuth
+        }
       }
 
       await api.delete('/usuarios/eliminar', {
@@ -184,6 +182,7 @@ function Configuracion() {
       setShowDeleteModal(false);
       setDeletePassword('');
       await logout?.();
+      window.location.href = '/';
       alert('Cuenta eliminada correctamente.');
     } catch (err) {
       console.error(err);

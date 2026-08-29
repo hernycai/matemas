@@ -185,46 +185,171 @@ const SidebarDesafios = ({ isOpen, onClose }) => {
             )}
 
             <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", marginTop: "0.75rem" }}>
-              Otras ramas disponibles:
+              Ramas y Módulos de Ejercicios:
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              {otrasRamas.map((rama) => (
-                <button
+              {ramas.map((rama) => (
+                <div
                   key={rama.id}
-                  type="button"
-                  onClick={() => cambiarDesafio(rama.id)}
-                  disabled={cambiando}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #E2E8F0",
+                    backgroundColor: rama.id === desafioActualId ? "#F0FDF4" : "#F8FAFC",
+                    border: `1px solid ${rama.id === desafioActualId ? "#86EFAC" : "#E2E8F0"}`,
                     borderRadius: "12px",
-                    padding: "12px 14px",
-                    textAlign: "left",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    color: "#334155",
-                    cursor: cambiando ? "default" : "pointer",
+                    padding: "10px 12px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    transition: "all 0.2s ease",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "#F1F5F9";
-                    e.currentTarget.style.borderColor = "#CBD5E1";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "#F8FAFC";
-                    e.currentTarget.style.borderColor = "#E2E8F0";
                   }}
                 >
-                  <span>{rama.nombre}</span>
-                  {cambiando && (
-                    <Oval height={14} width={14} color="#0A3D91" secondaryColor="#CBD5E1" strokeWidth={5} strokeWidthSecondary={5} ariaLabel="cambiando" />
-                  )}
-                </button>
+                  <span style={{ fontWeight: 600, fontSize: "0.88rem", color: "#1E293B" }}>
+                    {rama.nombre}
+                  </span>
+                  <div style={{ display: "flex", gap: "6px" }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        onClose();
+                        navigate(`/ejercicios/${rama.id}`);
+                      }}
+                      style={{
+                        backgroundColor: "#0A3D91",
+                        color: "#FFFFFF",
+                        border: "none",
+                        borderRadius: "8px",
+                        padding: "5px 10px",
+                        fontSize: "0.78rem",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                      }}
+                    >
+                      Ejercitar
+                    </button>
+                    {rama.id !== desafioActualId && (
+                      <button
+                        type="button"
+                        onClick={() => cambiarDesafio(rama.id)}
+                        disabled={cambiando}
+                        title="Fijar como rama principal en el dashboard"
+                        style={{
+                          backgroundColor: "#E2E8F0",
+                          color: "#475569",
+                          border: "none",
+                          borderRadius: "8px",
+                          padding: "5px 8px",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Fijar
+                      </button>
+                    )}
+                  </div>
+                </div>
               ))}
+            </div>
+
+            <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", marginTop: "1rem" }}>
+              Otras Secciones de Mate+:
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  navigate("/mixto");
+                }}
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #CBD5E1",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "#0F172A",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  cursor: "pointer",
+                }}
+              >
+                <span>🎮</span>
+                <span>Desafíos Mixtos</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  navigate("/ranking");
+                }}
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #CBD5E1",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "#0F172A",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  cursor: "pointer",
+                }}
+              >
+                <span>🥇</span>
+                <span>Ranking</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  navigate("/perfil");
+                }}
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #CBD5E1",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "#0F172A",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  cursor: "pointer",
+                }}
+              >
+                <span>👤</span>
+                <span>Mi Perfil</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  navigate("/configuracion");
+                }}
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #CBD5E1",
+                  borderRadius: "10px",
+                  padding: "10px",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "#0F172A",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  cursor: "pointer",
+                }}
+              >
+                <span>⚙️</span>
+                <span>Ajustes</span>
+              </button>
             </div>
 
             <div style={{ marginTop: "auto", paddingTop: "1.5rem" }}>

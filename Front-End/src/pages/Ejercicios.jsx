@@ -418,6 +418,8 @@ function ModuloEjercicios() {
           monedasGanadas: sessionStats.monedasGanadas,
           porcentajeCorrectas,
           progresoGlobal,
+          seccionId: idSeccionActual,
+          siguienteSeccionId: idSeccionActual < 6 ? idSeccionActual + 1 : null,
           seccionNombre:
             sessionStats.seccionNombre ||
             ejercicioActual?.categoria ||

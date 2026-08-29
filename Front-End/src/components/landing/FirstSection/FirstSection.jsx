@@ -82,6 +82,69 @@ const FirstSection = ({ navigate }) => {
                             Dominá las herramientas matemáticas que realmente necesitás para tu día a día. Sin estrés, vos elegís cuándo y cómo avanzar.
                         </p>
 
+                        {/* Badges Flotantes Dinámicos con Movimiento */}
+                        <div style={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: "10px",
+                            justifyContent: isMobile ? "center" : "flex-start",
+                            margin: "0.5rem 0",
+                        }}>
+                            <motion.div
+                                animate={{ y: [0, -6, 0] }}
+                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                style={{
+                                    backgroundColor: "rgba(255, 255, 255, 0.85)",
+                                    backdropFilter: "blur(4px)",
+                                    border: "1px solid #CBD5E1",
+                                    borderRadius: "20px",
+                                    padding: "6px 14px",
+                                    fontSize: "0.85rem",
+                                    fontWeight: 700,
+                                    color: "#0F172A",
+                                    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                                }}
+                            >
+                                🏷️ Descuentos & Porcentajes
+                            </motion.div>
+
+                            <motion.div
+                                animate={{ y: [0, 6, 0] }}
+                                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                                style={{
+                                    backgroundColor: "rgba(255, 255, 255, 0.85)",
+                                    backdropFilter: "blur(4px)",
+                                    border: "1px solid #CBD5E1",
+                                    borderRadius: "20px",
+                                    padding: "6px 14px",
+                                    fontSize: "0.85rem",
+                                    fontWeight: 700,
+                                    color: "#0F172A",
+                                    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                                }}
+                            >
+                                🍽️ División de Cuentas
+                            </motion.div>
+
+                            <motion.div
+                                animate={{ y: [0, -5, 0] }}
+                                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                                style={{
+                                    backgroundColor: "rgba(255, 255, 255, 0.85)",
+                                    backdropFilter: "blur(4px)",
+                                    border: "1px solid #CBD5E1",
+                                    borderRadius: "20px",
+                                    padding: "6px 14px",
+                                    fontSize: "0.85rem",
+                                    fontWeight: 700,
+                                    color: "#0F172A",
+                                    boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+                                }}
+                            >
+                                ⚡ Agilidad Mental Diaria
+                            </motion.div>
+                        </div>
+
                         <Button
                             variant="primary"
                             size={isMobile ? 'md' : 'lg'}
@@ -93,14 +156,21 @@ const FirstSection = ({ navigate }) => {
                                 fontSize: isMobile ? "clamp(0.9rem, 2.5vw, 1.2rem)" : "clamp(1rem, 1.5vw, 1.5rem)",
                                 color: "#1a1a1a",
                                 padding: isMobile ? "8px 30px" : "10px 40px",
-                                fontWeight: 500,
-                                boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                                fontWeight: 600,
+                                boxShadow: "0px 6px 16px rgba(255, 219, 84, 0.4)",
                                 minHeight: isMobile ? '48px' : '56px',
                                 width: isMobile ? '100%' : 'auto',
                                 maxWidth: isMobile ? '300px' : 'auto',
+                                transition: "all 0.25s ease",
                             }}
-                            onMouseEnter={() => setIsHovered(true)}
-                            onMouseLeave={() => setIsHovered(false)}
+                            onMouseEnter={(e) => {
+                                setIsHovered(true);
+                                e.currentTarget.style.transform = "scale(1.04)";
+                            }}
+                            onMouseLeave={(e) => {
+                                setIsHovered(false);
+                                e.currentTarget.style.transform = "scale(1)";
+                            }}
                             onClick={() => navigate('/login')}
                             aria-label="Comenzar a aprender matemáticas"
                         >

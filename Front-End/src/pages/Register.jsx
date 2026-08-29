@@ -15,7 +15,8 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import Header from "../../src/components/layouts/header/Header";
+import Header from "../components/layouts/header/Header";
+import Terms from "../components/layouts/LegalPage/Terms";
 
 const useRegisterForm = () => {
   const navigate = useNavigate();
@@ -33,8 +34,14 @@ const useRegisterForm = () => {
   const [showToast, setShowToast] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [showTermsModal, setShowTermsModal] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [usuario, setUsuario] = useState("");
+
+  const handleCompleteProfile = async () => {
+    setShowProfileModal(false);
+    navigate("/onboarding", { replace: true });
+  };
   const handleChangeValue = (e) => {
     const { name, value } = e.target;
     if (name === "nombre") setNombre(value);
@@ -130,7 +137,10 @@ const useRegisterForm = () => {
     rememberMe,
     setRememberMe,
     acceptedTerms,
+    acceptedTerms,
     setAcceptedTerms,
+    showTermsModal,
+    setShowTermsModal,
     genero,
     setGenero,
     showProfileModal,
@@ -167,6 +177,8 @@ const RegisterPage = () => {
     setRememberMe,
     acceptedTerms,
     setAcceptedTerms,
+    showTermsModal,
+    setShowTermsModal,
     genero,
     setGenero,
     showProfileModal,
@@ -509,15 +521,32 @@ const RegisterPage = () => {
                   variant="dark"
                   className="small"
                 /> */}
-                <Form.Check
-                  type="checkbox"
-                  id="acceptedTerms"
-                  label="He leído y acepto los términos y condiciones de uso"
-                  checked={acceptedTerms}
-                  onChange={(e) => setAcceptedTerms(e.target.checked)}
-                  variant="dark"
-                  className="small"
-                />
+                <div className="d-flex align-items-start gap-2">
+                  <Form.Check
+                    type="checkbox"
+                    id="acceptedTerms"
+                    checked={acceptedTerms}
+                    onChange={(e) => setAcceptedTerms(e.target.checked)}
+                    style={{ marginTop: "3px" }}
+                  />
+                  <label htmlFor="acceptedTerms" style={{ fontSize: "0.85rem", color: "#475569", cursor: "pointer", lineHeight: 1.4, margin: 0 }}>
+                    He leído y acepto los{" "}
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowTermsModal(true);
+                      }}
+                      style={{
+                        color: "#0A3D91",
+                        fontWeight: 700,
+                        textDecoration: "underline",
+                        cursor: "pointer",
+                      }}
+                    >
+                      términos y condiciones de uso
+                    </span>
+                  </label>
+                </div>
               </div>
               {/* Botón ingresar */}
               <Button
@@ -693,6 +722,36 @@ const RegisterPage = () => {
             Comenzar
           </Button>
         </Modal.Body>
+      </Modal>
+
+      {/* Modal de Términos y Condiciones */}
+      <Modal
+        show={showTermsModal}
+        onHide={() => setShowTermsModal(false)}
+        size="lg"
+        centered
+        scrollable
+      >
+        <Modal.Header closeButton style={{ backgroundColor: "#0A3D91", color: "#FFFFFF" }}>
+          <Modal.Title style={{ fontWeight: 800, fontSize: "1.2rem" }}>
+            📜 Términos y Condiciones de Uso
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ padding: "2rem" }}>
+          <Terms />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => {
+              setAcceptedTerms(true);
+              setShowTermsModal(false);
+            }}
+            style={{ backgroundColor: "#0A3D91", border: "none", fontWeight: 700, borderRadius: "10px" }}
+          >
+            Aceptar Términos y Cerrar
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );

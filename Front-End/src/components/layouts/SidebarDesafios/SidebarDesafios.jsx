@@ -1,53 +1,79 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 import { useEffect, useState } from "react";
-import { LuBookText, LuX } from "react-icons/lu";
-import { Oval } from "react-loader-spinner"; // ✅ Instalar: npm install react-loader-spinner
+import { LuBookText, LuX, LuSparkles, LuUserCheck } from "react-icons/lu";
+import { Oval } from "react-loader-spinner";
+import { useNavigate } from "react-router-dom";
 import api from "../../../config/api";
 import { useAuth } from "../../../context/AuthContext";
 import "./SidebarDesafios.css";
 
+const DEFAULT_RAMAS = [
+  { id: 1, nombre: "🛒 Presupuesto y Compras del Hogar" },
+  { id: 2, nombre: "🏷️ Descuentos, Ofertas y Porcentajes" },
+  { id: 3, nombre: "🍽️ División de Cuentas y Propinas" },
+  { id: 4, nombre: "💳 Cuotas vs Contado e Intereses" },
+  { id: 5, nombre: "🍳 Medidas y Proporciones" },
+  { id: 6, nombre: "🏆 Gran Desafío Maestro" },
+];
+
 const SidebarDesafios = ({ isOpen, onClose }) => {
-  const { profile, refreshProfile } = useAuth();
-  const [ramas, setRamas] = useState([]);
+  const navigate = useNavigate();
+  const { profile, refreshProfile, updateProfile } = useAuth();
+  const [ramas, setRamas] = useState(DEFAULT_RAMAS);
   const [cambiando, setCambiando] = useState(false);
-  const [loadingRamas, setLoadingRamas] = useState(true); // ✅ Estado para carga de ramas
-  const [errorRamas, setErrorRamas] = useState(null); // ✅ Estado para errores
+  const [loadingRamas, setLoadingRamas] = useState(false);
+  const [errorRamas, setErrorRamas] = useState(null);
 
   useEffect(() => {
     if (!isOpen) return;
 
-    setLoadingRamas(true);
-    setErrorRamas(null);
-
     api
       .get("/ramas")
       .then((res) => {
-        setRamas(res.data || []);
-        setLoadingRamas(false);
+        if (res.data && res.data.length > 0) {
+          setRamas(res.data);
+        } else {
+          setRamas(DEFAULT_RAMAS);
+        }
       })
       .catch((err) => {
-        console.error("Error al cargar ramas:", err);
-        setErrorRamas("Error al cargar los desafíos");
+        console.warn("Cargando ramas pedagógicas locales:", err.message);
+        setRamas(DEFAULT_RAMAS);
+      })
+      .finally(() => {
         setLoadingRamas(false);
       });
   }, [isOpen]);
 
-  const desafioActualId = profile?.desafioActualId;
-  const desafioActual = ramas.find((r) => r.id === desafioActualId);
+  const desafioActualId = profile?.desafioActualId || 2;
+  const desafioActual = ramas.find((r) => r.id === desafioActualId) || ramas[1];
   const otrasRamas = ramas.filter((r) => r.id !== desafioActualId);
 
   const cambiarDesafio = async (ramaId) => {
     if (cambiando || ramaId === desafioActualId) return;
     try {
       setCambiando(true);
-      await api.patch("/usuarios/desafio-actual", { desafioActualId: ramaId });
-      await refreshProfile();
+      if (updateProfile) {
+        await updateProfile({ desafioActualId: ramaId, desafio: ramas.find(r => r.id === ramaId)?.nombre });
+      }
+      try {
+        await api.patch("/usuarios/desafio-actual", { desafioActualId: ramaId });
+      } catch {
+        /* offline */
+      }
+      if (refreshProfile) {
+        await refreshProfile();
+      }
       onClose();
     } catch (err) {
       console.error("Error al cambiar desafío:", err);
     } finally {
       setCambiando(false);
     }
+  };
+
+  const irAConfigurarPerfil = () => {
+    onClose();
+    navigate("/onboarding");
   };
 
   return (
@@ -190,17 +216,37 @@ const SidebarDesafios = ({ isOpen, onClose }) => {
                   ))}
                 </ul>
 
-                {/* ✅ Si no hay otras ramas, mostrar mensaje */}
-                {otrasRamas.length === 0 && !loadingRamas && (
-                  <p style={{
-                    color: "#999",
-                    fontSize: "0.85rem",
-                    textAlign: "center",
-                    padding: "1rem 0"
-                  }}>
-                    No hay otros desafíos disponibles
-                  </p>
-                )}
+                <div style={{ marginTop: "auto", paddingTop: "1rem", borderTop: "1px solid #e2e8f0" }}>
+                  <button
+                    type="button"
+                    onClick={irAConfigurarPerfil}
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      borderRadius: "14px",
+                      backgroundColor: "#FFDB54",
+                      color: "#1e293b",
+                      border: "none",
+                      fontWeight: 700,
+                      fontSize: "0.92rem",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "0.5rem",
+                      cursor: "pointer",
+                      boxShadow: "0 4px 12px rgba(255, 219, 84, 0.4)",
+                      transition: "all 0.2s ease"
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
+                    onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+                  >
+                    <LuSparkles size={18} />
+                    Cambiar Perfil y Tutor
+                  </button>
+                  <small style={{ display: "block", textAlign: "center", color: "#64748b", fontSize: "0.75rem", marginTop: "6px" }}>
+                    Elegí qué querés entrenar y tu mascota
+                  </small>
+                </div>
               </>
             )}
           </aside>

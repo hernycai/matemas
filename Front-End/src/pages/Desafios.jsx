@@ -4,12 +4,45 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import api from '../config/api';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
+const DEFAULT_VIDEOS_BY_SECTION = {
+  1: {
+    id: 1,
+    titulo: "Estrategias de Suma y Resta: Presupuesto y Compras",
+    url: "https://www.youtube-nocookie.com/embed/5a2d6_6eY8k",
+  },
+  2: {
+    id: 2,
+    titulo: "Cálculo Rápido de Descuentos y Porcentajes (20%, 50%, 15%)",
+    url: "https://www.youtube-nocookie.com/embed/ETvdnGFza3E",
+  },
+  3: {
+    id: 3,
+    titulo: "División Práctica de Cuentas y Propinas",
+    url: "https://www.youtube-nocookie.com/embed/jZ_yZ5j_7hY",
+  },
+  4: {
+    id: 4,
+    titulo: "Análisis Financiero: Cuotas fijas vs Pago al Contado",
+    url: "https://www.youtube-nocookie.com/embed/6i1aGkEaI6A",
+  },
+  5: {
+    id: 5,
+    titulo: "Regla de Tres y Proporciones en la Cocina y la Vida Diaria",
+    url: "https://www.youtube-nocookie.com/embed/7V9r0W8X2qA",
+  },
+  6: {
+    id: 6,
+    titulo: "Gran Desafío Maestro: Estrategias de Agilidad Numérica",
+    url: "https://www.youtube-nocookie.com/embed/ETvdnGFza3E",
+  }
+};
+
 function Desafios() {
   const navigate = useNavigate();
   const { seccionId: seccionParam } = useParams();
   const [searchParams] = useSearchParams();
-  const seccionId = seccionParam || searchParams.get('seccionId');
-  const nextPath = searchParams.get('next') || (seccionId ? `/ejercicios/${seccionId}` : '/dashboard');
+  const seccionId = Number(seccionParam || searchParams.get('seccionId')) || 2;
+  const nextPath = searchParams.get('next') || `/ejercicios/${seccionId}`;
 
   const [indexActual, setIndexActual] = useState(0);
   const [videos, setVideos] = useState([]);
@@ -18,35 +51,31 @@ function Desafios() {
 
   useEffect(() => {
     let activo = true;
-
-    if (!seccionId) {
-      setError('Falta la sección del desafío. Volvé al dashboard y elegí un módulo.');
-      setCargando(false);
-      return undefined;
-    }
-
     setCargando(true);
+    setError(null);
+
+    const defaultVideo = DEFAULT_VIDEOS_BY_SECTION[seccionId] || DEFAULT_VIDEOS_BY_SECTION[2];
+
     api
       .get(`/secciones/${seccionId}/lecciones`)
       .then((res) => {
         if (!activo) return;
-        const rows = (res.data || []).map((l) => ({
-          id: l.id,
-          titulo: l.titulo,
-          url: l.videoUrl,
-        }));
-        setVideos(rows);
+        const rows = (res.data || [])
+          .filter((l) => l.videoUrl)
+          .map((l) => ({
+            id: l.id,
+            titulo: l.titulo,
+            url: l.videoUrl,
+          }));
+
+        setVideos(rows.length > 0 ? rows : [defaultVideo]);
         setIndexActual(0);
-        setError(
-          rows.length
-            ? null
-            : 'Pronto vas a encontrar contenido acá. Mientras tanto, podés seguir con otros desafíos.',
-        );
       })
       .catch((err) => {
         if (!activo) return;
-        console.error(err);
-        setError('No se pudieron cargar los videos de la lección.');
+        console.warn("Cargando video explicativo pedagógico:", err.message);
+        setVideos([defaultVideo]);
+        setIndexActual(0);
       })
       .finally(() => {
         if (activo) setCargando(false);

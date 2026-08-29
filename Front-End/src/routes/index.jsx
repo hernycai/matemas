@@ -64,17 +64,8 @@ const ProtectedRoute = ({ children, requireOnboarding = false, requireAdmin = fa
     return <LoadingSpinner message="Cargando tu perfil..." />;
   }
 
-  // 🎯 Ruta exclusiva para onboarding: si ya completó, enviar al dashboard.
-  if (requireOnboarding) {
-    return shouldShowOnboarding ? (
-      children
-    ) : (
-      <Navigate to="/dashboard" replace />
-    );
-  }
-
-  // 🎯 Si todavía necesita onboarding, cualquier otra ruta protegida debe ir allí.
-  if (shouldShowOnboarding) {
+  // 🎯 Si todavía necesita onboarding (usuario nuevo), cualquier otra ruta protegida debe ir allí.
+  if (shouldShowOnboarding && location.pathname !== '/onboarding') {
     return <Navigate to="/onboarding" replace />;
   }
 
@@ -241,7 +232,7 @@ export default function AppRouter() {
         <Route
           path="/onboarding"
           element={
-            <ProtectedRoute requireOnboarding>
+            <ProtectedRoute>
               <Onboarding />
             </ProtectedRoute>
           }

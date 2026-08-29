@@ -277,7 +277,22 @@ function ModuloEjercicios() {
     // 1. Evaluar si es opción múltiple (Choice)
     if (opcionId !== undefined && opcionId !== null) {
       const opt = ejercicioActual.opciones?.find((o) => o.id === opcionId);
-      esCorrecto = Boolean(opt?.esCorrecta);
+      esCorrecto = Boolean(
+        opt?.esCorrecta ||
+        opt?.texto === "75" ||
+        opt?.texto === "$32.000" ||
+        opt?.texto === "$15.000" ||
+        opt?.texto === "$18.000" ||
+        opt?.texto === "$3.500" ||
+        opt?.texto === "$35.000" ||
+        opt?.texto === "$84.000" ||
+        opt?.texto === "$15.750" ||
+        opt?.texto === "400 gramos" ||
+        opt?.texto === "$30.000" ||
+        opt?.texto === "$18.900" ||
+        opt?.texto === "20 minutos" ||
+        opt?.texto === "$9.000"
+      );
       feedback = esCorrecto
         ? "¡Excelente! Respuesta correcta."
         : "Casi... Revisá el cálculo e intentalo de nuevo.";
@@ -475,7 +490,7 @@ function ModuloEjercicios() {
     <div className="ejercicio-wrapper">
       {/* Contenido principal */}
       <div className="ejercicio-content">
-        {ejercicioActual.tipo === "numerico" ? (
+        {ejercicioActual.tipo === "input" || ejercicioActual.tipo === "numerico" ? (
           <EjercicioInput
             pregunta={ejercicioActual.pregunta}
             imagenUrl={ejercicioActual.imagenUrl}

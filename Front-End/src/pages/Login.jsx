@@ -441,21 +441,6 @@ const LoginPage = () => {
                   </>
                 )}
               </Button>
-
-              <div className="mt-3 pt-2 border-top text-center">
-                <Button
-                  variant="warning"
-                  onClick={handleDemoLogin}
-                  disabled={loading}
-                  className="w-100 rounded-pill fw-bold text-dark d-flex align-items-center justify-content-center gap-2 shadow-sm"
-                  style={{ backgroundColor: "#FFDB54", border: "none", padding: "10px" }}
-                >
-                  🚀 Probar como Usuario Registrado (Demo)
-                </Button>
-                <small className="text-muted d-block mt-1" style={{ fontSize: "0.75rem" }}>
-                  Acceso directo con perfil adulto completo para testing
-                </small>
-              </div>
             </Form>
             <p className="text-center mt-3 small text-muted">
               ¿No tenés cuenta?{" "}

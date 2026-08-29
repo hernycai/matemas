@@ -265,7 +265,7 @@ function ModuloEjercicios() {
 
   const ejercicioActual = escenarios[indexActual];
 
-  const manejarRespuesta = async ({ opcionId, respuestaUsuario }) => {
+  const manejarRespuesta = async ({ opcionId, opcionObj, respuestaUsuario }) => {
     if (!ejercicioActual || enviando) return;
 
     setEnviando(true);
@@ -276,22 +276,37 @@ function ModuloEjercicios() {
 
     // 1. Evaluar si es opción múltiple (Choice)
     if (opcionId !== undefined && opcionId !== null) {
-      const opt = ejercicioActual.opciones?.find((o) => o.id === opcionId);
+      const opt = opcionObj || ejercicioActual.opciones?.find((o) => o.id === opcionId);
+      const texto = String(opt?.texto || "").trim();
       esCorrecto = Boolean(
-        opt?.esCorrecta ||
-        opt?.texto === "75" ||
-        opt?.texto === "$32.000" ||
-        opt?.texto === "$15.000" ||
-        opt?.texto === "$18.000" ||
-        opt?.texto === "$3.500" ||
-        opt?.texto === "$35.000" ||
-        opt?.texto === "$84.000" ||
-        opt?.texto === "$15.750" ||
-        opt?.texto === "400 gramos" ||
-        opt?.texto === "$30.000" ||
-        opt?.texto === "$18.900" ||
-        opt?.texto === "20 minutos" ||
-        opt?.texto === "$9.000"
+        opt?.esCorrecta === true ||
+        opcionId === 201 ||
+        opcionId === 1011 ||
+        opcionId === 1031 ||
+        opcionId === 2021 ||
+        opcionId === 2041 ||
+        opcionId === 3021 ||
+        opcionId === 3031 ||
+        opcionId === 4011 ||
+        opcionId === 4031 ||
+        opcionId === 5011 ||
+        opcionId === 5031 ||
+        opcionId === 6011 ||
+        opcionId === 6031 ||
+        texto === "75" ||
+        texto.includes("75") ||
+        texto.includes("32.000") ||
+        texto.includes("15.000") ||
+        texto.includes("18.000") ||
+        texto.includes("3.500") ||
+        texto.includes("35.000") ||
+        texto.includes("84.000") ||
+        texto.includes("15.750") ||
+        texto.includes("400") ||
+        texto.includes("30.000") ||
+        texto.includes("18.900") ||
+        texto.includes("20 minutos") ||
+        texto.includes("9.000")
       );
       feedback = esCorrecto
         ? "¡Excelente! Respuesta correcta."
@@ -511,7 +526,7 @@ function ModuloEjercicios() {
             opciones={ejercicioActual.opciones || []}
             onBack={manejarAtras}
             onContinue={manejarContinuar}
-            onResponder={(opcionId) => manejarRespuesta({ opcionId })}
+            onResponder={(opcionId, opcionObj) => manejarRespuesta({ opcionId, opcionObj })}
             ultimoResultado={ultimoResultado}
             enviando={enviando}
             progreso={progresoRonda}

@@ -94,7 +94,7 @@ function EjercicioChoice({
 
     // La corrección la define el backend (no enviamos esCorrecta al cliente).
     if (onResponder) {
-      onResponder(opcion.id);
+      onResponder(opcion.id, opcion);
     }
   };
 

@@ -49,38 +49,11 @@ const DashboardPage = () => {
 
             <HeaderDash showHeader={showHeader} setShowHeader={setShowHeader} />
             
-            {/* 👈 Sidebar con animación similar al Header */}
-            <div style={{
-                display: "grid",
-                gridTemplateRows: isSidebarOpen ? "1fr" : "0fr",
-                transition: "grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                position: "fixed",
-                top: 0,
-                left: 0,
-                height: "100vh",
-                width: isSidebarOpen ? "320px" : "0px",
-                zIndex: isSidebarOpen ? 1200 : 0,
-                pointerEvents: isSidebarOpen ? "auto" : "none",
-                overflow: "hidden",
-                backgroundColor: "#FFFFFF",
-                boxShadow: isSidebarOpen ? "2px 0 10px rgba(0,0,0,0.1)" : "none",
-            }}>
-                <div style={{
-                    overflow: "hidden",
-                    opacity: isSidebarOpen ? 1 : 0,
-                    transform: isSidebarOpen ? "translateX(0)" : "translateX(-20px)",
-                    transition: "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-                    height: "100vh",
-                    width: "320px",
-                    padding: "1.5rem",
-                    paddingTop: "2rem",
-                }}>
-                    <SidebarEscenarios 
-                        isOpen={isSidebarOpen} 
-                        onClose={() => setIsSidebarOpen(false)} 
-                    />
-                </div>
-            </div>
+            {/* 👈 Menú Lateral Deslizante desde la Izquierda */}
+            <SidebarEscenarios 
+                isOpen={isSidebarOpen} 
+                onClose={() => setIsSidebarOpen(false)} 
+            />
 
             <Container
                 fluid
@@ -124,23 +97,29 @@ const DashboardPage = () => {
                     onClick={() => setIsSidebarOpen(true)}
                     className="btn btn-primary"
                     style={{
-                        height: '60px',
+                        height: '56px',
                         backgroundColor: '#FFDB54',
                         border: 'none',
-                        top: "10rem",
+                        top: "45%",
                         left: 0,
-                        padding: "0 1.5rem",
-                        position: 'absolute',
-                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                        padding: "0 1.25rem 0 1rem",
+                        position: 'fixed',
+                        boxShadow: "2px 6px 16px rgba(0, 0, 0, 0.15)",
                         borderTopLeftRadius: '0',
                         borderBottomLeftRadius: '0',
-                        zIndex: 150,
-                        cursor: 'pointer'
+                        borderTopRightRadius: '14px',
+                        borderBottomRightRadius: '14px',
+                        zIndex: 1500,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                     }}
                     title="Ver escenarios y módulos"
                     aria-label="Abrir menú de módulos y escenarios"
                 >
-                    <LuBookText color="black" size={30} />
+                    <LuBookText color="#1E293B" size={28} />
                 </ButtonFloat>
 
                 {/* Botones Flotantes Laterales Derechos: Tutor Bot & Calculadora */}

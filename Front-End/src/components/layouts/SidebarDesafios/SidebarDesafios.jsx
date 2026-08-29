@@ -78,180 +78,189 @@ const SidebarDesafios = ({ isOpen, onClose }) => {
 
   return (
     <>
+      {/* Backdrop oscuro con desenfoque */}
       <div
+        className={`sidebar-backdrop ${isOpen ? "open" : ""}`}
+        onClick={onClose}
         style={{
-          display: "grid",
-          gridTemplateRows: isOpen ? "1fr" : "0fr",
-          transition: "grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          backgroundColor: "rgba(15, 23, 42, 0.55)",
+          backdropFilter: "blur(4px)",
+          opacity: isOpen ? 1 : 0,
+          pointerEvents: isOpen ? "auto" : "none",
+          transition: "opacity 0.3s ease",
+          zIndex: 1999,
+        }}
+      />
+
+      {/* Menú Lateral Deslizante desde la Izquierda */}
+      <aside
+        className={`sidebar-drawer ${isOpen ? "open" : ""}`}
+        style={{
           position: "fixed",
           top: 0,
           left: 0,
           height: "100vh",
-          width: isOpen ? "320px" : "0px",
-          zIndex: 1000,
-          overflow: "hidden",
+          width: "350px",
+          maxWidth: "85vw",
           backgroundColor: "#FFFFFF",
-          boxShadow: isOpen ? "2px 0 10px rgba(0,0,0,0.1)" : "none",
+          boxShadow: isOpen ? "8px 0 35px rgba(0,0,0,0.22)" : "none",
+          transform: isOpen ? "translateX(0)" : "translateX(-100%)",
+          transition: "transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)",
+          zIndex: 2000,
+          display: "flex",
+          flexDirection: "column",
+          padding: "1.75rem 1.5rem",
+          overflowY: "auto",
+          boxSizing: "border-box",
         }}
       >
-        <div
-          style={{
-            overflow: "hidden",
-            opacity: isOpen ? 1 : 0,
-            transform: isOpen ? "translateX(0)" : "translateX(-20px)",
-            transition:
-              "opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
-            height: "100vh",
-            width: "320px",
-            padding: "1.5rem",
-            paddingTop: "2rem",
-          }}
-        >
-          <aside
-            className={`sidebar-desafios ${isOpen ? "open" : ""}`}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <LuBookText size={22} color="#0A3D91" />
+            <h2 style={{ fontSize: "1.3rem", fontWeight: 800, color: "#0F172A", margin: 0 }}>
+              Ramas de Estudio
+            </h2>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Cerrar menú"
             style={{
-              height: "100%",
+              background: "#F1F5F9",
+              border: "none",
+              borderRadius: "50%",
+              width: "36px",
+              height: "36px",
               display: "flex",
-              flexDirection: "column",
-              backgroundColor: "#FFFFFF",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              color: "#64748B",
             }}
           >
-            <button
-              className="sidebar-close-btn"
-              onClick={onClose}
-              aria-label="Cerrar menú"
-              style={{
-                position: "absolute",
-                top: "1rem",
-                right: "1rem",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-              }}
-            >
-              <LuX size={24} />
-            </button>
-
-            <h2 className="sidebar-title">Desafíos</h2>
-            <div className="sidebar-divider" />
-
-            {/* ✅ Spinner mientras se cargan las ramas */}
-            {loadingRamas ? (
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                padding: "2rem 0",
-                flex: 1
-              }}>
-                <Oval
-                  height={40}
-                  width={40}
-                  color="#111111"
-                  secondaryColor="#cccccc"
-                  strokeWidth={4}
-                  strokeWidthSecondary={4}
-                  ariaLabel="loading"
-                />
-                <span style={{ marginLeft: "0.75rem", color: "#666", fontSize: "0.9rem" }}>
-                  Cargando desafíos...
-                </span>
-              </div>
-            ) : errorRamas ? (
-              // ✅ Mensaje de error
-              <div style={{
-                padding: "1rem",
-                color: "#dc2626",
-                textAlign: "center",
-                fontSize: "0.9rem"
-              }}>
-                {errorRamas}
-              </div>
-            ) : (
-              <>
-                {desafioActual && (
-                  <div className="sidebar-item active">
-                    <div className="item-icon-wrapper">
-                      <LuBookText size={20} color="#111111" />
-                    </div>
-                    <span className="item-text text-bold">
-                      {desafioActual.nombre}
-                    </span>
-                  </div>
-                )}
-
-                <div className="sidebar-divider" />
-
-                <p className="sidebar-subtitle">+ desafíos</p>
-
-                <ul className="sidebar-list">
-                  {otrasRamas.map((rama) => (
-                    <li
-                      key={rama.id}
-                      className="sidebar-list-item"
-                      onClick={() => cambiarDesafio(rama.id)}
-                      style={{
-                        cursor: cambiando ? "default" : "pointer",
-                        opacity: cambiando ? 0.5 : 1,
-                        pointerEvents: cambiando ? "none" : "auto",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <span>{rama.nombre}</span>
-                      {/* ✅ Spinner pequeño en el item que se está cambiando */}
-                      {cambiando && (
-                        <Oval
-                          height={16}
-                          width={16}
-                          color="#111111"
-                          secondaryColor="#cccccc"
-                          strokeWidth={5}
-                          strokeWidthSecondary={5}
-                          ariaLabel="cambiando"
-                        />
-                      )}
-                    </li>
-                  ))}
-                </ul>
-
-                <div style={{ marginTop: "auto", paddingTop: "1rem", borderTop: "1px solid #e2e8f0" }}>
-                  <button
-                    type="button"
-                    onClick={irAConfigurarPerfil}
-                    style={{
-                      width: "100%",
-                      padding: "0.75rem 1rem",
-                      borderRadius: "14px",
-                      backgroundColor: "#FFDB54",
-                      color: "#1e293b",
-                      border: "none",
-                      fontWeight: 700,
-                      fontSize: "0.92rem",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "0.5rem",
-                      cursor: "pointer",
-                      boxShadow: "0 4px 12px rgba(255, 219, 84, 0.4)",
-                      transition: "all 0.2s ease"
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
-                  >
-                    <LuSparkles size={18} />
-                    Cambiar Perfil y Tutor
-                  </button>
-                  <small style={{ display: "block", textAlign: "center", color: "#64748b", fontSize: "0.75rem", marginTop: "6px" }}>
-                    Elegí qué querés entrenar y tu mascota
-                  </small>
-                </div>
-              </>
-            )}
-          </aside>
+            <LuX size={20} />
+          </button>
         </div>
-      </div>
+
+        <p style={{ fontSize: "0.85rem", color: "#64748B", margin: "0 0 1.25rem 0" }}>
+          Elegí la rama de entrenamiento práctico para tus desafíos diarios:
+        </p>
+
+        {/* Spinner mientras se cargan las ramas */}
+        {loadingRamas ? (
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", padding: "3rem 0", flex: 1 }}>
+            <Oval height={40} width={40} color="#0A3D91" secondaryColor="#E2E8F0" strokeWidth={4} strokeWidthSecondary={4} ariaLabel="loading" />
+          </div>
+        ) : errorRamas ? (
+          <div style={{ padding: "1rem", color: "#DC2626", textAlign: "center", fontSize: "0.9rem" }}>
+            {errorRamas}
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", flex: 1 }}>
+            {desafioActual && (
+              <div style={{
+                backgroundColor: "#EFF6FF",
+                border: "2px solid #3B82F6",
+                borderRadius: "14px",
+                padding: "12px 14px",
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+              }}>
+                <span style={{ fontSize: "1.2rem" }}>🎯</span>
+                <div>
+                  <small style={{ fontWeight: 800, color: "#1D4ED8", textTransform: "uppercase", fontSize: "0.7rem", letterSpacing: "0.5px" }}>
+                    Rama Actual en Progreso
+                  </small>
+                  <div style={{ fontWeight: 700, color: "#1E293B", fontSize: "0.95rem" }}>
+                    {desafioActual.nombre}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#94A3B8", textTransform: "uppercase", marginTop: "0.75rem" }}>
+              Otras ramas disponibles:
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+              {otrasRamas.map((rama) => (
+                <button
+                  key={rama.id}
+                  type="button"
+                  onClick={() => cambiarDesafio(rama.id)}
+                  disabled={cambiando}
+                  style={{
+                    backgroundColor: "#F8FAFC",
+                    border: "1px solid #E2E8F0",
+                    borderRadius: "12px",
+                    padding: "12px 14px",
+                    textAlign: "left",
+                    fontWeight: 600,
+                    fontSize: "0.9rem",
+                    color: "#334155",
+                    cursor: cambiando ? "default" : "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    transition: "all 0.2s ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "#F1F5F9";
+                    e.currentTarget.style.borderColor = "#CBD5E1";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#F8FAFC";
+                    e.currentTarget.style.borderColor = "#E2E8F0";
+                  }}
+                >
+                  <span>{rama.nombre}</span>
+                  {cambiando && (
+                    <Oval height={14} width={14} color="#0A3D91" secondaryColor="#CBD5E1" strokeWidth={5} strokeWidthSecondary={5} ariaLabel="cambiando" />
+                  )}
+                </button>
+              ))}
+            </div>
+
+            <div style={{ marginTop: "auto", paddingTop: "1.5rem" }}>
+              <button
+                type="button"
+                onClick={irAConfigurarPerfil}
+                style={{
+                  width: "100%",
+                  padding: "0.85rem 1rem",
+                  borderRadius: "14px",
+                  backgroundColor: "#FFDB54",
+                  color: "#0F172A",
+                  border: "none",
+                  fontWeight: 800,
+                  fontSize: "0.95rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(255, 219, 84, 0.4)",
+                  transition: "transform 0.2s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
+                onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+              >
+                <LuSparkles size={18} />
+                <span>Cambiar Perfil y Tutor</span>
+              </button>
+              <small style={{ display: "block", textAlign: "center", color: "#64748B", fontSize: "0.75rem", marginTop: "6px" }}>
+                Reconfigurá tus objetivos y elegí tu compañero
+              </small>
+            </div>
+          </div>
+        )}
+      </aside>
 
       {/* ✅ Overlay con spinner mientras cambia de desafío */}
       {cambiando && (

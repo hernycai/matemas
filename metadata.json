@@ -1,0 +1,8 @@
+{
+  "name": "Mate+",
+  "description": "Plataforma interactiva para aprender matemáticas con lecciones, desafíos y práctica adaptada a tu ritmo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

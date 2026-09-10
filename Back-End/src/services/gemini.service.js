@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const apiKey = process.env.GOOGLE_API_KEY && process.env.GOOGLE_API_KEY !== 'api_key' ? process.env.GOOGLE_API_KEY : null;
+const rawKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+const apiKey = rawKey && rawKey !== 'api_key' ? rawKey : null;
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 
 export const generarFeedbackPedagogico = async (pregunta, explicacionBase, opcionElegida) => {

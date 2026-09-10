@@ -4,10 +4,10 @@
   "description": "",
   "main": "api/index.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "node src/app.js",
     "start": "node src/app.js",
-    "postinstall": "prisma generate --schema=./prisma/schema.prisma",
-    "build": "prisma generate --schema=./prisma/schema.prisma",
+    "postinstall": "prisma generate --schema=./prisma/schema.prisma || true",
+    "build": "prisma generate --schema=./prisma/schema.prisma || true",
     "seed": "node prisma/seed.js",
     "seed:auth": "node prisma/seed-auth-users.js",
     "seed:ejercicios": "node prisma/seed-ejercicios.js",

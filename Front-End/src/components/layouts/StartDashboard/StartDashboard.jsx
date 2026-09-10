@@ -11,7 +11,7 @@ const StartDashboard = () => {
                 
                 {/* Contenedor del Círculo */}
                 <div className="col-12 col-md-3 containerCirculo">
-                    <Circulo />
+                    <CircleProgress />
                 </div>
 
                 {/* Bloques de Progreso */}

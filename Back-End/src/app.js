@@ -69,11 +69,13 @@ app.use(express.json());
 app.use("/api", apiRoutes);
 app.use(errorHandler);
 
-app.get("/", (req, res) =>
-  res.status(200).send("InnovaLab API Core - Back-End Online"),
-);
+if (!process.env.EMBEDDED_API) {
+  app.get("/", (req, res) =>
+    res.status(200).send("InnovaLab API Core - Back-End Online"),
+  );
+}
 
-if (process.env.NODE_ENV !== "production") {
+if (process.env.NODE_ENV !== "production" && !process.env.EMBEDDED_API) {
   const server = app.listen(PORT, () => {
     console.log(`Servidor corriendo en http://localhost:${PORT}`);
   });
@@ -92,7 +94,9 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 process.on("SIGINT", async () => {
-  await prisma.$disconnect();
+  if (prisma?.$disconnect) {
+    await prisma.$disconnect();
+  }
   process.exit(0);
 });
 

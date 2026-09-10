@@ -31,10 +31,7 @@ const cleanBaseURL = normalizeBaseURL(rawBaseURL);
 console.log('📡 API BaseURL:', cleanBaseURL || 'Usando fallback');
 
 const api = axios.create({
-    baseURL: cleanBaseURL || (
-        import.meta.env.MODE === 'production'
-        ? '/api'
-        : 'http://localhost:3001/api'),
+    baseURL: cleanBaseURL || '/api',
     timeout: 30000
 });
 

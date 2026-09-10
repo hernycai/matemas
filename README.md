@@ -2,23 +2,23 @@
 
 *Una plataforma con entrenamientos pensados para adultos, con un enfoque práctico 'gamificado', enfocada en actividades matemáticas puntuales de la vida diaria.*
 
-![Banner](Front-End/src/assets/Visuales_Readme/Banner.png)
-![Lupa](Front-End/src/assets/Visuales_Readme/Lupa.png)
+![Banner](docs/Visuales_Readme/Banner.png)
+![Lupa](docs/Visuales_Readme/Lupa.png)
 ---
 
 ## Nuestro equipo
 
 <p>
-<img src="Front-End/src/assets/Visuales_Readme/Sol.png" alt="Sol" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/sofi.png" alt="Sofia" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/Romi.png" alt="Romina" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/Lis.png" alt="Lisandro" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/Isaac.png" alt="Isaac" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/Hernan.png" alt="Hernán" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/Gus.png" alt="Gustavo" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/Flor.png" alt="Flor" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/Maribel.png" alt="Maribel" width="80">
-<img src="Front-End/src/assets/Visuales_Readme/Cesar.png" alt="César" width="80">
+<img src="docs/Visuales_Readme/Sol.png" alt="Sol" width="80">
+<img src="docs/Visuales_Readme/sofi.png" alt="Sofia" width="80">
+<img src="docs/Visuales_Readme/Romi.png" alt="Romina" width="80">
+<img src="docs/Visuales_Readme/Lis.png" alt="Lisandro" width="80">
+<img src="docs/Visuales_Readme/Isaac.png" alt="Isaac" width="80">
+<img src="docs/Visuales_Readme/Hernan.png" alt="Hernán" width="80">
+<img src="docs/Visuales_Readme/Gus.png" alt="Gustavo" width="80">
+<img src="docs/Visuales_Readme/Flor.png" alt="Flor" width="80">
+<img src="docs/Visuales_Readme/Maribel.png" alt="Maribel" width="80">
+<img src="docs/Visuales_Readme/Cesar.png" alt="César" width="80">
 </p>
 
 ---

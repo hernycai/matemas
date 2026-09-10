@@ -12,10 +12,10 @@
     "preview": "npm run preview --workspace=frontend",
     "dev:front": "npm run dev --workspace=frontend",
     "dev:back": "npm run dev --workspace=backend",
-    "build": "npm run build --workspace=frontend",
-    "build:all": "npm run build --workspaces --if-present",
-    "build:front": "npm run build --workspace=frontend",
-    "build:back": "npm run build --workspace=backend",
+    "build": "npm --prefix Front-End run build && node -e \"const fs=require('fs'); if(fs.existsSync('Front-End/dist')) fs.cpSync('Front-End/dist', 'dist', {recursive:true});\"",
+    "build:all": "npm run build:front && npm run build:back",
+    "build:front": "npm --prefix Front-End run build && node -e \"const fs=require('fs'); if(fs.existsSync('Front-End/dist')) fs.cpSync('Front-End/dist', 'dist', {recursive:true});\"",
+    "build:back": "npm --prefix Back-End run build",
     "install:all": "npm install"
   },
   "engines": {

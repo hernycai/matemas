@@ -1,11 +1,18 @@
--- CreateEnum
-CREATE TYPE "Rol" AS ENUM ('usuario', 'admin', 'superadmin');
+-- Idempotent Enums
+DO $$ BEGIN
+    CREATE TYPE "Rol" AS ENUM ('usuario', 'admin', 'superadmin');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
 
--- CreateEnum
-CREATE TYPE "TipoEjercicio" AS ENUM ('opcion_multiple', 'numerico');
+DO $$ BEGIN
+    CREATE TYPE "TipoEjercicio" AS ENUM ('opcion_multiple', 'numerico');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
 
--- CreateTable
-CREATE TABLE "Usuario" (
+-- CreateTable Usuario
+CREATE TABLE IF NOT EXISTS "Usuario" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "nombre" TEXT,
@@ -27,8 +34,8 @@ CREATE TABLE "Usuario" (
     CONSTRAINT "Usuario_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Auditoria" (
+-- CreateTable Auditoria
+CREATE TABLE IF NOT EXISTS "Auditoria" (
     "id" SERIAL NOT NULL,
     "usuarioId" TEXT NOT NULL,
     "accion" TEXT NOT NULL,
@@ -40,8 +47,19 @@ CREATE TABLE "Auditoria" (
     CONSTRAINT "Auditoria_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Seccion" (
+-- CreateTable Rama
+CREATE TABLE IF NOT EXISTS "Rama" (
+    "id" SERIAL NOT NULL,
+    "nombre" TEXT NOT NULL,
+    "descripcion" TEXT,
+    "orden" INTEGER NOT NULL DEFAULT 0,
+    "activo" BOOLEAN NOT NULL DEFAULT true,
+
+    CONSTRAINT "Rama_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable Seccion
+CREATE TABLE IF NOT EXISTS "Seccion" (
     "id" SERIAL NOT NULL,
     "nombre" TEXT NOT NULL,
     "descripcion" TEXT NOT NULL,
@@ -54,16 +72,16 @@ CREATE TABLE "Seccion" (
     CONSTRAINT "Seccion_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "SeccionAprobada" (
+-- CreateTable SeccionAprobada
+CREATE TABLE IF NOT EXISTS "SeccionAprobada" (
     "usuarioId" TEXT NOT NULL,
     "seccionId" INTEGER NOT NULL,
 
     CONSTRAINT "SeccionAprobada_pkey" PRIMARY KEY ("usuarioId","seccionId")
 );
 
--- CreateTable
-CREATE TABLE "Escenario" (
+-- CreateTable Escenario
+CREATE TABLE IF NOT EXISTS "Escenario" (
     "id" SERIAL NOT NULL,
     "titulo" TEXT NOT NULL,
     "descripcion" TEXT NOT NULL,
@@ -78,8 +96,8 @@ CREATE TABLE "Escenario" (
     CONSTRAINT "Escenario_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Opcion" (
+-- CreateTable Opcion
+CREATE TABLE IF NOT EXISTS "Opcion" (
     "id" SERIAL NOT NULL,
     "texto" TEXT NOT NULL,
     "puntos" INTEGER NOT NULL DEFAULT 0,
@@ -89,8 +107,8 @@ CREATE TABLE "Opcion" (
     CONSTRAINT "Opcion_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Recurso" (
+-- CreateTable Recurso
+CREATE TABLE IF NOT EXISTS "Recurso" (
     "id" TEXT NOT NULL,
     "nombre" TEXT NOT NULL,
     "valor" INTEGER NOT NULL DEFAULT 1,
@@ -101,8 +119,8 @@ CREATE TABLE "Recurso" (
     CONSTRAINT "Recurso_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Insignia" (
+-- CreateTable Insignia
+CREATE TABLE IF NOT EXISTS "Insignia" (
     "id" TEXT NOT NULL,
     "nombre" TEXT NOT NULL,
     "descripcion" TEXT NOT NULL,
@@ -114,21 +132,21 @@ CREATE TABLE "Insignia" (
     CONSTRAINT "Insignia_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Progreso" (
+-- CreateTable Progreso
+CREATE TABLE IF NOT EXISTS "Progreso" (
     "id" SERIAL NOT NULL,
     "usuarioId" TEXT NOT NULL,
     "escenarioId" INTEGER NOT NULL,
     "puntosObtenidos" INTEGER NOT NULL DEFAULT 0,
     "resuelto" BOOLEAN NOT NULL DEFAULT false,
     "intentosFallidos" INTEGER NOT NULL DEFAULT 0,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Progreso_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Leccion" (
+-- CreateTable Leccion
+CREATE TABLE IF NOT EXISTS "Leccion" (
     "id" SERIAL NOT NULL,
     "seccionId" INTEGER NOT NULL,
     "titulo" TEXT NOT NULL,
@@ -138,8 +156,8 @@ CREATE TABLE "Leccion" (
     CONSTRAINT "Leccion_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Consejo" (
+-- CreateTable Consejo
+CREATE TABLE IF NOT EXISTS "Consejo" (
     "id" SERIAL NOT NULL,
     "descripcion" TEXT NOT NULL,
     "activo" BOOLEAN NOT NULL DEFAULT true,
@@ -148,19 +166,8 @@ CREATE TABLE "Consejo" (
     CONSTRAINT "Consejo_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Rama" (
-    "id" SERIAL NOT NULL,
-    "nombre" TEXT NOT NULL,
-    "descripcion" TEXT,
-    "orden" INTEGER NOT NULL DEFAULT 0,
-    "activo" BOOLEAN NOT NULL DEFAULT true,
-
-    CONSTRAINT "Rama_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "_InsigniaToUsuario" (
+-- CreateTable _InsigniaToUsuario
+CREATE TABLE IF NOT EXISTS "_InsigniaToUsuario" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL,
 
@@ -168,61 +175,72 @@ CREATE TABLE "_InsigniaToUsuario" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Usuario_email_key" ON "Usuario"("email");
+CREATE UNIQUE INDEX IF NOT EXISTS "Usuario_email_key" ON "Usuario"("email");
+CREATE UNIQUE INDEX IF NOT EXISTS "Recurso_seccionId_key" ON "Recurso"("seccionId");
+CREATE UNIQUE INDEX IF NOT EXISTS "Rama_nombre_key" ON "Rama"("nombre");
+CREATE INDEX IF NOT EXISTS "_InsigniaToUsuario_B_index" ON "_InsigniaToUsuario"("B");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Recurso_seccionId_key" ON "Recurso"("seccionId");
+-- Foreign Keys with Exception Handling
+DO $$ BEGIN
+    ALTER TABLE "Usuario" ADD CONSTRAINT "Usuario_desafioActualId_fkey" FOREIGN KEY ("desafioActualId") REFERENCES "Rama"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- CreateIndex
-CREATE UNIQUE INDEX "Rama_nombre_key" ON "Rama"("nombre");
+DO $$ BEGIN
+    ALTER TABLE "Auditoria" ADD CONSTRAINT "Auditoria_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- CreateIndex
-CREATE INDEX "_InsigniaToUsuario_B_index" ON "_InsigniaToUsuario"("B");
+DO $$ BEGIN
+    ALTER TABLE "Seccion" ADD CONSTRAINT "Seccion_ramaId_fkey" FOREIGN KEY ("ramaId") REFERENCES "Rama"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Usuario" ADD CONSTRAINT "Usuario_desafioActualId_fkey" FOREIGN KEY ("desafioActualId") REFERENCES "Rama"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "SeccionAprobada" ADD CONSTRAINT "SeccionAprobada_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Auditoria" ADD CONSTRAINT "Auditoria_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "SeccionAprobada" ADD CONSTRAINT "SeccionAprobada_seccionId_fkey" FOREIGN KEY ("seccionId") REFERENCES "Seccion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Seccion" ADD CONSTRAINT "Seccion_ramaId_fkey" FOREIGN KEY ("ramaId") REFERENCES "Rama"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Escenario" ADD CONSTRAINT "Escenario_seccionId_fkey" FOREIGN KEY ("seccionId") REFERENCES "Seccion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "SeccionAprobada" ADD CONSTRAINT "SeccionAprobada_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Opcion" ADD CONSTRAINT "Opcion_escenarioId_fkey" FOREIGN KEY ("escenarioId") REFERENCES "Escenario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "SeccionAprobada" ADD CONSTRAINT "SeccionAprobada_seccionId_fkey" FOREIGN KEY ("seccionId") REFERENCES "Seccion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Recurso" ADD CONSTRAINT "Recurso_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Escenario" ADD CONSTRAINT "Escenario_seccionId_fkey" FOREIGN KEY ("seccionId") REFERENCES "Seccion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Recurso" ADD CONSTRAINT "Recurso_seccionId_fkey" FOREIGN KEY ("seccionId") REFERENCES "Seccion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Opcion" ADD CONSTRAINT "Opcion_escenarioId_fkey" FOREIGN KEY ("escenarioId") REFERENCES "Escenario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Insignia" ADD CONSTRAINT "Insignia_escenarioId_fkey" FOREIGN KEY ("escenarioId") REFERENCES "Escenario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Recurso" ADD CONSTRAINT "Recurso_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Progreso" ADD CONSTRAINT "Progreso_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Recurso" ADD CONSTRAINT "Recurso_seccionId_fkey" FOREIGN KEY ("seccionId") REFERENCES "Seccion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Progreso" ADD CONSTRAINT "Progreso_escenarioId_fkey" FOREIGN KEY ("escenarioId") REFERENCES "Escenario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Insignia" ADD CONSTRAINT "Insignia_escenarioId_fkey" FOREIGN KEY ("escenarioId") REFERENCES "Escenario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Leccion" ADD CONSTRAINT "Leccion_seccionId_fkey" FOREIGN KEY ("seccionId") REFERENCES "Seccion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Progreso" ADD CONSTRAINT "Progreso_usuarioId_fkey" FOREIGN KEY ("usuarioId") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "Consejo" ADD CONSTRAINT "Consejo_escenarioId_fkey" FOREIGN KEY ("escenarioId") REFERENCES "Escenario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Progreso" ADD CONSTRAINT "Progreso_escenarioId_fkey" FOREIGN KEY ("escenarioId") REFERENCES "Escenario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "_InsigniaToUsuario" ADD CONSTRAINT "_InsigniaToUsuario_A_fkey" FOREIGN KEY ("A") REFERENCES "Insignia"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;
 
--- AddForeignKey
-ALTER TABLE "Leccion" ADD CONSTRAINT "Leccion_seccionId_fkey" FOREIGN KEY ("seccionId") REFERENCES "Seccion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Consejo" ADD CONSTRAINT "Consejo_escenarioId_fkey" FOREIGN KEY ("escenarioId") REFERENCES "Escenario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_InsigniaToUsuario" ADD CONSTRAINT "_InsigniaToUsuario_A_fkey" FOREIGN KEY ("A") REFERENCES "Insignia"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_InsigniaToUsuario" ADD CONSTRAINT "_InsigniaToUsuario_B_fkey" FOREIGN KEY ("B") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "_InsigniaToUsuario" ADD CONSTRAINT "_InsigniaToUsuario_B_fkey" FOREIGN KEY ("B") REFERENCES "Usuario"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN null; END $$;

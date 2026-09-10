@@ -17,6 +17,7 @@ import {
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Header from "../components/layouts/header/Header";
 import Terms from "../components/layouts/LegalPage/Terms";
+import GoogleAuthModal from "../components/auth/GoogleAuthModal";
 
 const useRegisterForm = () => {
   const navigate = useNavigate();
@@ -137,7 +138,6 @@ const useRegisterForm = () => {
     rememberMe,
     setRememberMe,
     acceptedTerms,
-    acceptedTerms,
     setAcceptedTerms,
     showTermsModal,
     setShowTermsModal,
@@ -196,13 +196,33 @@ const RegisterPage = () => {
     googleLoading,
   } = useRegisterForm();
 
+  const [showGoogleModal, setShowGoogleModal] = useState(false);
+
   const handleGoogleLogin = async () => {
     try {
-      await loginWithGoogle(`${window.location.origin}/auth/callback`);
+      const res = await loginWithGoogle(`${window.location.origin}/auth/callback`);
+      if (res?.requireAccountPicker) {
+        setShowGoogleModal(true);
+      }
     } catch (error) {
-      setToastMessage(
-        "❌ Error al iniciar sesión con Google. Intentá nuevamente.",
-      );
+      setShowGoogleModal(true);
+    }
+  };
+
+  const handleSelectGoogleAccount = async (cuenta) => {
+    try {
+      await loginWithGoogle({
+        email: cuenta.email,
+        nombre: cuenta.nombre,
+        id: cuenta.id,
+      });
+      setShowGoogleModal(false);
+      setToastMessage(`✅ ¡Sesión iniciada con Google (${cuenta.email})! Redirigiendo...`);
+      setToastVariant("success");
+      setShowToast(true);
+    } catch (err) {
+      console.error("Error al autenticar cuenta Google:", err);
+      setToastMessage("❌ No se pudo autenticar con Google.");
       setToastVariant("danger");
       setShowToast(true);
     }
@@ -753,6 +773,13 @@ const RegisterPage = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <GoogleAuthModal
+        isOpen={showGoogleModal}
+        onClose={() => setShowGoogleModal(false)}
+        onSelectAccount={handleSelectGoogleAccount}
+        loading={googleLoading}
+      />
     </>
   );
 };

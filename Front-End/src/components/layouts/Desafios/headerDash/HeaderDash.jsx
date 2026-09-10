@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Navbar, Container, Nav, Dropdown } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../../header/header.css';
-import { FaUser, FaCog, FaSignOutAlt, FaCalculator, FaComments } from "react-icons/fa";
+import { FaSignOutAlt, FaCalculator, FaComments, FaUserEdit, FaTrophy, FaSun, FaMoon } from "react-icons/fa";
 import { useAuth } from '../../../../context/AuthContext';
+import { useTheme } from '../../../../context/ThemeContext';
 import { LuChevronDown, LuChevronUp } from 'react-icons/lu';
 import { useMediaQuery } from '../../../../hooks/useMediaQuery';
 import ButtonFloat from '../../../ui/ButtonFloat/ButtonFloat';
-import fotoPerfilUser from '../../../../assets/Foto_perfil.png'; 
+import UserAvatar from '../../../ui/UserAvatar/UserAvatar.jsx';
 import ModalCalculadora from '../../Calculadora/Calculadora.jsx';
 import { useMascotContext } from '../../../../mascotas/core/MascotProvider';
 
@@ -17,6 +18,7 @@ export default function Header({ showHeader, setShowHeader }) {
   const [isOpenCalculator, setIsOpenCalculator] = useState(false);
   const { logout, profile } = useAuth();
   const { openChat } = useMascotContext();
+  const { isDark, toggleTheme } = useTheme();
   const displayName = profile?.nombre?.trim() || profile?.email?.split("@")[0] || "Usuario";
 
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -39,7 +41,8 @@ export default function Header({ showHeader, setShowHeader }) {
   };
 
   const handleSettings = () => {
-    navigate('/configuracion');
+    // Al presionar la opción de configuración, llevar a editar el perfil según solicitado
+    navigate('/perfil');
   };
 
   return (
@@ -135,39 +138,85 @@ export default function Header({ showHeader, setShowHeader }) {
             </Nav>
           </Navbar.Collapse>
           
-          <div className="hidden md:block d-flex align-items-center gap-2 gap-lg-3">
+          <div className="d-flex align-items-center gap-2 gap-lg-3">
+            <button
+              id="headerdash-theme-toggle"
+              type="button"
+              onClick={toggleTheme}
+              className="header-theme-pill"
+              aria-label={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+              title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+            >
+              {isDark ? (
+                <>
+                  <FaSun className="theme-icon theme-sun-icon" />
+                  <span className="theme-text d-none d-sm-inline">Modo Claro</span>
+                </>
+              ) : (
+                <>
+                  <FaMoon className="theme-icon theme-moon-icon" />
+                  <span className="theme-text d-none d-sm-inline">Modo Oscuro</span>
+                </>
+              )}
+            </button>
+
             <Dropdown align="end">
               <Dropdown.Toggle
                 variant="link"
                 id="dropdown-user-menu"
-                className="p-0 border-0"
+                className="p-0 border-0 d-flex align-items-center"
+                style={{ textDecoration: 'none', background: 'transparent', boxShadow: 'none' }}
+                title="Mi perfil y opciones de cuenta"
               >
-                <img
-                  src={fotoPerfilUser} 
-                  alt="User Avatar"
-                  className="rounded-circle"
-                  style={{ width: 40, height: 40, objectFit: 'cover' }}
+                <UserAvatar
+                  avatar={profile?.avatar}
+                  marco={profile?.marco}
+                  size={42}
+                  showFrame={true}
                 />
               </Dropdown.Toggle>
 
-              <Dropdown.Menu className="dropdown-menu-custom mt-2 shadow-lg" style={{ minWidth: '220px' }}>
-                <Dropdown.Item onClick={handleProfile} className="py-2">
-                  <FaUser className="me-2" />
-                  {displayName}
+              <Dropdown.Menu className="dropdown-menu-custom mt-2 shadow-lg border-0" style={{ minWidth: '230px', borderRadius: '14px', padding: '8px' }}>
+                <div 
+                  className="px-3 py-2 d-flex align-items-center gap-2 border-bottom mb-2"
+                  style={{ cursor: 'pointer' }}
+                  onClick={handleProfile}
+                  title="Click para ver o editar perfil"
+                >
+                  <UserAvatar
+                    avatar={profile?.avatar}
+                    marco={profile?.marco}
+                    size={40}
+                    showFrame={true}
+                  />
+                  <div style={{ overflow: 'hidden' }}>
+                    <div style={{ fontWeight: 800, fontSize: '0.92rem', color: '#0F172A', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                      {displayName}
+                    </div>
+                    <div style={{ fontSize: '0.74rem', color: '#64748B', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                      {profile?.email || 'Miembro activo'}
+                    </div>
+                  </div>
+                </div>
+
+                <Dropdown.Item onClick={handleProfile} className="py-2 d-flex align-items-center rounded-2" style={{ fontWeight: 600, color: '#0A3D91' }}>
+                  <FaUserEdit className="me-2" size={16} />
+                  Editar el perfil
                 </Dropdown.Item>
 
-                <Dropdown.Item onClick={handleSettings} className="py-2">
-                  <FaCog className="me-2" />
-                  Configuración
+                <Dropdown.Item onClick={() => navigate('/ranking')} className="py-2 d-flex align-items-center rounded-2" style={{ fontWeight: 500, color: '#334155' }}>
+                  <FaTrophy className="me-2" size={14} color="#F59E0B" />
+                  Ver Ranking
                 </Dropdown.Item>
 
-                <Dropdown.Divider />
+                <Dropdown.Divider className="my-1" />
 
                 <Dropdown.Item
                   onClick={handleLogout}
-                  className="py-2 text-danger"
+                  className="py-2 text-danger d-flex align-items-center rounded-2"
+                  style={{ fontWeight: 600 }}
                 >
-                  <FaSignOutAlt className="me-2" />
+                  <FaSignOutAlt className="me-2" size={15} />
                   Cerrar Sesión
                 </Dropdown.Item>
               </Dropdown.Menu>

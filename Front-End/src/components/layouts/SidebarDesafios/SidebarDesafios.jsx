@@ -333,7 +333,7 @@ const SidebarDesafios = ({ isOpen, onClose }) => {
                 type="button"
                 onClick={() => {
                   onClose();
-                  navigate("/configuracion");
+                  navigate("/perfil");
                 }}
                 style={{
                   backgroundColor: "#F8FAFC",
@@ -350,7 +350,7 @@ const SidebarDesafios = ({ isOpen, onClose }) => {
                 }}
               >
                 <span>⚙️</span>
-                <span>Ajustes</span>
+                <span>Editar Perfil</span>
               </button>
             </div>
 

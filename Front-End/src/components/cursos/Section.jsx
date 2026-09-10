@@ -297,8 +297,9 @@ export default function CursoSection() {
       <ModalConfirmacion
         show={show}
         handleClose={handleClose}
-        handleToDesafios={handleToDesafios}
+        handleToDesafios={handleToEjercicios}
         handleToEjercicios={handleToEjercicios}
+        seccion={lecciones[currentIndex]}
       />
 
       <div

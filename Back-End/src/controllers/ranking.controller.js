@@ -96,16 +96,16 @@ export const getRanking = async (req, res, next) => {
         const ranking = topUsuarios.map((usuario, index) => ({
             id: usuario.id,
             nombre: usuario.nombre || 'Usuario Anónimo',
-            puntos: usuario.puntos,
-            tokens: usuario.tokens,
-            racha: usuario.racha,
+            puntos: usuario.puntos || 0,
+            tokens: usuario.tokens || 0,
+            racha: usuario.racha || 0,
             mascota: usuario.mascota,
-            seccionesAprobadas: usuario._count.seccionesAprobadas,
-            ejerciciosResueltos: usuario._count.progreso,
+            seccionesAprobadas: usuario._count?.seccionesAprobadas ?? 0,
+            ejerciciosResueltos: usuario._count?.progreso ?? 0,
             posicion: index + 1,
             esUsuarioActual: usuario.id === userId,
             // Calcular título según puntos o secciones aprobadas
-            titulo: getTituloUsuario(usuario.puntos, usuario._count.seccionesAprobadas)
+            titulo: getTituloUsuario(usuario.puntos, usuario._count?.seccionesAprobadas ?? 0)
         }));
 
         // 4. Respuesta final
@@ -163,15 +163,15 @@ export const getPodio = async (req, res, next) => {
         const podio = topTres.map((usuario, index) => ({
             id: usuario.id,
             nombre: usuario.nombre || 'Usuario Anónimo',
-            puntos: usuario.puntos,
-            tokens: usuario.tokens,
-            racha: usuario.racha,
+            puntos: usuario.puntos || 0,
+            tokens: usuario.tokens || 0,
+            racha: usuario.racha || 0,
             mascota: usuario.mascota,
-            seccionesAprobadas: usuario._count.seccionesAprobadas,
-            ejerciciosResueltos: usuario._count.progreso,
+            seccionesAprobadas: usuario._count?.seccionesAprobadas ?? 0,
+            ejerciciosResueltos: usuario._count?.progreso ?? 0,
             posicion: index + 1,
             esUsuarioActual: usuario.id === userId,
-            titulo: getTituloUsuario(usuario.puntos, usuario._count.seccionesAprobadas),
+            titulo: getTituloUsuario(usuario.puntos, usuario._count?.seccionesAprobadas ?? 0),
             // Medalla según posición
             medalla: index === 0 ? '🥇' : index === 1 ? '🥈' : '🥉'
         }));
@@ -211,7 +211,7 @@ export const getPodio = async (req, res, next) => {
                         ...usuario,
                         posicion: usuariosConMasPuntos + 1,
                         esUsuarioActual: true,
-                        titulo: getTituloUsuario(usuario.puntos, usuario._count.seccionesAprobadas)
+                        titulo: getTituloUsuario(usuario.puntos, usuario._count?.seccionesAprobadas ?? 0)
                     };
                 }
             }
@@ -230,26 +230,28 @@ export const getPodio = async (req, res, next) => {
 /**
  * Función auxiliar para determinar el título del usuario
  */
-function getTituloUsuario(puntos, seccionesAprobadas) {
-    if (puntos >= 1000 && seccionesAprobadas >= 10) {
+function getTituloUsuario(puntos = 0, seccionesAprobadas = 0) {
+    const pts = Number(puntos) || 0;
+    const sec = Number(seccionesAprobadas) || 0;
+    if (pts >= 1000 && sec >= 10) {
         return '🏆 Mente Matemática Suprema';
     }
-    if (puntos >= 500 && seccionesAprobadas >= 5) {
+    if (pts >= 500 && sec >= 5) {
         return '🧠 Genio Matemático';
     }
-    if (puntos >= 200 && seccionesAprobadas >= 3) {
+    if (pts >= 200 && sec >= 3) {
         return '📐 Maestro de la Geometría';
     }
-    if (puntos >= 100 && seccionesAprobadas >= 2) {
+    if (pts >= 100 && sec >= 2) {
         return '📊 As de la Suma';
     }
-    if (puntos >= 50 && seccionesAprobadas >= 1) {
+    if (pts >= 50 && sec >= 1) {
         return '⚡ Imparable de las Fracciones';
     }
-    if (puntos >= 20) {
+    if (pts >= 20) {
         return '🌟 Aprendiz Veloz';
     }
-    if (puntos >= 10) {
+    if (pts >= 10) {
         return '📝 Curioso Matemático';
     }
     return '🌱 Explorador de Números';
@@ -308,7 +310,7 @@ export const getMiEstadistica = async (req, res, next) => {
                 posicion,
                 totalUsuarios,
                 percentil,
-                titulo: getTituloUsuario(usuario.puntos, usuario._count.seccionesAprobadas)
+                titulo: getTituloUsuario(usuario.puntos, usuario._count?.seccionesAprobadas ?? 0)
             }
         });
     } catch (error) {

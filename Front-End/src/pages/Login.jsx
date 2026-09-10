@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Header from "../../src/components/layouts/header/Header.jsx";
 import RecuperarContrasena from "./RecuperarContrasena.jsx";
+import GoogleAuthModal from "../components/auth/GoogleAuthModal.jsx";
 const useLoginForm = () => {
   const { login, loginWithGoogle, googleLoading, loginAsDemoUser } = useAuth();
   const [email, setEmail] = useState("");
@@ -24,6 +25,7 @@ const useLoginForm = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
   const [showRecuperar, setShowRecuperar] = useState(false);
+  const [showGoogleModal, setShowGoogleModal] = useState(false);
   const [formError, setFormError] = useState("");
   const handleChangeValue = (e) => {
     const { name, value } = e.target;
@@ -104,18 +106,36 @@ const useLoginForm = () => {
   const handleGoogleLogin = async () => {
     try {
       const redirectUrl = `${window.location.origin}/auth/callback`;
-      await loginWithGoogle(redirectUrl);
+      const res = await loginWithGoogle(redirectUrl);
+
+      if (res?.requireAccountPicker) {
+        setShowGoogleModal(true);
+        return;
+      }
 
       setToastMessage("🔗 Redirigiendo a Google...");
       setToastVariant("info");
       setShowToast(true);
-
-      // La redirección la maneja Supabase
     } catch (error) {
-      console.error("Error en login con Google:", error);
-      setToastMessage(
-        "❌ Error al iniciar sesión con Google. Intentá nuevamente.",
-      );
+      console.warn("Fallo redirección OAuth, abriendo selector de Google:", error);
+      setShowGoogleModal(true);
+    }
+  };
+
+  const handleSelectGoogleAccount = async (cuenta) => {
+    try {
+      await loginWithGoogle({
+        email: cuenta.email,
+        nombre: cuenta.nombre,
+        id: cuenta.id,
+      });
+      setShowGoogleModal(false);
+      setToastMessage(`✅ ¡Sesión iniciada con Google (${cuenta.email})! Redirigiendo...`);
+      setToastVariant("success");
+      setShowToast(true);
+    } catch (err) {
+      console.error("Error al autenticar cuenta Google:", err);
+      setToastMessage("❌ No se pudo autenticar la cuenta de Google seleccionada.");
       setToastVariant("danger");
       setShowToast(true);
     }
@@ -133,6 +153,7 @@ const useLoginForm = () => {
     handleChangeValue,
     handleSubmit,
     handleGoogleLogin,
+    handleSelectGoogleAccount,
     handleDemoLogin,
     rememberMe,
     setRememberMe,
@@ -140,6 +161,8 @@ const useLoginForm = () => {
     googleLoading,
     showRecuperar,
     setShowRecuperar,
+    showGoogleModal,
+    setShowGoogleModal,
     formError,
   };
 };
@@ -157,6 +180,7 @@ const LoginPage = () => {
     handleChangeValue,
     handleSubmit,
     handleGoogleLogin,
+    handleSelectGoogleAccount,
     handleDemoLogin,
     rememberMe,
     setRememberMe,
@@ -165,6 +189,8 @@ const LoginPage = () => {
     googleLoading,
     showRecuperar,
     setShowRecuperar,
+    showGoogleModal,
+    setShowGoogleModal,
     formError,
   } = useLoginForm();
 
@@ -473,6 +499,12 @@ const LoginPage = () => {
       <RecuperarContrasena
         show={showRecuperar}
         onHide={() => setShowRecuperar(false)}
+      />
+      <GoogleAuthModal
+        isOpen={showGoogleModal}
+        onClose={() => setShowGoogleModal(false)}
+        onSelectAccount={handleSelectGoogleAccount}
+        loading={googleLoading}
       />
     </>
   );

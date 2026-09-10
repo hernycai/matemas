@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ModalAyuda from '../../Consejos/ModalAyuda.jsx';
 import ModalCalculadora from '../../Calculadora/Calculadora.jsx';
+import ModalConfirmacion from '../../../cursos/ModalConfirmacion.jsx';
 import { useMascotContext } from "../../../../mascotas/core/MascotProvider";
 import { FaComments } from "react-icons/fa";
 import "./headerDesafio.css";
@@ -12,6 +13,7 @@ export default function HeaderDesafio({ progreso = 100, seccionId = null }) {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenCalculator, setIsOpenCalculator] = useState(false);
+  const [isOpenInfo, setIsOpenInfo] = useState(false);
   const { openChat } = useMascotContext();
 
   useEffect(() => {
@@ -34,16 +36,16 @@ export default function HeaderDesafio({ progreso = 100, seccionId = null }) {
     setIsOpen(false);
   };
 
-  const openLevelVideo = () => {
-    if (!seccionId) return;
-    const returnTo = encodeURIComponent(location.pathname + location.search);
-    navigate(`/desafios/${seccionId}?next=${returnTo}`);
-  };
-
   return (
     <>
       <ModalAyuda isOpen={isOpen} onClose={closeHelpModal} />
       <ModalCalculadora isOpen={isOpenCalculator} onClose={() => setIsOpenCalculator(false)} />
+      <ModalConfirmacion
+        show={isOpenInfo}
+        handleClose={() => setIsOpenInfo(false)}
+        handleToEjercicios={() => setIsOpenInfo(false)}
+        seccion={{ id: seccionId }}
+      />
 
       <div className="header-desafio">
         <div className="header-desafio-progress">
@@ -63,10 +65,9 @@ export default function HeaderDesafio({ progreso = 100, seccionId = null }) {
           <button
             className="icon-btn"
             type="button"
-            onClick={openLevelVideo}
-            disabled={!seccionId}
-            title={seccionId ? "Ver video de este nivel" : "Video no disponible"}
-            aria-label="Ver video de este nivel"
+            onClick={() => setIsOpenInfo(true)}
+            title="¿De qué se trata este ejercicio?"
+            aria-label="¿De qué se trata este ejercicio?"
           >
             <img src="/icons/Book.png" alt="" />
           </button>

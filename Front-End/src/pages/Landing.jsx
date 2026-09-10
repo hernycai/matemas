@@ -96,7 +96,7 @@ const Landing = () => {
     return (
         <>
             <WelcomeModal />
-            <Container ref={containerRef} fluid className="p-0 m-0 overflow-auto overflow-x-hidden" style={{ backgroundColor: "#F0F1EB" }}>
+            <Container ref={containerRef} fluid className="p-0 m-0 overflow-auto overflow-x-hidden landing-main-container">
                 <a href="#contenido-principal" className="skip-link">
                     Saltar al contenido
                 </a>

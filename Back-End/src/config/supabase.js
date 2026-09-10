@@ -25,11 +25,44 @@ if (dataSource === 'DB' && supabaseUrl && supabaseAnonKey &&
             onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
             // Mock getUser para el middleware de autenticación en desarrollo local
             getUser: async (token) => {
+                if (!token) {
+                    return { data: { user: null }, error: { message: 'Token missing' } };
+                }
                 if (token === 'dev-bypass-token') {
-                    // Retorna un usuario mock con rol de admin para las pruebas locales
                     return {
                         data: {
                             user: { id: 'mock-admin-id', email: 'elmoteroloco@gmail.com', user_metadata: { full_name: 'Mock Admin' } }
+                        },
+                        error: null
+                    };
+                }
+                if (typeof token === 'string' && token.startsWith('google-token-')) {
+                    try {
+                        const raw = token.replace('google-token-', '');
+                        const payload = JSON.parse(Buffer.from(raw, 'base64').toString('utf8'));
+                        return {
+                            data: {
+                                user: {
+                                    id: payload.id || 'admin-009',
+                                    email: payload.email || 'hluciano@gmail.com',
+                                    user_metadata: { full_name: payload.name || 'Luciano' }
+                                }
+                            },
+                            error: null
+                        };
+                    } catch {
+                        return {
+                            data: {
+                                user: { id: 'admin-009', email: 'hluciano@gmail.com', user_metadata: { full_name: 'Luciano' } }
+                            },
+                            error: null
+                        };
+                    }
+                }
+                if (typeof token === 'string' && token.startsWith('demo-token-')) {
+                    return {
+                        data: {
+                            user: { id: 'demo-adult-user-01', email: 'maria.adulta@matemas.com', user_metadata: { full_name: 'María Gómez' } }
                         },
                         error: null
                     };

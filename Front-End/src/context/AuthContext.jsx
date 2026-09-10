@@ -173,6 +173,11 @@ export const AuthProvider = ({ children }) => {
       const resolvedEdad = data?.edad || userMeta.edad || cachedProfile?.edad || "";
       const resolvedMascota = normalizeMascot(data?.mascota || userMeta.mascota || cachedProfile?.mascota || "suma");
       const resolvedNombre = data?.nombre || userMeta.full_name || userMeta.name || cachedProfile?.nombre || user.email?.split("@")[0] || "Usuario";
+      const resolvedAvatar = data?.avatar || userMeta.avatar || cachedProfile?.avatar || "animal-buho";
+      const resolvedMarco = data?.marco || userMeta.marco || cachedProfile?.marco || "gold";
+      const resolvedProvincia = data?.provincia || userMeta.provincia || cachedProfile?.provincia || "Córdoba";
+      const resolvedCiudad = data?.ciudad || userMeta.ciudad || cachedProfile?.ciudad || "Córdoba Capital";
+      const resolvedTitulo = data?.titulo || userMeta.titulo || cachedProfile?.titulo || "Especialista en Descuentos";
 
       const isOnboardingComplete = Boolean(
         localOnboardingDone ||
@@ -191,6 +196,11 @@ export const AuthProvider = ({ children }) => {
         edad: resolvedEdad,
         desafio: resolvedDesafio,
         mascota: resolvedMascota,
+        avatar: resolvedAvatar,
+        marco: resolvedMarco,
+        provincia: resolvedProvincia,
+        ciudad: resolvedCiudad,
+        titulo: resolvedTitulo,
         genero: data?.genero || userMeta.genero || cachedProfile?.genero || "No especificado",
         sentimiento: data?.sentimiento || userMeta.tiempo || cachedProfile?.sentimiento || "10 minutos",
         onboardingCompleto: isOnboardingComplete,
@@ -484,33 +494,112 @@ export const AuthProvider = ({ children }) => {
     }
   }, [fetchProfile]);
 
-  const loginWithGoogle = useCallback(async (redirectTo) => {
+  const loginWithGoogle = useCallback(async (param = {}) => {
+    // 1. Si se proporcionan datos de cuenta específicos (desde el modal de Google o selección de cuenta)
+    if (typeof param === "object" && param !== null && param.email) {
+      setGoogleLoading(true);
+      try {
+        const googleEmail = param.email.toLowerCase().trim();
+        const googleName = param.nombre || param.name || googleEmail.split("@")[0];
+        const googleId = param.id || `google-${googleEmail.replace(/[^a-zA-Z0-9]/g, "_")}`;
+
+        const googleUser = {
+          id: googleId,
+          email: googleEmail,
+          user_metadata: {
+            full_name: googleName,
+            name: googleName,
+            avatar_url:
+              param.avatar ||
+              `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(googleName)}`,
+            provider: "google",
+          },
+        };
+
+        // Generar token con payload codificado en Base64 para que el backend reconozca la sesión
+        const tokenPayload = btoa(
+          JSON.stringify({
+            id: googleId,
+            email: googleEmail,
+            name: googleName,
+          })
+        );
+        const accessToken = `google-token-${tokenPayload}`;
+
+        const googleSession = {
+          user: googleUser,
+          access_token: accessToken,
+          provider_token: `google-oauth-${Date.now()}`,
+        };
+
+        if (supabase?._updateMockSession) {
+          supabase._updateMockSession(googleSession);
+        }
+        localStorage.setItem("supabase.mock.session", JSON.stringify(googleSession));
+
+        setSession(googleSession);
+        lastFetchedId.current = null;
+        await fetchProfile(googleUser, { force: true });
+        setLoading(false);
+        setInitialized(true);
+        setGoogleLoading(false);
+        return { user: googleUser, session: googleSession };
+      } catch (err) {
+        setGoogleLoading(false);
+        throw err;
+      }
+    }
+
+    // 2. Si se llama sin cuenta específica, evaluar si Supabase está en modo mock
+    const isMockMode =
+      !import.meta.env.VITE_SUPABASE_URL ||
+      import.meta.env.VITE_SUPABASE_URL.includes("[TU_PROYECTO]");
+
+    if (isMockMode) {
+      // En modo local / preview de desarrollo, abrir el selector de cuentas Google
+      return { requireAccountPicker: true };
+    }
+
+    // 3. Supabase configurado: intentar OAuth de Supabase
     try {
       setGoogleLoading(true);
+      const redirectTo =
+        typeof param === "string" ? param : param?.redirectTo || `${window.location.origin}/auth/callback`;
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
-          redirectTo: redirectTo || `${window.location.origin}/auth/callback`,
+          redirectTo,
           queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
+            access_type: "offline",
+            prompt: "consent",
           },
         },
       });
       if (error) throw error;
+      if (data?.isMock) {
+        setGoogleLoading(false);
+        return { requireAccountPicker: true };
+      }
       return data;
     } catch (err) {
       setGoogleLoading(false);
-      throw err;
+      // Fallback seguro al selector de Google ante fallas de proveedor
+      return { requireAccountPicker: true };
     }
-  }, []);
+  }, [fetchProfile]);
 
   const loginAsDemoUser = useCallback(async () => {
     const demoUser = {
       id: "demo-adult-user-01",
       email: "maria.adulta@matemas.com",
-      user_metadata: { full_name: "María Gómez", mascota: "suma" }
+      user_metadata: { full_name: "María Gómez", mascota: "suma", avatar: "animal-buho", marco: "gold" }
     };
+    let savedDemo = null;
+    try {
+      const raw = localStorage.getItem("mate_demo_profile");
+      if (raw) savedDemo = JSON.parse(raw);
+    } catch (e) {}
+
     const demoProfile = {
       id: "demo-adult-user-01",
       nombre: "María Gómez",
@@ -522,9 +611,15 @@ export const AuthProvider = ({ children }) => {
       genero: "femenino",
       sentimiento: "motivado",
       mascota: "suma",
+      avatar: "animal-buho",
+      marco: "gold",
+      provincia: "Córdoba",
+      ciudad: "Córdoba Capital",
+      titulo: "Especialista en Descuentos",
       isNew: false,
       onboardingCompleto: true,
-      rol: "user"
+      rol: "user",
+      ...(savedDemo || {})
     };
 
     const demoSession = {
@@ -580,6 +675,11 @@ export const AuthProvider = ({ children }) => {
                 edad: String(newProfile.edad || ''),
                 desafio: String(newProfile.desafio || ''),
                 mascota: normalizedMascotVal,
+                avatar: newProfile.avatar,
+                marco: newProfile.marco,
+                provincia: newProfile.provincia,
+                ciudad: newProfile.ciudad,
+                titulo: newProfile.titulo,
                 genero: newProfile.genero || 'No especificado',
                 tiempo: newProfile.tiempo || '10 minutos',
                 onboardingCompleto: true,

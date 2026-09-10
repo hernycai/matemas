@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-const Footer = React.lazy(() => import('../components/layouts/Footer/Footer'));
-const Header = React.lazy(() => import('../components/layouts/header/Header'));
+import Header from '../components/layouts/header/Header';
 import ButtonBack from '../components/ui/ButtonBack/ButtonBack';
 import Privacity from '../components/layouts/LegalPage/Privacity';
 import Terms from '../components/layouts/LegalPage/Terms';

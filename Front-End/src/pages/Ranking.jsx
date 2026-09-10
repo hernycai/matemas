@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import api from "../config/api";
 import fotoPerfilUser from '../assets/Foto_perfil.png';
 import LoadingSpinner from "../components/ui/LoadingSpinner";
+import UserAvatar from "../components/ui/UserAvatar/UserAvatar.jsx";
 
 // ============================================
 // SERVICIO DE RANKING (integrado)
@@ -426,17 +427,23 @@ const CardRanking = ({
                     style={{
                         position: "relative",
                         borderRadius: "100%",
-                        backgroundImage: `url(${avatar})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
                         width: sizes.avatarSize,
                         height: sizes.avatarSize,
-                        backgroundColor: "#FFDB54",
                         flexShrink: 0,
-                        border: index <= 3 ? `2px solid ${index === 1 ? "#FFD700" : index === 2 ? "#C0C0C0" : "#CD7F32"}` : "none",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                     }}
                 >   
-                    <img src={fotoPerfilUser} style={{ width: "100%", height: "100%" }} />
+                    {esUsuarioActual ? (
+                        <UserAvatar size={parseInt(sizes.avatarSize, 10) || 48} showFrame={true} />
+                    ) : (
+                        <img 
+                            src={avatar || fotoPerfilUser} 
+                            alt={titulo}
+                            style={{ width: "100%", height: "100%", borderRadius: "100%", objectFit: "cover" }} 
+                        />
+                    )}
                     {!isMobile && medal && (
                         <div style={{
                             position: "absolute",
@@ -665,16 +672,23 @@ const UserCard = ({
                 style={{
                     position: "relative",
                     borderRadius: "100%",
-                    backgroundImage: `url(${userImage})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
                     width: sizes.avatarSize,
                     height: sizes.avatarSize,
-                    backgroundColor: "#FFDB54",
-                    border: isYou ? "3px solid #FFD700" : "none",
+                    flexShrink: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                 }}
             >
-                <img src={fotoPerfilUser} style={{ width: "100%", height: "100%", borderRadius: "100%" }} />
+                {isYou ? (
+                    <UserAvatar size={parseInt(sizes.avatarSize, 10) || 60} showFrame={true} />
+                ) : (
+                    <img 
+                        src={userImage || fotoPerfilUser} 
+                        alt={name}
+                        style={{ width: "100%", height: "100%", borderRadius: "100%", objectFit: "cover" }} 
+                    />
+                )}
                 <img
                     src={medalImage}
                     alt="medalla"

@@ -1,50 +1,108 @@
+import React from "react";
 import { Modal, Button } from "react-bootstrap";
-export default function ModalConfirmacion({ show, handleToDesafios, handleToEjercicios, handleClose }) {
-    return (
-        <Modal
-            show={show}
-            onHide={handleClose}
-            className="modal-custom"
-            centered
+import { FaCheckCircle, FaLightbulb, FaRocket } from "react-icons/fa";
+import { getSectionOverview } from "../../data/exercisesOverview";
+import "./ModalConfirmacion.css";
+
+export default function ModalConfirmacion({
+  show,
+  handleClose,
+  handleToEjercicios,
+  handleToDesafios,
+  seccion,
+}) {
+  const info = getSectionOverview(seccion);
+
+  const onStart = () => {
+    if (handleToEjercicios) {
+      handleToEjercicios();
+    } else if (handleToDesafios) {
+      handleToDesafios();
+    }
+  };
+
+  return (
+    <Modal
+      show={show}
+      onHide={handleClose}
+      className="modal-ejercicio-explicacion"
+      centered
+    >
+      <div className="modal-ejercicio-header">
+        <img
+          src="/mascot.png"
+          alt="Mascota Mate+"
+          className="modal-ejercicio-mascot"
+          onError={(e) => {
+            e.target.style.display = 'none';
+          }}
+        />
+        <div className="modal-ejercicio-header-info">
+          <div className="modal-ejercicio-badge-row">
+            <span className="modal-ejercicio-badge-nivel">
+              {info.nivelTexto || `Nivel ${info.nivel || 1}`}
+            </span>
+            {info.puntos && (
+              <span className="modal-ejercicio-badge-puntos">
+                +{info.puntos} pts de recompensa
+              </span>
+            )}
+          </div>
+          <h2 className="modal-ejercicio-title">{info.titulo}</h2>
+          {info.subtitulo && (
+            <p className="modal-ejercicio-subtitle">{info.subtitulo}</p>
+          )}
+        </div>
+      </div>
+
+      <div className="modal-ejercicio-body">
+        {/* Descripción general del ejercicio */}
+        <div className="modal-ejercicio-desc-box">
+          <p className="modal-ejercicio-desc-text">{info.descripcion}</p>
+        </div>
+
+        {/* Qué vas a practicar */}
+        <div className="modal-ejercicio-section-label">
+          <span>🎯 ¿De qué se trata este ejercicio?</span>
+        </div>
+
+        <div className="modal-ejercicio-que-practicaras">
+          {info.quePracticaras?.map((punto, index) => (
+            <div key={index} className="modal-ejercicio-item-row">
+              <FaCheckCircle className="modal-ejercicio-item-icon" size={16} />
+              <span>{punto}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Consejo o estrategia clave */}
+        {info.consejo && (
+          <div className="modal-ejercicio-consejo-box">
+            <strong>
+              <FaLightbulb style={{ marginRight: 6 }} />
+              Consejo práctico:
+            </strong>{" "}
+            {info.consejo}
+          </div>
+        )}
+      </div>
+
+      <div className="modal-ejercicio-footer">
+        <Button
+          type="button"
+          className="modal-ejercicio-btn-volver"
+          onClick={handleClose}
         >
-            <Modal.Header style={{ display: "flex !important", justifyContent: "center !important" }} className="d-flex justify-content-around" closeButton={false}>
-                <Modal.Title>
-                    <img src="/mascot.png" alt="Mascot" style={{ width: "80px", borderRadius: "50%", margin: "0 auto" }} />
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="text-center" style={{ margin: "0 2rem", backgroundColor: "white", borderRadius: "20px", padding: "1rem", fontWeight: "bold", fontSize: "18px" }}>
-                ¿Querés ver un video explicativo antes de arrancar? Esto te ayudará a entender mejor el desafío
-            </Modal.Body>
-            <Modal.Footer className="d-flex justify-content-around" style={{ border: "none" }}>
-                <Button
-                    onClick={handleToEjercicios}
-                    style={{
-                        borderRadius: "20px",
-                        backgroundColor: "#FFDB54",
-                        border: "1px solid #FFDB54",
-                        color: "black",
-                        fontWeight: "semibold",
-                        fontSize: "18px",
-                        padding: "0.5rem 1.5rem"
-                    }}
-                >
-                    No, continuar
-                </Button>
-                <Button
-                    onClick={handleToDesafios}
-                    style={{
-                        borderRadius: "20px",
-                        backgroundColor: "#FFDB54",
-                        border: "1px solid #FFDB54",
-                        color: "black",
-                        fontWeight: "semibold",
-                        fontSize: "18px",
-                        padding: "0.5rem 1.5rem"
-                    }}
-                >
-                    Sí, ver video
-                </Button>
-            </Modal.Footer>
-        </Modal>
-    )
+          Volver
+        </Button>
+        <Button
+          type="button"
+          className="modal-ejercicio-btn-comenzar"
+          onClick={onStart}
+        >
+          <FaRocket /> Comenzar Ejercicio
+        </Button>
+      </div>
+    </Modal>
+  );
 }

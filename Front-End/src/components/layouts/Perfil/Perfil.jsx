@@ -161,21 +161,22 @@ function Perfil() {
 
   useEffect(() => {
     if (profile) {
-      setFormData({
-        nombre: profile.nombre || 'María Gómez',
-        email: profile.email || 'usuario@matemas.com',
-        edad: profile.edad || '38',
-        provincia: profile.provincia || 'Córdoba',
-        ciudad: profile.ciudad || 'Córdoba Capital',
-        desafio: profile.desafio || 'mejorar_calculo_diario',
-        sentimiento: profile.sentimiento || 'motivado',
-        avatar: profile.avatar || 'animal-buho',
-        marco: profile.marco || 'emerald',
-        titulo: profile.titulo || 'Especialista en Descuentos',
-        mascota: profile.mascota || 'suma',
-      });
+      setFormData((prev) => ({
+        ...prev,
+        nombre: profile.nombre || prev.nombre || 'María Gómez',
+        email: profile.email || prev.email || 'usuario@matemas.com',
+        edad: profile.edad || prev.edad || '38',
+        provincia: profile.provincia || prev.provincia || 'Córdoba',
+        ciudad: profile.ciudad || prev.ciudad || 'Córdoba Capital',
+        desafio: profile.desafio || prev.desafio || 'mejorar_calculo_diario',
+        sentimiento: profile.sentimiento || prev.sentimiento || 'motivado',
+        avatar: profile.avatar || prev.avatar || 'animal-buho',
+        marco: profile.marco || prev.marco || 'emerald',
+        titulo: profile.titulo || prev.titulo || 'Especialista en Descuentos',
+        mascota: profile.mascota || prev.mascota || 'suma',
+      }));
     }
-  }, [profile]);
+  }, [profile?.id, profile?.email]);
 
   const opcionesMenu = [
     { id: 'datos', label: 'Datos Personales', iconImg: iconAvatar },
@@ -190,6 +191,16 @@ function Perfil() {
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     setGuardadoExitoso(false);
+
+    // Sincronizar de inmediato si cambia el avatar o el marco decorativo para actualizar el menú superior en vivo
+    // Se ejecuta de manera asíncrona fuera del updater de estado para no interferir en el ciclo de render de React
+    if (field === 'avatar' || field === 'marco') {
+      if (updateProfile) {
+        updateProfile({ [field]: value }).catch((err) => {
+          console.error("Error al sincronizar avatar/marco:", err);
+        });
+      }
+    }
   };
 
   const handleElegirAvatarAleatorio = () => {

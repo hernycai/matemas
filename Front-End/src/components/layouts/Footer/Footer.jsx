@@ -24,103 +24,76 @@ const Footer = () => {
     };
 
     return (
-        <footer className="footer-wrapper" role="contentinfo">
+        <footer id="footer-principal" className="footer-wrapper" role="contentinfo">
             <div className="footer">
-                <Row className="justify-content-between w-100">
-                    <Col xs={12} sm={12} md={12} lg={4} className="mb-4 mb-lg-0">
-                        <div className="footer-section d-flex align-items-center align-items-lg-start flex-column gap-3">
+                <Row className="align-items-center justify-content-between w-100 gy-3">
+                    {/* Marca y propósito resumido */}
+                    <Col xs={12} md={6} lg={5}>
+                        <div className="d-flex align-items-center gap-3">
                             <img
+                                id="footer-logo"
                                 src="/logo.png"
                                 alt="Logo de MATE+"
-                                style={{ width: 100, height: 'auto', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)', borderRadius: '100%' }}
+                                className="footer-logo-compact"
                             />
-                            <p className="footer-location w-75 text-center text-lg-start">
-                                Nuestra visión es hacerte el aprendizaje más fácil y ayudarte a dominar las matemáticas que necesitás para potenciar tu día a día.
-                            </p>
-                            {/* Sin perfiles oficiales todavía: no linkear a homes genéricas */}
-                            <p className="footer-location w-75 text-center text-lg-start mb-0" style={{ fontSize: '0.85rem', opacity: 0.85 }}>
-                                Seguinos pronto en redes — perfiles oficiales en camino.
-                            </p>
+                            <div>
+                                <h3 className="footer-brand-title m-0">MATE+</h3>
+                                <p className="footer-tagline m-0">
+                                    Matemática práctica y cotidiana para potenciar tu día a día.
+                                </p>
+                            </div>
                         </div>
                     </Col>
 
-                    <Col xs={4} sm={4} md={4} lg={2}>
-                        <Nav className="footer-section d-flex align-items-center flex-column gap-2">
-                            <p className="footer-social-title m-0">Acerca</p>
+                    {/* Enlaces de navegación rápida */}
+                    <Col xs={12} md={6} lg={6}>
+                        <Nav className="justify-content-center justify-content-md-end align-items-center gap-3 gap-lg-4 flex-wrap">
                             <Nav.Link
+                                id="footer-nav-about"
                                 onClick={() => handleScrollToSection("about")}
                                 href="/#about"
                                 className="footer-link"
-                                style={{ whiteSpace: "nowrap" }}
                             >
                                 ¿Qué es MATE+?
                             </Nav.Link>
                             <Nav.Link
+                                id="footer-nav-nosotros"
                                 as={Link}
                                 to="/nosotros"
                                 className="footer-link"
-                                style={{ whiteSpace: "nowrap" }}
                             >
                                 Sobre nosotros
                             </Nav.Link>
-                        </Nav>
-                    </Col>
-
-                    <Col xs={4} sm={4} md={4} lg={2}>
-                        <div className="footer-section d-flex align-items-center flex-column gap-2">
-                            <p className="footer-social-title m-0">Comunidad</p>
-                            <span className="footer-link footer-link-disabled" title="Próximamente">
-                                Foro (próximamente)
-                            </span>
-                            <span className="footer-link footer-link-disabled" title="Próximamente">
-                                Blog (próximamente)
-                            </span>
-                        </div>
-                    </Col>
-
-                    <Col xs={4} sm={4} md={4} lg={2}>
-                        <div className="footer-section d-flex flex-column align-items-center align-items-lg-end gap-2">
-                            <p className="footer-social-title m-0">Redes</p>
-                            <a
-                                href="https://www.linkedin.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link
+                                id="footer-nav-privacidad"
+                                to="/privacidad"
+                                state={{ tab: 'privacidad' }}
                                 className="footer-link"
                             >
-                                LinkedIn
-                            </a>
-                            <Link to="/nosotros" className="footer-link">
-                                Equipo 8
+                                Privacidad
                             </Link>
-                        </div>
+                            <Link
+                                id="footer-nav-terminos"
+                                to="/terminos"
+                                state={{ tab: 'terminos' }}
+                                className="footer-link"
+                            >
+                                Términos
+                            </Link>
+                        </Nav>
                     </Col>
                 </Row>
 
-                <div className="w-100 my-4" style={{ borderBottom: '1px solid rgba(0,0,0,0.15)' }} />
+                <div className="footer-divider" />
 
-                <Row className="w-100 align-items-center">
-                    <Col xs={12} md={6} className="text-center text-md-start">
-                        <p className="footer-copyright">
-                            © {currentYear} Mate+. Todos los derechos reservados.
-                        </p>
-                    </Col>
-                    <Col xs={12} md={6} className="d-flex justify-content-center justify-content-md-end gap-4 gap-md-5 mt-2 mt-md-0">
-                        <Link
-                            to="/privacidad"
-                            state={{ tab: 'privacidad' }}
-                            className="footer-copyright footer-legal-link"
-                        >
-                            Política de Privacidad
-                        </Link>
-                        <Link
-                            to="/terminos"
-                            state={{ tab: 'terminos' }}
-                            className="footer-copyright footer-legal-link"
-                        >
-                            Términos y Condiciones
-                        </Link>
-                    </Col>
-                </Row>
+                <div className="w-100 d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start gap-1">
+                    <p className="footer-copyright m-0">
+                        © {currentYear} MATE+. Todos los derechos reservados.
+                    </p>
+                    <span className="footer-subtext m-0">
+                        Aprende sin apuros, a tu propio ritmo.
+                    </span>
+                </div>
             </div>
         </footer>
     );

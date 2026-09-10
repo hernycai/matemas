@@ -67,7 +67,7 @@ if (!supabase) {
                 return { data: { subscription: { unsubscribe: () => {} } } };
             },
             signInWithPassword: async () => Promise.reject(new Error("SUPABASE_UNAVAILABLE_MOCK")),
-            signInWithOAuth: async () => Promise.reject(new Error("SUPABASE_UNAVAILABLE_MOCK")),
+            signInWithOAuth: async (options) => ({ data: { provider: options?.provider || 'google', isMock: true }, error: null }),
             signUp: async () => Promise.reject(new Error("SUPABASE_UNAVAILABLE_MOCK")),
             signOut: async () => {
                 localStorage.removeItem(MOCK_STORAGE_KEY);

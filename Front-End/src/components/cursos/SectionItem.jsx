@@ -133,7 +133,7 @@ export default function SectionItem({
               opacity: locked ? 0.7 : 1,
             }}
             disabled={locked}
-            title={locked ? "Completá el nivel anterior para desbloquear" : "Ver video / empezar"}
+            title={locked ? "Completá el nivel anterior para desbloquear" : "Comenzar ejercicio"}
             onClick={(e) => {
               e.stopPropagation();
               if (!locked) handleShow();

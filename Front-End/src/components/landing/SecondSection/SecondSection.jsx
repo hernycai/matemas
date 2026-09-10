@@ -1,90 +1,110 @@
-import '../FirstSection/FirstSection.css';
-import { Container, Stack, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
+import './SecondSection.css';
 
 const steps = [
     {
         id: 1,
+        stepNumber: "Paso 1",
         title: "Práctico y fácil de entender",
         subtitle: "Aprendé con ejercicios reales como compras, descuentos, precios y cuentas del día a día.",
         src: '/landing/step-1.png',
-        alt: "Ilustración práctica y fácil de entender - Ejercicios de la vida cotidiana"
+        alt: "Ilustración práctica y fácil de entender - Ejercicios de la vida cotidiana",
+        floatClass: "graphic-float-1"
     },
     {
         id: 2,
+        stepNumber: "Paso 2",
         title: "Explicado paso a paso",
         subtitle: "Videos claros y simples para ganar confianza resolviendo problemas cotidianos.",
         src: '/landing/step-2.png',
-        alt: "Ilustración explicado paso a paso - Videos claros y simples"
+        alt: "Ilustración explicado paso a paso - Videos claros y simples",
+        floatClass: "graphic-float-2"
     },
     {
         id: 3,
+        stepNumber: "Paso 3",
         title: "Pensado para adultos",
-        subtitle: "Una experiencia accesible y enfocada en aprender desde situaciones reales. Sin apuros ni presión. ¡A tu ritmo!",
+        subtitle: "Una experiencia accesible y enfocada en aprender desde situaciones reales. ¡A tu propio ritmo y sin presiones!",
         src: '/landing/step-3.png',
-        alt: "Ilustración pensado para adultos - Aprendizaje a tu ritmo sin presión"
+        alt: "Ilustración pensado para adultos - Aprendizaje a tu ritmo sin presión",
+        floatClass: "graphic-float-3"
     }
 ];
 
 const SecondSection = () => {
     return (
-        <Container
-            fluid
-            className="p-5"
-            style={{ backgroundColor: '#FFFEFD' }}
+        <div
             id="como-funciona"
+            className="d-flex align-items-center justify-content-center"
         >
-            <Stack gap={0}>
-                {steps.map((step, index) => (
-                    <Row
-                        key={step.id}
-                        className={`align-items-center justify-content-around gap-2 ${index % 2 === 1 ? 'flex-row-reverse' : ''
-                            }`}
-                        style={{ marginBottom: '3rem' }}
+            <Container fluid="lg" className="como-funciona-container">
+                {/* Encabezado compacto */}
+                <div className="text-center mb-3 mb-md-4">
+                    <span className="como-funciona-badge">
+                        ¿CÓMO FUNCIONA?
+                    </span>
+                    <h2
+                        className="fw-bold m-0"
+                        style={{
+                            fontSize: 'clamp(1.4rem, 2.2vw, 1.95rem)',
+                            color: '#0A3D91',
+                            letterSpacing: '-0.5px'
+                        }}
                     >
-                        {/* ✅ Columna de texto con mejor contraste */}
-                        <Col lg={6} className="text-center text-lg-start">
-                            <h3
-                                className="text-uppercase fw-bold mb-3"
-                                style={{
-                                    fontSize: 'clamp(1.8rem, 4vw, 3.75rem)', // 28px → 60px
-                                    color: 'black',
-                                    fontWeight: 600,
-                                    textShadow: '0 2px 4px rgba(0,0,0,0.1)'
-                                }}
-                            >
-                                {step.title}
-                            </h3>
-                            <p
-                                className="lead"
-                                style={{
-                                    fontSize: 'clamp(1rem, 1.8vw, 2rem)', // 16px → 30px
-                                    color: '#000000',
-                                    fontWeight: 400,
-                                }}
-                            >
-                                {step.subtitle}
-                            </p>
-                        </Col>
+                        Aprendé a tu ritmo en 3 simples pasos
+                    </h2>
+                </div>
 
-                        <Col lg={4} className="text-center">
-                            <img
-                                src={step.src}
-                                alt={step.alt}
-                                width="300"
-                                height="300"
-                                style={{
-                                    width: '100%',
-                                    height: '100%',
-                                    borderRadius: '50%',
-                                    objectFit: 'cover',
-                                    transition: 'opacity 0.5s ease',
-                                }}
-                            />
+                {/* 3 pasos en horizontal para que quepan en una sola pantalla */}
+                <Row className="g-3 g-lg-4 justify-content-center align-items-stretch">
+                    {steps.map((step) => (
+                        <Col key={step.id} xs={12} md={4}>
+                            <div id={`como-funciona-card-${step.id}`} className="como-funciona-card">
+                                <span className="como-funciona-badge">
+                                    {step.stepNumber}
+                                </span>
+
+                                {/* Gráfico con efecto aura y animación de flotación dinámica */}
+                                <div id={`como-funciona-graphic-${step.id}`} className="como-funciona-graphic-wrapper">
+                                    <div className="como-funciona-graphic-aura" />
+                                    <img
+                                        id={`como-funciona-img-${step.id}`}
+                                        src={step.src}
+                                        alt={step.alt}
+                                        width="130"
+                                        height="130"
+                                        className={`como-funciona-graphic-img ${step.floatClass}`}
+                                        loading="lazy"
+                                    />
+                                </div>
+
+                                <h3
+                                    className="fw-bold mb-2"
+                                    style={{
+                                        fontSize: 'clamp(1.05rem, 1.25vw, 1.25rem)',
+                                        color: '#1A202C',
+                                        lineHeight: 1.3
+                                    }}
+                                >
+                                    {step.title}
+                                </h3>
+
+                                <p
+                                    style={{
+                                        fontSize: 'clamp(0.85rem, 0.95vw, 0.95rem)',
+                                        color: '#4A5568',
+                                        lineHeight: 1.5,
+                                        margin: 0
+                                    }}
+                                >
+                                    {step.subtitle}
+                                </p>
+                            </div>
                         </Col>
-                    </Row>
-                ))}
-            </Stack>
-        </Container>
+                    ))}
+                </Row>
+            </Container>
+        </div>
     );
 };
 

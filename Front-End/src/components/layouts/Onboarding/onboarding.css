@@ -284,9 +284,10 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 12px;
+  align-items: center;
+  gap: 16px;
   margin-top: auto;
-  padding: 10px 0 5px 0;
+  padding: 14px 0 6px 0;
   flex-shrink: 0;
 }
 
@@ -296,41 +297,67 @@
 
 .onboarding-container form .page .field.btns button {
   flex: 1;
-  max-width: 120px;
-  height: 40px;
+  max-width: 145px;
+  height: 46px;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-transform: none;
+  letter-spacing: 0.02em;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+.onboarding-container form .page .field.btns button:active {
+  transform: scale(0.97);
+}
+
+/* Botón Secundario (Atrás) */
 .onboarding-container form .page .field.btns button.prev {
-  background: #7f8c8d;
-  color: #fff;
+  background: #ffffff;
+  color: #334155;
+  border: 1.5px solid #cbd5e1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .onboarding-container form .page .field.btns button.prev:hover {
-  background: #95a5a6;
+  background: #f8fafc;
+  color: #0f172a;
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Botón Primario (Siguiente / Comenzar) */
 .onboarding-container form .page .field.btns button.next,
 .onboarding-container form .page .field.btns button.submit {
-  background: #A9A9A9;
-  color: #fff;
+  background: linear-gradient(180deg, #ffd54f 0%, #f6c23d 100%);
+  color: #1f2937;
+  border: 1.5px solid #eab308;
+  box-shadow: 0 4px 14px rgba(246, 194, 61, 0.4);
 }
 
 .onboarding-container form .page .field.btns button.next:hover,
 .onboarding-container form .page .field.btns button.submit:hover {
-  background: #8f8f8f;
+  background: linear-gradient(180deg, #ffe082 0%, #f59e0b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(246, 194, 61, 0.55);
 }
 
+/* Estado Deshabilitado */
 .onboarding-container form .page .field.btns button:disabled {
-  background: #566573 !important;
-  color: #95a5a6;
+  background: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: none !important;
   cursor: not-allowed;
+  transform: none !important;
+  opacity: 0.85;
 }
 
 /* ==========================================================================
@@ -506,9 +533,10 @@
   }
 
   .onboarding-container form .page .field.btns button {
-    height: 38px;
-    font-size: 15px;
-    max-width: 100px;
+    height: 42px;
+    font-size: 14px;
+    max-width: 130px;
+    padding: 0 16px;
   }
 
   /* Grid de mascotas en móvil */
@@ -581,9 +609,10 @@
   }
 
   .onboarding-container form .page .field.btns button {
-    height: 34px;
+    height: 38px;
     font-size: 13px;
-    max-width: 80px;
+    max-width: 110px;
+    padding: 0 12px;
   }
 
   .mascota-selection-container > div:last-child {

@@ -65,7 +65,7 @@ const FooterDash = () => {
                 textAlign: sizes.textAlign,
                 width: isMobile ? "100%" : "auto",
             }}>
-                ©2026 Equipo 8. Innova Lab
+                ©{new Date().getFullYear()} MATE+. Todos los derechos reservados.
             </p>
 
             {/* Enlaces legales */}

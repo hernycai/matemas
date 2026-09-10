@@ -2,16 +2,17 @@ import { useState } from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import "./header.css";
-import { FaRegUser } from "react-icons/fa";
-import { FaComments } from "react-icons/fa";
+import { FaRegUser, FaComments, FaSun, FaMoon } from "react-icons/fa";
 import ModalCalculadora from "../Calculadora/Calculadora.jsx";
 import { useMascotContext } from "../../../mascotas/core/MascotProvider";
+import { useTheme } from "../../../context/ThemeContext";
 
 export default function Header() {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const [isOpenCalculator, setIsOpenCalculator] = useState(false);
   const { openChat } = useMascotContext();
+  const { isDark, toggleTheme } = useTheme();
 
   const handleScrollToSection = (sectionId) => {
     setExpanded(false);
@@ -112,10 +113,46 @@ export default function Header() {
               />
             </svg>
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="navbar-nav" />
+
+          {/* Acciones principales visibles en el Header: botón de tema pill + login + toggle móvil */}
+          <div className="d-flex align-items-center gap-2 gap-md-3 order-lg-3">
+            <button
+              id="btn-toggle-theme-header"
+              type="button"
+              onClick={toggleTheme}
+              className="header-theme-pill"
+              aria-label={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+              title={`Cambiar a modo ${isDark ? 'claro' : 'oscuro'}`}
+            >
+              {isDark ? (
+                <>
+                  <FaSun className="theme-icon theme-sun-icon" />
+                  <span className="theme-text">Modo Claro</span>
+                </>
+              ) : (
+                <>
+                  <FaMoon className="theme-icon theme-moon-icon" />
+                  <span className="theme-text">Modo Oscuro</span>
+                </>
+              )}
+            </button>
+
+            <Nav.Link
+              as={Link}
+              to="/login"
+              className="d-none d-lg-flex gap-2 align-items-center button m-0"
+              onClick={() => setExpanded(false)}
+            >
+              <FaRegUser />
+              Iniciar Sesión
+            </Nav.Link>
+
+            <Navbar.Toggle aria-controls="navbar-nav" className="ms-1" />
+          </div>
+
           <Navbar.Collapse
             id="navbar-nav"
-            className="align-items-center justify-content-center"
+            className="align-items-center justify-content-center order-lg-2"
           >
             <Nav className="d-flex flex-column flex-lg-row align-items-center gap-3 gap-lg-4 py-3 py-lg-0">
               <Nav.Link
@@ -146,7 +183,7 @@ export default function Header() {
                 as="button"
                 type="button"
                 onClick={handleOpenTutor}
-                style={{ background: "none", border: "none", color: "#0A3D91", fontWeight: 700 }}
+                style={{ background: "none", border: "none", color: "var(--color-primary, #0A3D91)", fontWeight: 700 }}
                 className="d-flex align-items-center gap-1"
               >
                 <FaComments />
@@ -166,16 +203,6 @@ export default function Header() {
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>
-
-          <Nav.Link
-            as={Link}
-            to="/login"
-            className="d-none d-lg-flex gap-2 align-items-center button"
-            onClick={() => setExpanded(false)}
-          >
-            <FaRegUser />
-            Iniciar Sesión
-          </Nav.Link>
         </Container>
       </Navbar>
     </>

@@ -87,16 +87,131 @@
 .button-check {
   padding: 0.9rem 1.5rem;
   background-color: #FFDB54;
-  color: #000000;
+  color: #111111;
   border: none;
   border-radius: 12px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(255, 219, 84, 0.35);
 }
 
-.button-check:hover {
-  background-color: #2d3748;
+.button-check:hover:not(:disabled) {
+  background-color: #f59e0b;
+  color: #111111;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.button-check:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Barra de utilidades pedagógicas (Calculadora, Pizarra, Pista) */
+.ejercicio-tools-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 750px;
+}
+
+.tool-badge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.95rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1e293b;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.tool-badge-btn:hover {
+  background: #ffffff;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.tool-badge-btn.hint-btn {
+  background: #fef3c7;
+  border-color: #fde68a;
+  color: #92400e;
+}
+
+.tool-badge-btn.hint-btn:hover {
+  background: #fde68a;
+}
+
+/* Tarjeta contenedora para garantizar contraste y foco de lectura */
+.ejercicio-card-shell {
+  width: 100%;
+  max-width: 780px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  padding: 2.25rem 2rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* Indicador de progreso de ronda */
+.ronda-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #0284c7;
+  background: #e0f2fe;
+  border-radius: 999px;
+  margin-bottom: 1.25rem;
+}
+
+/* Caja de explicación paso a paso */
+.explicacion-box {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 1rem;
+  padding: 1.1rem 1.25rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #0284c7;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #334155;
+  text-align: left;
+  animation: slideIn 0.25s ease-out;
+}
+
+.explicacion-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+  font-size: 0.98rem;
 }
 
 /* --- MENSAJES DE RESPUESTA (CARTELES) --- */

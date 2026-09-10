@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import HeaderDashboard from '../Desafios/headerDash/HeaderDash';
-import avatarUser from '../../../assets/Foto_perfil.png';
+import UserAvatar from '../../ui/UserAvatar/UserAvatar.jsx';
 import './Configuracion.css';
 import { useAuth } from '../../../context/AuthContext';
 import api from '../../../config/api';
@@ -9,6 +10,7 @@ import { supabase } from '../../../config/supabaseClient';
 const PASSWORD_PLACEHOLDER = '*************';
 
 function Configuracion() {
+  const navigate = useNavigate();
   const { profile, refreshProfile, logout, deleteAccount } = useAuth();
   const [showHeader, setShowHeader] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -194,8 +196,30 @@ function Configuracion() {
         <div className="config-card">
           <h1 className="config-title">Configuración</h1>
 
-          <div className="config-avatar-wrapper">
-            <img src={avatarUser} alt="Foto de perfil" className="config-avatar-img" />
+          <div className="config-avatar-wrapper" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}>
+            <UserAvatar
+              avatar={profile?.avatar}
+              marco={profile?.marco}
+              size={88}
+              showFrame={true}
+            />
+            <button
+              type="button"
+              onClick={() => navigate('/perfil')}
+              style={{
+                backgroundColor: '#FFDB54',
+                color: '#0A3D91',
+                border: 'none',
+                fontWeight: 700,
+                fontSize: '0.85rem',
+                borderRadius: '20px',
+                padding: '6px 14px',
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+              }}
+            >
+              ✏️ Personalizar Avatar y Editar Perfil
+            </button>
           </div>
 
           <form method="post" onSubmit={handleSaveChanges} className="config-form">

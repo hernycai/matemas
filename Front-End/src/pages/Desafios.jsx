@@ -87,7 +87,7 @@ function Desafios() {
   }, [seccionId]);
 
   if (cargando) {
-    return <LoadingSpinner message="Cargando video..." />;
+    return <LoadingSpinner message="Cargando desafío..." />;
   }
 
   if (error || !videos.length) {
